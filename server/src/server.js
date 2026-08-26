@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 // ─── Load .env FIRST — before any other imports that need env vars ────────────
@@ -136,7 +137,22 @@ app.use('/api/claude', claudeRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/public-apis', publicApiRoutes);
-// ─────────────────────────────────────────────────────────────────────────────
+// Serve Frontend Static Build in Production (Single Service on Railway)
+const distPath = path.resolve(__dirname, '..', '..', 'dist');
+try {
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+        return next();
+      }
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+    console.log('[PathSeeker] Production static frontend attached from:', distPath);
+  }
+} catch (e) {
+  console.warn('[PathSeeker Warning] Could not attach static frontend dist:', e.message);
+}
 
 // Centralized Error Handler
 app.use(errorHandler);

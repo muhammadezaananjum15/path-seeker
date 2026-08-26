@@ -9,6 +9,8 @@
     "client": "vite --host 0.0.0.0 --port 5173",
     "server": "cd server && npm run dev",
     "build": "tsc -b && vite build",
+    "start": "node server/src/server.js",
+    "postinstall": "cd server && npm install",
     "preview": "vite preview --host 0.0.0.0 --port 5173",
     "lint": "oxlint"
   },
