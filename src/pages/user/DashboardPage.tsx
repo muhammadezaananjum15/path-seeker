@@ -145,11 +145,11 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="max-w-[1440px] mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8">
 
           {/* ── Mobile Nav Pills Bar ── */}
-          <div className="lg:hidden col-span-1 flex items-center gap-2 overflow-x-auto scrollbar-none pb-2 max-w-full">
+          <div className="lg:hidden col-span-1 flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none pb-2 max-w-full">
             {sidebarItems.map(({ label, path, icon: Icon }) => {
               const isActive = location.pathname === path;
               return (

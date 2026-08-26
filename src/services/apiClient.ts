@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.PROD
+    ? 'https://path-seeker-production-ecd0.up.railway.app/api'
+    : '/api');
+
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -30,7 +36,7 @@ apiClient.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('pathseeker_refresh_token');
         if (refreshToken) {
-          const res = await axios.post('/api/auth/refresh', { refreshToken });
+          const res = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
           if (res.data.success && res.data.accessToken) {
             localStorage.setItem('pathseeker_access_token', res.data.accessToken);
             if (res.data.refreshToken) {

@@ -212,7 +212,7 @@ export const VerifyOtpPage: React.FC = () => {
               <label className="block text-xs font-bold text-slate-700 mb-3 text-center">
                 Enter 6-digit code
               </label>
-              <div className="flex gap-2.5 justify-center" onPaste={handlePaste}>
+              <div className="flex gap-1.5 sm:gap-2.5 justify-center" onPaste={handlePaste}>
                 {digits.map((digit, index) => (
                   <motion.input
                     key={index}

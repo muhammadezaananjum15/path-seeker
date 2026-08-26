@@ -48,29 +48,29 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* ── Lumio Floating Pill Navigation Header ──────── */}
-      <header className="fixed top-[16px] left-0 right-0 z-50 flex items-center justify-center px-4 w-full pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-[1100px] flex items-center justify-between bg-white/95 text-slate-900 backdrop-blur-xl rounded-full px-4 py-2.5 shadow-xl border border-slate-200 h-[62px]">
+      <header className="fixed top-[12px] sm:top-[16px] left-0 right-0 z-50 flex items-center justify-center px-2 sm:px-4 w-full pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-[1280px] 2xl:max-w-[1440px] flex items-center justify-between bg-white/95 text-slate-900 backdrop-blur-xl rounded-full px-3 sm:px-5 py-2 shadow-xl border border-slate-200 min-h-[58px] sm:h-[62px]">
           
           {/* Left Brand Badge */}
-          <div className="flex items-center gap-4 pl-1">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-[36px] h-[36px] rounded-full bg-gradient-to-tr from-[#4F20C9] to-indigo-600 text-white flex items-center justify-center font-black text-base shrink-0 shadow-md group-hover:scale-105 transition-transform">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] rounded-full bg-gradient-to-tr from-[#4F20C9] to-indigo-600 text-white flex items-center justify-center font-black text-sm sm:text-base shrink-0 shadow-md group-hover:scale-105 transition-transform">
                 P
               </div>
-              <span className="font-extrabold text-base text-slate-900 tracking-tight">
+              <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">
                 Path<span className="text-purple-600">Seeker</span>
               </span>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-4 ml-4">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-3 ml-2 xl:ml-4">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`text-[12.5px] font-semibold tracking-wide transition-all px-2.5 py-1 rounded-full ${
+                    className={`text-[12px] xl:text-[13px] font-semibold tracking-wide transition-all px-2.5 py-1 rounded-full whitespace-nowrap ${
                       isActive
                         ? 'text-purple-700 bg-purple-50 font-bold'
                         : 'text-slate-600 hover:text-purple-600 hover:bg-slate-100'
@@ -84,12 +84,12 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {isAuthenticated ? (
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition-all border border-slate-200 text-xs font-bold text-slate-800"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:pl-2 sm:pr-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition-all border border-slate-200 text-xs font-bold text-slate-800"
                 >
                   <div className="w-6 h-6 rounded-full bg-[#4F20C9] text-white flex items-center justify-center font-black text-[10px]">
                     {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -127,20 +127,20 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <Link
                   to="/login"
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-slate-700 hover:text-purple-600 hover:bg-slate-100 font-bold text-[12px] transition-all"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-slate-700 hover:text-purple-600 hover:bg-slate-100 font-bold text-[12px] transition-all whitespace-nowrap"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Log In</span>
                 </Link>
                 <Link
                   to="/register"
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#4F20C9] text-white hover:bg-purple-700 font-bold text-[12px] shadow-md hover:shadow-purple-500/25 transition-all shrink-0"
+                  className="flex items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full bg-[#4F20C9] text-white hover:bg-purple-700 font-bold text-[11px] sm:text-[12px] shadow-md hover:shadow-purple-500/25 transition-all shrink-0 whitespace-nowrap"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
-                  <span>Sign Up</span>
+                  <span className="inline">Sign Up</span>
                 </Link>
               </div>
             )}
@@ -148,7 +148,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full text-slate-700 hover:bg-slate-100"
+              className="lg:hidden p-1.5 sm:p-2 rounded-full text-slate-700 hover:bg-slate-100 shrink-0 ml-0.5"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

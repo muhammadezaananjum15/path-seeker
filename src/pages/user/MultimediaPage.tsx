@@ -133,8 +133,8 @@ export const MultimediaPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen py-10 text-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="bg-white min-h-screen py-6 sm:py-10 text-slate-900">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <div className="space-y-3">

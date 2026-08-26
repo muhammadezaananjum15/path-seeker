@@ -50,8 +50,8 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen flex bg-slate-50 text-[#07031A] overflow-x-hidden">
 
       {/* ── Left Panel: Form ─────────────────────── */}
-      <div className="gsap-auth-left flex-1 flex items-center justify-center px-6 py-12 lg:px-16 bg-white">
-        <div className="w-full max-w-md space-y-8">
+      <div className="gsap-auth-left flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 lg:px-16 bg-white">
+        <div className="w-full max-w-md space-y-6 sm:space-y-8">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group w-fit">

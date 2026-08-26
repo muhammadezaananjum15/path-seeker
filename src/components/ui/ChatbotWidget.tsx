@@ -110,7 +110,7 @@ export const ChatbotWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 max-w-[calc(100vw-24px)]">
       {/* Floating Trigger Button with Framer Motion Bounce */}
       <AnimatePresence>
         {!isOpen && (
@@ -121,12 +121,13 @@ export const ChatbotWidget: React.FC = () => {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-3 px-5 py-3.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold shadow-2xl uppercase tracking-wider text-xs border border-purple-400/30"
+            className="flex items-center gap-2 sm:gap-3 px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold shadow-2xl uppercase tracking-wider text-[11px] sm:text-xs border border-purple-400/30"
           >
-            <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 animate-pulse" />
             </div>
-            <span>Ask PathSeeker AI</span>
+            <span className="hidden xs:inline sm:inline">Ask PathSeeker AI</span>
+            <span className="xs:hidden">AI</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -138,7 +139,7 @@ export const ChatbotWidget: React.FC = () => {
             initial={{ scale: 0.85, opacity: 0, y: 40 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.85, opacity: 0, y: 40 }}
-            className="w-[92vw] sm:w-[420px] h-[580px] max-h-[85vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden text-slate-900"
+            className="w-[calc(100vw-24px)] sm:w-[420px] h-[540px] sm:h-[580px] max-h-[80vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden text-slate-900"
           >
             {/* Header */}
             <div className="p-4 bg-gradient-to-r from-[#290C86] via-[#4F20C9] to-purple-700 text-white flex items-center justify-between shadow-md">

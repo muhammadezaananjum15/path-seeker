@@ -80,11 +80,10 @@ connectDB();
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:5174',
-      process.env.CLIENT_URL,
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      // Allow requests from localhost, Vercel frontend, Railway, or custom CLIENT_URL
+      callback(null, true);
+    },
     credentials: true,
   })
 );

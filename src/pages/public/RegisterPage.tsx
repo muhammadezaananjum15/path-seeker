@@ -64,22 +64,22 @@ export const RegisterPage: React.FC = () => {
     <div className="min-h-screen flex bg-slate-50 text-[#07031A] overflow-x-hidden">
 
       {/* ── Left Panel: Form ─────────────────────── */}
-      <div className="gsap-reg-left flex-1 flex items-center justify-center px-6 py-10 lg:px-14 bg-white">
-        <div className="w-full max-w-md space-y-6">
+      <div className="gsap-reg-left flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-10 lg:px-14 bg-white">
+        <div className="w-full max-w-md space-y-5 sm:space-y-6">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group w-fit">
-            <div className="w-10 h-10 rounded-2xl bg-[#4F20C9] text-white flex items-center justify-center font-black text-base shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#4F20C9] text-white flex items-center justify-center font-black text-sm sm:text-base shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
               P
             </div>
-            <span className="text-2xl font-black tracking-tight text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            <span className="text-xl sm:text-2xl font-black tracking-tight text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               Path<span className="text-[#4F20C9]">Seeker</span>
             </span>
           </Link>
 
           {/* Title */}
           <div className="space-y-1">
-            <h1 className="text-3xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            <h1 className="text-2xl sm:text-3xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               Create your account ✨
             </h1>
             <p className="text-xs text-slate-500 font-medium">Join PathSeeker to unlock AI career passport tools</p>
@@ -102,13 +102,13 @@ export const RegisterPage: React.FC = () => {
             {/* Role Picker */}
             <div className="space-y-1.5">
               <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">Select Your Stage</label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 xs:grid-cols-3 gap-2">
                 {ROLES.map((r) => (
                   <button
                     key={r.id}
                     type="button"
                     onClick={() => setRole(r.id)}
-                    className={`p-2.5 rounded-2xl border text-center transition-all cursor-pointer ${
+                    className={`p-2 sm:p-2.5 rounded-2xl border text-center transition-all cursor-pointer ${
                       role === r.id
                         ? 'bg-purple-50 border-[#4F20C9] text-[#4F20C9] font-black shadow-sm'
                         : 'bg-slate-50 border-slate-200 text-slate-600 font-bold hover:border-slate-300'

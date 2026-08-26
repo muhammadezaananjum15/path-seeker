@@ -170,17 +170,17 @@ export const CareersPage: React.FC = () => {
   });
 
   return (
-    <div className="bg-slate-50 min-h-screen py-10 text-[#07031A]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="bg-slate-50 min-h-screen py-6 sm:py-10 text-[#07031A]">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* ── Page Header Banner ─────────────────────────────────────────────── */}
-        <div className="p-8 sm:p-12 rounded-[36px] bg-gradient-to-r from-[#07031A] via-purple-950 to-[#4F20C9] text-white space-y-4 shadow-xl">
+        <div className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[36px] bg-gradient-to-r from-[#07031A] via-purple-950 to-[#4F20C9] text-white space-y-3 sm:space-y-4 shadow-xl">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-bold uppercase tracking-wider">
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-amber-300 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                 1,000+ Verified Tech Streams
               </span>
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight mt-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight mt-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Career Exploration Bank
               </h1>
             </div>

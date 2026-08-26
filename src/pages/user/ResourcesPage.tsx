@@ -290,15 +290,15 @@ export const ResourcesPage: React.FC = () => {
   const convertedSalary = Math.round(baseSalary * (currencyRates[selectedCurrency] || 1));
 
   return (
-    <div className="bg-slate-50 min-h-screen py-10 text-[#07031A]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="bg-slate-50 min-h-screen py-6 sm:py-10 text-[#07031A]">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
 
         {/* ── Main Banner ────────────────────────────────────────────────── */}
-        <div className="p-8 sm:p-12 rounded-[36px] bg-gradient-to-r from-[#07031A] via-purple-950 to-[#4F20C9] text-white space-y-4 shadow-xl">
-          <span className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-black uppercase tracking-wider">
+        <div className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[36px] bg-gradient-to-r from-[#07031A] via-purple-950 to-[#4F20C9] text-white space-y-3 sm:space-y-4 shadow-xl">
+          <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-amber-300 text-[10px] sm:text-xs font-black uppercase tracking-wider">
             FREE DOWNLOADABLE PDF RESOURCES &amp; CAREER TOOLS
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Resource Hub &amp; Learning Gateway
           </h1>
           <p className="text-xs sm:text-sm text-purple-100 max-w-3xl leading-relaxed">
@@ -307,7 +307,7 @@ export const ResourcesPage: React.FC = () => {
         </div>
 
         {/* ── SECTION 1: LIVE REMOTE TECH JOBS ── */}
-        <div className="p-8 rounded-[36px] bg-white border border-slate-200 shadow-md space-y-6">
+        <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[36px] bg-white border border-slate-200 shadow-md space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
             <div className="flex items-center gap-3">
               <Briefcase className="w-6 h-6 text-[#4F20C9]" />

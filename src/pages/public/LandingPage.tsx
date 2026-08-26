@@ -103,16 +103,16 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-xs font-black uppercase tracking-wider mb-8 shadow-sm"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
         >
-          <Sparkles className="w-4 h-4 text-[#4F20C9] animate-spin" />
-          <span>Next-Gen Career Intelligence Operating System</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] animate-spin shrink-0" />
+          <span className="truncate sm:whitespace-normal">Next-Gen Career Intelligence OS</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
         </motion.div>
 
         {/* Headline */}
         <h1
-          className="gsap-hero-title text-5xl sm:text-7xl lg:text-[100px] font-extrabold text-[#07031A] mb-6 tracking-tighter leading-[0.95] max-w-5xl"
+          className="gsap-hero-title text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[90px] xl:text-[100px] font-extrabold text-[#07031A] mb-4 sm:mb-6 tracking-tighter leading-[1.08] sm:leading-[0.95] max-w-5xl break-words px-2"
           style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           Architect Your Future.<br />
@@ -122,7 +122,7 @@ export const LandingPage: React.FC = () => {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-[#475569] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-normal">
+        <p className="text-[#475569] text-xs sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-normal px-2 mb-8">
           The unified platform powering students, graduates, and working professionals with AI career matching, 150+ video masterclasses, ATS resume tools, and live hiring feeds.
         </p>
 
@@ -131,24 +131,24 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap items-center justify-center gap-4 mb-16 w-full max-w-md"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 w-full max-w-md px-2"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/quiz')}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap"
           >
-            <Brain className="w-4 h-4 text-purple-200" />
-            <span>Take AI Career Assessment</span>
-            <ArrowRight className="w-4 h-4" />
+            <Brain className="w-4 h-4 text-purple-200 shrink-0" />
+            <span>Take AI Assessment</span>
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/careers')}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
           >
             Explore 1,000+ Careers
           </motion.button>
