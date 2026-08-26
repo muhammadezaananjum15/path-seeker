@@ -37,14 +37,14 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen py-10 text-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="bg-white min-h-screen py-8 sm:py-10 text-slate-900">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         {/* Header Banner */}
         <div className="space-y-2">
           <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-bold uppercase tracking-wider">
             GET IN TOUCH
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Contact <span className="text-[#4F20C9]">Us</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">

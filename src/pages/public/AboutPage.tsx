@@ -17,8 +17,8 @@ import {
 
 export const AboutPage: React.FC = () => {
   return (
-    <div className="bg-white text-slate-900 min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="bg-white text-slate-900 min-h-screen py-8 sm:py-12">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
         
         {/* About PathSeeker Hero */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -26,7 +26,7 @@ export const AboutPage: React.FC = () => {
             <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-black uppercase tracking-wider">
               ABOUT PATHSEEKER
             </span>
-            <h1 className="text-4xl sm:text-6xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               About <span className="text-[#4F20C9]">Us</span>
             </h1>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
@@ -34,7 +34,7 @@ export const AboutPage: React.FC = () => {
             </p>
 
             {/* 3 Metric Pills */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4">
               <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center shadow-sm">
                 <Users className="w-5 h-5 text-[#4F20C9] mx-auto mb-1" />
                 <p className="text-xl font-black text-[#07031A]">1,000+</p>

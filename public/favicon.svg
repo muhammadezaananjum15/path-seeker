@@ -1,35 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="psGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#290C86" />
-      <stop offset="50%" stop-color="#4F20C9" />
-      <stop offset="100%" stop-color="#7C3AED" />
+    <!-- Background gradient: dark navy to vibrant purple -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07031A" />
+      <stop offset="55%" stop-color="#2D0FA0" />
+      <stop offset="100%" stop-color="#4F20C9" />
     </linearGradient>
-    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FDE047" />
+    <!-- Gold needle gradient -->
+    <linearGradient id="needle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF176" />
+      <stop offset="50%" stop-color="#FDE047" />
       <stop offset="100%" stop-color="#F59E0B" />
     </linearGradient>
+    <!-- Glow filter for needle -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Subtle shadow -->
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#4F20C9" flood-opacity="0.3" />
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#4F20C9" flood-opacity="0.5"/>
     </filter>
   </defs>
 
-  <!-- Background Shield Container -->
-  <rect width="512" height="512" rx="128" fill="url(#psGrad)" />
-  
-  <!-- Outer Compass Ring -->
-  <circle cx="256" cy="256" r="160" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="16" />
-  
-  <!-- Compass Points -->
-  <circle cx="256" cy="76" r="10" fill="#FDE047" />
-  <circle cx="436" cy="256" r="10" fill="#FFFFFF" fill-opacity="0.6" />
-  <circle cx="256" cy="436" r="10" fill="#FFFFFF" fill-opacity="0.6" />
-  <circle cx="76" cy="256" r="10" fill="#FFFFFF" fill-opacity="0.6" />
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
 
-  <!-- Center Target Star & Compass Pointer -->
-  <g filter="url(#shadow)">
-    <polygon points="256,120 286,226 392,256 286,286 256,392 226,286 120,256 226,226" fill="url(#starGrad)" />
-    <circle cx="256" cy="256" r="32" fill="#FFFFFF" />
-    <circle cx="256" cy="256" r="18" fill="#4F20C9" />
+  <!-- Subtle radial spotlight in center -->
+  <ellipse cx="256" cy="240" rx="200" ry="190" fill="#4F20C9" opacity="0.25"/>
+
+  <!-- Winding path / road (bottom, white curved lines) -->
+  <path d="M 100 440 Q 200 380 256 340 Q 320 300 380 260" 
+        stroke="white" stroke-opacity="0.18" stroke-width="28" stroke-linecap="round" fill="none"/>
+  <path d="M 130 460 Q 215 395 265 355 Q 330 315 390 272" 
+        stroke="white" stroke-opacity="0.10" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Compass needle — diamond shape pointing upper-right, glowing gold -->
+  <g filter="url(#glow)" transform="translate(256,240)">
+    <!-- Upper tip (pointing northeast) -->
+    <polygon 
+      points="0,-130  55,0  0,40  -55,0" 
+      fill="url(#needle)" 
+      transform="rotate(-40)"
+      opacity="1"
+    />
+    <!-- Lower dark half -->
+    <polygon 
+      points="0,40  55,0  0,-130  -55,0" 
+      fill="#1A0B5C" 
+      transform="rotate(-40)"
+      opacity="0.75"
+    />
+    <!-- Center hub circle -->
+    <circle cx="0" cy="0" r="22" fill="white" opacity="0.95" filter="url(#shadow)"/>
+    <circle cx="0" cy="0" r="12" fill="#4F20C9"/>
   </g>
 </svg>

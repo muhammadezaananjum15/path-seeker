@@ -32,8 +32,8 @@ export const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-slate-50">
-      <div className="w-full max-w-md space-y-8 p-8 rounded-3xl bg-white border border-slate-200 shadow-2xl">
+    <div className="min-h-[80vh] flex items-center justify-center px-3 sm:px-4 py-8 sm:py-12 bg-slate-50">
+      <div className="w-full max-w-md space-y-6 sm:space-y-8 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-2xl">
         <div className="text-center space-y-2">
           <div className="w-12 h-12 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-lg brand-glow">
             <Target className="w-7 h-7" />

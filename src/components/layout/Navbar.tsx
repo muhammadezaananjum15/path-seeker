@@ -54,8 +54,34 @@ export const Navbar: React.FC = () => {
           {/* Left Brand Badge */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] rounded-full bg-gradient-to-tr from-[#4F20C9] to-indigo-600 text-white flex items-center justify-center font-black text-sm sm:text-base shrink-0 shadow-md group-hover:scale-105 transition-transform">
-                P
+              {/* PathSeeker SVG Logo Icon */}
+              <div className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] rounded-full shrink-0 shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+                <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <defs>
+                    <linearGradient id="navbg" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#07031A" />
+                      <stop offset="55%" stopColor="#2D0FA0" />
+                      <stop offset="100%" stopColor="#4F20C9" />
+                    </linearGradient>
+                    <linearGradient id="navneedle" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FFF176" />
+                      <stop offset="100%" stopColor="#F59E0B" />
+                    </linearGradient>
+                    <filter id="navglow">
+                      <feGaussianBlur stdDeviation="14" result="blur"/>
+                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                  </defs>
+                  <rect width="512" height="512" rx="110" fill="url(#navbg)"/>
+                  <ellipse cx="256" cy="240" rx="200" ry="190" fill="#4F20C9" opacity="0.22"/>
+                  <path d="M 100 440 Q 200 380 256 340 Q 320 300 380 260" stroke="white" strokeOpacity="0.18" strokeWidth="28" strokeLinecap="round" fill="none"/>
+                  <g filter="url(#navglow)" transform="translate(256,240)">
+                    <polygon points="0,-130 55,0 0,40 -55,0" fill="url(#navneedle)" transform="rotate(-40)"/>
+                    <polygon points="0,40 55,0 0,-130 -55,0" fill="#1A0B5C" transform="rotate(-40)" opacity="0.75"/>
+                    <circle cx="0" cy="0" r="22" fill="white" opacity="0.95"/>
+                    <circle cx="0" cy="0" r="12" fill="#4F20C9"/>
+                  </g>
+                </svg>
               </div>
               <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">
                 Path<span className="text-purple-600">Seeker</span>

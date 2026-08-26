@@ -210,8 +210,8 @@ export const BlogPage: React.FC = () => {
   const displayArticles = filteredArticles.length > 0 ? filteredArticles : FALLBACK_ARTICLES;
 
   return (
-    <div className="bg-white min-h-screen py-10 text-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="bg-white min-h-screen py-6 sm:py-10 text-slate-900">
+      <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
 
         {/* ── Hero Header ─────────────────────────────────────────────────── */}
         <motion.div
