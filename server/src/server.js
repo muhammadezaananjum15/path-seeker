@@ -9,13 +9,21 @@ const __dirnameEnv = path.dirname(__filenameEnv);
 // Priority 1: server/.env  (canonical — what the user edits)
 dotenv.config({ path: path.resolve(__dirnameEnv, '..', '.env') });
 
+const hasMongoUri = () =>
+  Boolean(
+    process.env.MONGO_URI ||
+    process.env.MONGODB_URI ||
+    process.env.MONGO_URL ||
+    process.env.DATABASE_URL
+  );
+
 // Priority 2: server/src/.env  (legacy mirror — kept for backward compat)
-if (!process.env.MONGO_URI) {
+if (!hasMongoUri()) {
   dotenv.config({ path: path.join(__dirnameEnv, '.env') });
 }
 
 // Priority 3: project root .env  (last resort)
-if (!process.env.MONGO_URI) {
+if (!hasMongoUri()) {
   dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 }
 // ─────────────────────────────────────────────────────────────────────────────
@@ -56,14 +64,16 @@ const warnMissing = (key) => {
     console.warn(`[PathSeeker] ⚠️  Missing env var: ${key} — some features may be limited.`);
   }
 };
-warnMissing('MONGO_URI');
+if (!hasMongoUri()) {
+  console.warn('[PathSeeker] ⚠️  Missing MongoDB URI env var (MONGO_URI / MONGODB_URI / MONGO_URL / DATABASE_URL).');
+}
 warnMissing('JWT_ACCESS_SECRET');
 warnMissing('GEMINI_API_KEY');
 warnMissing('YOUTUBE_API_KEY');
 warnMissing('GOOGLE_SEARCH_API_KEY');
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Connect to MongoDB (Atlas preferred, local fallback in db.js)
+// Connect to MongoDB
 connectDB();
 
 // ─── Middleware ───────────────────────────────────────────────────────────────

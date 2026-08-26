@@ -31,10 +31,20 @@ export const register = async (req, res, next) => {
     const cleanEmail = email.toLowerCase().trim();
     const userRole = role === 'admin' ? 'student' : role || 'student';
 
-    // Check existing in persistent DB
+    // 1. Check existing in persistent DB
     const existingPersistent = findPersistentUserByEmail(cleanEmail);
     if (existingPersistent && existingPersistent.isVerified) {
       return res.status(400).json({ success: false, message: 'User with this email already exists.' });
+    }
+
+    // 2. Check existing in MongoDB
+    try {
+      const existingUser = await User.findOne({ email: cleanEmail });
+      if (existingUser && existingUser.isVerified) {
+        return res.status(400).json({ success: false, message: 'User with this email already exists.' });
+      }
+    } catch (dbErr) {
+      console.warn('[MongoDB Notice] Could not query MongoDB user before registration:', dbErr.message);
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -71,8 +81,16 @@ export const register = async (req, res, next) => {
           otpExpiry,
         });
         await Profile.create({ userId: user._id }).catch(() => {});
+        console.log(`[MongoDB] User registered successfully in database: ${cleanEmail}`);
+      } else {
+        existingUser.passwordHash = passwordHash;
+        existingUser.otp = otp;
+        existingUser.otpExpiry = otpExpiry;
+        await existingUser.save();
       }
-    } catch (dbErr) {}
+    } catch (dbErr) {
+      console.error('[MongoDB Error] Failed to create user in MongoDB during registration:', dbErr.message);
+    }
 
     try {
       await sendEmail({
@@ -80,7 +98,9 @@ export const register = async (req, res, next) => {
         subject: 'PathSeeker - Account Verification OTP',
         text: `Your OTP code for account verification is: ${otp}. Valid for 15 minutes.`,
       });
-    } catch (emailErr) {}
+    } catch (emailErr) {
+      console.warn('[Email Notice] Could not send OTP email:', emailErr.message);
+    }
 
     res.status(201).json({
       success: true,

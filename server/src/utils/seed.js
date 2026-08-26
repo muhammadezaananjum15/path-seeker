@@ -4,14 +4,21 @@ import dotenv from 'dotenv';
 import path from 'path';
 import dns from 'dns';
 
-try {
-  dns.setServers(['8.8.8.8', '1.1.1.1']);
-} catch (e) {
-  // Ignore
+if (process.platform === 'win32' && !process.env.RAILWAY_ENVIRONMENT) {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch (e) {}
 }
 
 dotenv.config({ path: path.resolve(process.cwd(), 'server', '.env') });
-if (!process.env.MONGO_URI) {
+
+const getMongoUri = () =>
+  process.env.MONGO_URI ||
+  process.env.MONGODB_URI ||
+  process.env.MONGO_URL ||
+  process.env.DATABASE_URL;
+
+if (!getMongoUri()) {
   dotenv.config({ path: path.resolve(process.cwd(), 'server', 'src', '.env') });
 }
 
@@ -26,8 +33,12 @@ import { YOUTUBE_VIDEO_DATASET } from './videoData.js';
 
 const seedDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('[Seed] Connected to MongoDB Atlas...');
+    const mongoUri = getMongoUri();
+    if (!mongoUri) {
+      throw new Error('No MongoDB URI found in environment variables (MONGO_URI / MONGODB_URI / MONGO_URL).');
+    }
+    await mongoose.connect(mongoUri);
+    console.log('[Seed] Connected to MongoDB Atlas/Railway...');
 
     // Clear existing collections
     await User.deleteMany({});
