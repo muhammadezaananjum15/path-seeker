@@ -2,12 +2,12 @@ import nodemailer from 'nodemailer';
 
 export const sendEmail = async ({ to, subject, html, text }) => {
   try {
-    const emailHost = process.env.EMAIL_HOST || process.env.SMTP_HOST;
+    const emailHost = process.env.EMAIL_HOST || process.env.SMTP_HOST || 'smtp.gmail.com';
     const emailUser = process.env.EMAIL_USER || process.env.SMTP_USER;
     const emailPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
     const emailPort = Number(process.env.EMAIL_PORT || process.env.SMTP_PORT) || 587;
 
-    if (emailHost && emailUser && emailPass) {
+    if (emailUser && emailPass) {
       const transporter = nodemailer.createTransport({
         host: emailHost,
         port: emailPort,

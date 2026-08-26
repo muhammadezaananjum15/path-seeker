@@ -19,6 +19,7 @@ export const connectDB = async () => {
     process.env.MONGO_URI ||
     process.env.MONGODB_URI ||
     process.env.MONGO_URL ||
+    process.env.MONGO_PRIVATE_URL ||
     process.env.DATABASE_URL;
 
   const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.RAILWAY_ENVIRONMENT);
@@ -26,13 +27,14 @@ export const connectDB = async () => {
   if (primaryUri) {
     try {
       const conn = await mongoose.connect(primaryUri, {
-        serverSelectionTimeoutMS: 10000,
-        connectTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 5000,
       });
       console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
       return conn;
     } catch (error) {
       console.error(`[MongoDB Connection Error] Primary DB connection failed (${error.message}).`);
+      console.error(`[MongoDB Atlas Notice] If using MongoDB Atlas, ensure "0.0.0.0/0" is added to Network Access IP Whitelist in your MongoDB Atlas dashboard so Railway can connect!`);
     }
   } else {
     console.warn('[MongoDB Warning] No MONGO_URI, MONGODB_URI, or MONGO_URL found in environment variables.');

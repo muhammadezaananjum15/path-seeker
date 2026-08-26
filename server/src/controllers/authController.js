@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import { User } from '../models/User.js';
 import { Profile } from '../models/Profile.js';
 import { generateOtp } from '../utils/generateOtp.js';
@@ -37,14 +38,17 @@ export const register = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'User with this email already exists.' });
     }
 
-    // 2. Check existing in MongoDB
-    try {
-      const existingUser = await User.findOne({ email: cleanEmail });
-      if (existingUser && existingUser.isVerified) {
-        return res.status(400).json({ success: false, message: 'User with this email already exists.' });
+    // 2. Check existing in MongoDB (ONLY if connected to avoid buffering timeout)
+    const isMongoConnected = mongoose.connection.readyState === 1;
+    if (isMongoConnected) {
+      try {
+        const existingUser = await User.findOne({ email: cleanEmail });
+        if (existingUser && existingUser.isVerified) {
+          return res.status(400).json({ success: false, message: 'User with this email already exists.' });
+        }
+      } catch (dbErr) {
+        console.warn('[MongoDB Notice] Could not query MongoDB user before registration:', dbErr.message);
       }
-    } catch (dbErr) {
-      console.warn('[MongoDB Notice] Could not query MongoDB user before registration:', dbErr.message);
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -67,33 +71,39 @@ export const register = async (req, res, next) => {
     // Save to persistent disk database file
     savePersistentUser(newUserObj);
 
-    // Save to Mongoose MongoDB if available
-    try {
-      const existingUser = await User.findOne({ email: cleanEmail });
-      if (!existingUser) {
-        const user = await User.create({
-          name,
-          email: cleanEmail,
-          passwordHash,
-          role: userRole,
-          isVerified: false,
-          otp,
-          otpExpiry,
-        });
-        await Profile.create({ userId: user._id }).catch(() => {});
-        console.log(`[MongoDB] User registered successfully in database: ${cleanEmail}`);
-      } else {
-        existingUser.passwordHash = passwordHash;
-        existingUser.otp = otp;
-        existingUser.otpExpiry = otpExpiry;
-        await existingUser.save();
+    // Save to Mongoose MongoDB if available and connected
+    if (isMongoConnected) {
+      try {
+        const existingUser = await User.findOne({ email: cleanEmail });
+        if (!existingUser) {
+          const user = await User.create({
+            name,
+            email: cleanEmail,
+            passwordHash,
+            role: userRole,
+            isVerified: false,
+            otp,
+            otpExpiry,
+          });
+          await Profile.create({ userId: user._id }).catch(() => {});
+          console.log(`[MongoDB] User registered successfully in database: ${cleanEmail}`);
+        } else {
+          existingUser.passwordHash = passwordHash;
+          existingUser.otp = otp;
+          existingUser.otpExpiry = otpExpiry;
+          await existingUser.save();
+        }
+      } catch (dbErr) {
+        console.error('[MongoDB Error] Failed to create user in MongoDB during registration:', dbErr.message);
       }
-    } catch (dbErr) {
-      console.error('[MongoDB Error] Failed to create user in MongoDB during registration:', dbErr.message);
+    } else {
+      console.warn('[MongoDB Notice] MongoDB not connected yet. Saved user to persistent disk storage.');
     }
 
+    // Send Email
+    let emailResult = { success: false };
     try {
-      await sendEmail({
+      emailResult = await sendEmail({
         to: cleanEmail,
         subject: 'PathSeeker - Account Verification OTP',
         text: `Your OTP code for account verification is: ${otp}. Valid for 15 minutes.`,
@@ -102,11 +112,20 @@ export const register = async (req, res, next) => {
       console.warn('[Email Notice] Could not send OTP email:', emailErr.message);
     }
 
-    res.status(201).json({
+    const responsePayload = {
       success: true,
-      message: 'Registration successful. Verification OTP sent to email.',
+      message: emailResult.success && !emailResult.mock
+        ? 'Registration successful. Verification OTP sent to your email.'
+        : 'Registration successful. Verification code generated (check server logs or use code below).',
       email: cleanEmail,
-    });
+    };
+
+    // If SMTP email credentials aren't set in Railway env, return OTP in response for fallback testing
+    if (emailResult.mock || !process.env.EMAIL_HOST) {
+      responsePayload.otp = otp;
+    }
+
+    res.status(201).json(responsePayload);
   } catch (error) {
     next(error);
   }
