@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-page-bg: #FFFFFF;
+  --color-panel-bg: #F8FAFC;
+  --color-soft-card: #F1F5F9;
+  --color-card-white: #FFFFFF;
+
+  --color-brand-primary: #4F20C9;
+  --color-brand-purple: #5B21D6;
+  --color-[#181818]: #181818;
+
+  --color-text-main: #0F172A;
+  --color-[#8C8880]: #64748B;
+  --color-line: #E2E8F0;
+
+  --font-display: "Inter", "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Manrope", monospace;
+}
+
+:root {
+  --page-bg: #FFFFFF;
+  --panel-bg: #F8FAFC;
+  --card-white: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --line-border: #E2E8F0;
+  --brand-purple: #4F20C9;
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.04);
+}
+
+.dark {
+  --page-bg: #0E0E10;
+  --panel-bg: #16161A;
+  --card-white: #1C1C22;
+  --text-main: #FAF9F5;
+  --text-muted: #A1A1AA;
+  --line-border: #27272A;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; background-color: #FFFFFF; }
+
+body {
+  background-color: #FFFFFF;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, a, input, select, textarea {
+  transition: background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              box-shadow 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
+              opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+}
+
+/* ── Container ─────────────────────────────────── */
+.saas-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D9D7D0; border-radius: 99px; }
+.dark ::-webkit-scrollbar-thumb { background: #27272A; }
+
+/* ── Selection ─────────────────────────────────── */
+::selection { background-color: #181818; color: #FFFFFF; }
+
+/* ── Pill Buttons & Lumio Cards ────────────────── */
+.btn-pill-black {
+  background-color: #181818;
+  color: #FAF9F5;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  transition: all 0.2s ease;
+}
+.btn-pill-black:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.btn-pill-outline {
+  background-color: transparent;
+  border: 1px solid rgba(27,27,27,0.3);
+  color: #1B1B1B;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  transition: all 0.2s ease;
+}
+.btn-pill-outline:hover {
+  background-color: #181818;
+  color: #FAF9F5;
+}
+
+.card-lumio {
+  background-color: #FFFDF8;
+  border: 1px solid #D9D7D0;
+  border-radius: 32px;
+  box-shadow: var(--shadow-lumio);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card-lumio:hover {
+  box-shadow: 0 24px 60px rgba(27,27,27,0.1);
+  transform: translateY(-3px);
+}
+
+/* ── SaaS Card Utility ───────────────────────── */
+.card-saas {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+.card-saas:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* ── OTP Input ─────────────────────────────────── */
+.otp-input {
+  width: 52px;
+  height: 64px;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  border: 2px solid #D9D7D0;
+  border-radius: 16px;
+  background: #FFFDF8;
+  color: #1B1B1B;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.otp-input:focus {
+  border-color: #181818;
+  box-shadow: 0 0 0 4px rgba(24,24,24,0.12);
+}
+
+/* ── Marquee Animation ────────────────────────── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+/* ── Reduced Motion ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

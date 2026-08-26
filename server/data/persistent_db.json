@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "id": "prod-admin-420",
+      "name": "System Administrator",
+      "email": "admin420@gmail.com",
+      "passwordHash": "",
+      "role": "admin",
+      "isVerified": true,
+      "createdAt": "2026-08-26T16:41:58.804Z"
+    },
+    {
+      "id": "usr-1787762601766",
+      "name": "Test Student",
+      "email": "teststudent@gmail.com",
+      "passwordHash": "$2b$10$7fwtCFieEv./LfEDvk.7heE6BibMk8hX.TqJ09.7eiWUM2D86IW86",
+      "role": "student",
+      "isVerified": false,
+      "otp": "172093",
+      "otpExpiry": "2026-08-26T16:58:21.766Z",
+      "createdAt": "2026-08-26T16:43:21.766Z"
+    }
+  ],
+  "profiles": [],
+  "bookmarks": [],
+  "activities": []
+}
