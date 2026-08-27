@@ -8,20 +8,14 @@ interface ThemeState {
 
 const getSavedTheme = (): 'light' | 'dark' => {
   try {
-    const saved = localStorage.getItem('pathseeker_theme');
-    if (saved === 'dark' || saved === 'light') return saved;
+    localStorage.setItem('pathseeker_theme', 'light');
   } catch {}
   return 'light';
 };
 
 const applyThemeToDOM = (theme: 'light' | 'dark') => {
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
-  } else {
-    document.documentElement.classList.remove('dark');
-    document.documentElement.classList.add('light');
-  }
+  document.documentElement.classList.remove('dark');
+  document.documentElement.classList.add('light');
 };
 
 const initialTheme = getSavedTheme();

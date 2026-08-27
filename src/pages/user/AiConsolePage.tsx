@@ -155,7 +155,7 @@ export const AiConsolePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white min-h-screen py-8 text-slate-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header Banner */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">

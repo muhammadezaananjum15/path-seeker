@@ -32,14 +32,14 @@
 }
 
 .dark {
-  --page-bg: #000000;
-  --panel-bg: #0A0A0C;
-  --card-white: #121215;
-  --text-main: #FAF9F5;
-  --text-muted: #A1A1AA;
-  --line-border: #27272A;
-  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.8);
-  color-scheme: dark;
+  --page-bg: #FFFFFF;
+  --panel-bg: #F8FAFC;
+  --card-white: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --line-border: #E2E8F0;
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.04);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -49,9 +49,16 @@ html, body {
   max-width: 100vw;
 }
 
-body {
-  background-color: #FFFFFF;
-  color: var(--text-main);
+body,
+#root,
+html,
+html body,
+html #root,
+.dark,
+.dark body,
+.dark #root {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
   font-family: var(--font-sans);
   min-height: 100vh;
   margin: 0;
@@ -61,65 +68,56 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html:not(.dark),
-html.light {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-}
-
-html:not(.dark) body,
-html.light body,
-html:not(.dark) #root,
-html.light #root {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-}
-
-html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6 {
-  color: #07031A;
-}
-
-/* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
-.dark body,
-.dark #root {
-  background-color: #000000 !important;
-  color: #F4F4F5 !important;
-}
-
+h1, h2, h3, h4, h5, h6,
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-  color: #FFFFFF !important;
+  color: #07031A !important;
 }
 
+.text-[#07031A],
+.text-slate-900,
+.text-slate-800,
+.text-[#181818],
+.text-[#1B1B1B],
 .dark .text-[#07031A],
 .dark .text-slate-900,
 .dark .text-slate-800,
 .dark .text-[#181818],
 .dark .text-[#1B1B1B] {
-  color: #FAFAFA !important;
+  color: #0F172A !important;
 }
 
+.text-[#475569],
+.text-slate-700,
+.text-slate-600,
 .dark .text-[#475569],
 .dark .text-slate-700,
 .dark .text-slate-600 {
-  color: #E4E4E7 !important;
+  color: #334155 !important;
 }
 
+.text-slate-500,
+.text-slate-400,
 .dark .text-slate-500,
 .dark .text-slate-400 {
-  color: #A1A1AA !important;
+  color: #64748B !important;
 }
 
+input,
+select,
+textarea,
 .dark input,
 .dark select,
 .dark textarea {
-  background-color: #121215 !important;
-  color: #FAFAFA !important;
-  border-color: #27272A !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
 }
 
+input::placeholder,
+textarea::placeholder,
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #71717A !important;
+  color: #94A3B8 !important;
 }
 
 /* ── Responsive Container ─────────────────────────────────── */
