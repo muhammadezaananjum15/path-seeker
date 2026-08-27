@@ -50,7 +50,7 @@ html, body {
 }
 
 body {
-  background-color: var(--page-bg);
+  background-color: #FFFFFF !important;
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -61,12 +61,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button, a, input, select, textarea {
-  transition: background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
-              border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
-              transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
-              box-shadow 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0),
-              opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+html:not(.dark) body,
+html.light body {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6 {
+  color: #07031A;
 }
 
 /* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
