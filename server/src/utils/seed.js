@@ -363,7 +363,7 @@ const seedDB = async () => {
         authorName: 'Michael Chang',
         domain: 'Data Science',
         headline: 'Transitioning from Mechanical Engineering to Lead Data Analyst',
-        storyText: 'The personalized career match scores gave me the confidence to pivot into machine learning and business intelligence.',
+        storyText: 'The personalized career match scores gave me the confidence to pivot into machine learning and business intelligence with a clear skill path.',
         imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
         timeline: [
           { year: '2023', title: 'Career Pivot Decision', description: 'Enrolled in Python Data Science specialization' },
@@ -373,7 +373,51 @@ const seedDB = async () => {
         approvedBy: admin._id,
         approvedAt: new Date(),
       },
+      {
+        authorName: 'Elena Rostova',
+        domain: 'Design',
+        headline: 'Self-Taught Freelancer to Senior Product Designer at Figma',
+        storyText: 'Using Ask Pathseeker and the visual UI/UX resource guides, I mastered design system architecture and landed my dream job building interactive tools.',
+        imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+        timeline: [
+          { year: '2022', title: 'Discovered UX Passion', description: 'Studied Figma & design principles via PathSeeker' },
+          { year: '2023', title: 'Agency Redesigns', description: 'Lead design systems for 6 major client applications' },
+          { year: '2024', title: 'Joined Figma', description: 'Promoted to Senior Product Designer' },
+        ],
+        status: 'approved',
+        approvedBy: admin._id,
+        approvedAt: new Date(),
+      },
+      {
+        authorName: 'David K. Vance',
+        domain: 'Technology',
+        headline: 'Pivoting from IT Helpdesk to Cloud Infrastructure Architect',
+        storyText: 'PathSeeker systematically outlined the AWS & Terraform credentials I needed. In under 12 months, I tripled my income and moved into cloud security.',
+        imageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+        timeline: [
+          { year: '2023', title: 'AWS Certifications', description: 'Earned Solutions Architect Associate' },
+          { year: '2024', title: 'Infrastructure Lead', description: 'Architected multi-cloud enterprise deployments' },
+        ],
+        status: 'approved',
+        approvedBy: admin._id,
+        approvedAt: new Date(),
+      },
+      {
+        authorName: 'Priya Sharma',
+        domain: 'Business',
+        headline: 'How I Became a Lead Product Manager in 8 Months',
+        storyText: 'PathSeekers AI assessment matched my analytical skills with product management. The behavioral interview prep and ATS resume tips were total game-changers.',
+        imageUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80',
+        timeline: [
+          { year: '2023', title: 'Product Certification', description: 'Completed Agile Product Management course' },
+          { year: '2024', title: 'Lead Product Manager', description: 'Head of Growth Products at HealthTech' },
+        ],
+        status: 'approved',
+        approvedBy: admin._id,
+        approvedAt: new Date(),
+      },
     ]);
+
 
     console.log('[Seed] Success stories created.');
 

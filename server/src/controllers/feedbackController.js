@@ -38,3 +38,16 @@ export const adminUpdateFeedbackStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+export const adminDeleteFeedback = async (req, res, next) => {
+  try {
+    const feedback = await Feedback.findByIdAndDelete(req.params.id);
+    if (!feedback) {
+      return res.status(404).json({ success: false, message: 'Feedback not found.' });
+    }
+    res.json({ success: true, message: 'Feedback deleted successfully from MongoDB!' });
+  } catch (error) {
+    next(error);
+  }
+};
+

@@ -6,4 +6,6 @@ export const feedbackApi = {
   adminGetFeedback: () => apiClient.get('/feedback/admin'),
   adminUpdateFeedbackStatus: (id: string, status: 'open' | 'reviewed' | 'resolved') =>
     apiClient.patch(`/feedback/admin/${id}/status`, { status }),
+  adminDeleteFeedback: (id: string) => apiClient.delete(`/feedback/admin/${id}`),
 };
+

@@ -90,3 +90,75 @@ export const adminUpdateStoryStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+export const adminCreateStory = async (req, res, next) => {
+  try {
+    const { authorName, domain, headline, storyText, imageUrl, timeline, status } = req.body;
+
+    const story = await SuccessStory.create({
+      authorName,
+      userId: req.user._id,
+      domain,
+      headline,
+      storyText,
+      imageUrl: imageUrl || undefined,
+      timeline: timeline || [],
+      status: status || 'approved',
+      approvedBy: status === 'approved' ? req.user._id : null,
+      approvedAt: status === 'approved' ? new Date() : null,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Success story created directly by Admin in MongoDB!',
+      story,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminUpdateStory = async (req, res, next) => {
+  try {
+    const { authorName, domain, headline, storyText, imageUrl, timeline, status } = req.body;
+    const story = await SuccessStory.findById(req.params.id);
+
+    if (!story) {
+      return res.status(404).json({ success: false, message: 'Story not found.' });
+    }
+
+    if (authorName !== undefined) story.authorName = authorName;
+    if (domain !== undefined) story.domain = domain;
+    if (headline !== undefined) story.headline = headline;
+    if (storyText !== undefined) story.storyText = storyText;
+    if (imageUrl !== undefined) story.imageUrl = imageUrl;
+    if (timeline !== undefined) story.timeline = timeline;
+
+    if (status !== undefined && ['approved', 'rejected', 'pending'].includes(status)) {
+      story.status = status;
+      if (status === 'approved' && !story.approvedAt) {
+        story.approvedBy = req.user._id;
+        story.approvedAt = new Date();
+      }
+    }
+
+    await story.save();
+    res.json({ success: true, message: 'Success story updated in MongoDB!', story });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminDeleteStory = async (req, res, next) => {
+  try {
+    const story = await SuccessStory.findByIdAndDelete(req.params.id);
+    if (!story) {
+      return res.status(404).json({ success: false, message: 'Story not found.' });
+    }
+    res.json({ success: true, message: 'Story deleted successfully from MongoDB!' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+

@@ -48,13 +48,15 @@ export const Footer: React.FC = () => {
 
           {/* AI Tools & Trends */}
           <div className="space-y-3">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-purple-400">AI Intelligence</h4>
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-purple-400">Ask Pathseeker AI</h4>
             <ul className="space-y-2 text-xs text-slate-300 font-medium">
+              <li><Link to="/ai-console" className="hover:text-white transition-colors text-amber-300 font-bold">Ask Pathseeker Cockpit</Link></li>
               <li><Link to="/stories" className="hover:text-white transition-colors">Success Stories</Link></li>
               <li><Link to="/onboarding" className="hover:text-white transition-colors">Career Path Wizard</Link></li>
               <li><Link to="/sitemap" className="hover:text-white transition-colors">Visual Sitemap</Link></li>
             </ul>
           </div>
+
 
           {/* Support & Account */}
           <div className="space-y-3">

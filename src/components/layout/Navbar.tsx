@@ -31,11 +31,15 @@ export const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Careers', path: '/careers' },
     { name: 'Assessment', path: '/quiz' },
+    { name: 'Ask Pathseeker', path: '/ai-console' },
     { name: 'Resources', path: '/resources' },
     { name: 'Multimedia', path: '/multimedia' },
     { name: 'Stories', path: '/stories' },
+    { name: 'Feedback', path: '/feedback' },
     ...(isAuthenticated ? [{ name: 'Dashboard', path: '/dashboard' }] : []),
   ];
+
+
 
   const handleLogout = async () => {
     try {

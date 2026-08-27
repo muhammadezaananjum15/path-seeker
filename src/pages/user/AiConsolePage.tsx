@@ -7,20 +7,20 @@ import {
   User as UserIcon,
   Trash2,
   Download,
-  Share2,
-  Compass,
-  ArrowRight,
-  BookOpen,
-  Briefcase,
   Zap,
-  CheckCircle2,
   RefreshCw,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Copy,
+  Check,
+  Compass,
 } from 'lucide-react';
 import { chatbotApi } from '../../services/chatbotApi';
 import { articleApi } from '../../services/articleApi';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { logUserActivity } from '../../services/activityLogger';
-import { Link } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
 
 interface Message {
@@ -35,13 +35,18 @@ export const AiConsolePage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'model',
-      text: `Welcome to the **PathSeeker AI Career Strategy Console**!\n\nI analyze global hiring data, required skillsets, compensation benchmarks, and PathSeeker's Career Bank to help you make confident career choices.\n\nWhat career transition, degree choice, or skill roadmap would you like to explore today?`,
+      text: `Welcome to **Ask Pathseeker Strategy Cockpit**!\n\nI am your dedicated AI Agent. I evaluate real-time hiring metrics, skill prerequisites, salary benchmarks, and PathSeeker's Career Bank to help you make confident career choices.\n\nWhat career transition, degree choice, or skill roadmap would you like to build today?`,
       timestamp: new Date().toISOString(),
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   const decisionTemplates = [
     {
@@ -62,6 +67,25 @@ export const AiConsolePage: React.FC = () => {
     },
   ];
 
+  // Speech Recognition Setup
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const rec = new SpeechRecognition();
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.lang = 'en-US';
+      rec.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+        setIsListening(false);
+      };
+      rec.onerror = () => setIsListening(false);
+      rec.onend = () => setIsListening(false);
+      recognitionRef.current = rec;
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
       chatbotApi
@@ -79,6 +103,41 @@ export const AiConsolePage: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
+  const toggleMic = () => {
+    if (!recognitionRef.current) {
+      alert('Speech recognition is not supported in this browser.');
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
+  };
+
+  const speakText = (text: string) => {
+    if (!('speechSynthesis' in window)) return;
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const cleanText = text.replace(/[*#_]/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const copyMessage = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIdx(index);
+    setTimeout(() => setCopiedIdx(null), 2000);
+  };
+
   const handleSend = async (textToSend?: string) => {
     const query = textToSend || input.trim();
     if (!query || loading) return;
@@ -88,7 +147,7 @@ export const AiConsolePage: React.FC = () => {
     if (!textToSend) setInput('');
     setLoading(true);
 
-    logUserActivity('AI_CHAT', 'AI_CHAT', `Asked AI Console: ${query.slice(0, 60)}`);
+    logUserActivity('AI_CHAT', 'AI_CHAT', `Asked Ask Pathseeker: ${query.slice(0, 60)}`);
 
     try {
       if (aiProvider === 'claude') {
@@ -136,7 +195,7 @@ export const AiConsolePage: React.FC = () => {
     setMessages([
       {
         role: 'model',
-        text: 'Chat history cleared. How else can PathSeeker AI assist your career journey?',
+        text: 'Chat history cleared. How else can Ask Pathseeker assist your career strategy?',
         timestamp: new Date().toISOString(),
       },
     ]);
@@ -150,39 +209,39 @@ export const AiConsolePage: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `PathSeeker_AI_Career_Consultation_${Date.now()}.txt`;
+    link.download = `Ask_Pathseeker_Career_Consultation_${Date.now()}.txt`;
     link.click();
   };
 
   return (
-    <div className="bg-white min-h-screen py-8 text-slate-900">
+    <div className="bg-slate-50/50 min-h-screen py-8 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header Banner */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-bold uppercase tracking-wider">
-                  PATHSEEKER CAREER INTELLIGENCE
+                <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-black uppercase tracking-wider">
+                  ASK PATHSEEKER AGENT COCKPIT
                 </span>
-                <div className="inline-flex p-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold">
+                <div className="inline-flex p-1 rounded-full bg-slate-200/80 border border-slate-300/80 text-xs font-bold">
                   <button
                     onClick={() => setAiProvider('gemini')}
                     className={`px-3.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
                       aiProvider === 'gemini'
-                        ? 'bg-[#4F20C9] text-white shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-[#4F20C9] text-white shadow-sm font-extrabold'
+                        : 'text-slate-700 hover:text-slate-900'
                     }`}
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    Gemini Live
+                    Gemini Agent
                   </button>
                   <button
                     onClick={() => setAiProvider('claude')}
                     className={`px-3.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
                       aiProvider === 'claude'
-                        ? 'bg-purple-700 text-white shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-purple-800 text-white shadow-sm font-extrabold'
+                        : 'text-slate-700 hover:text-slate-900'
                     }`}
                   >
                     <Zap className="w-3.5 h-3.5" />
@@ -190,25 +249,25 @@ export const AiConsolePage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black text-[#07031A] pt-1" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                Talk to <span className="text-[#4F20C9]">PathSeeker AI</span>
+              <h1 className="text-3xl sm:text-5xl font-black text-[#07031A] pt-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                Ask <span className="text-[#4F20C9]">Pathseeker</span> AI
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600">
-                A dedicated strategy console to evaluate major career decisions, pivots, and skill roadmaps.
+              <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                An intelligent career strategy cockpit to analyze pivots, education pathways, ATS resumes, and compensation benchmarks.
               </p>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={handleExportConsole}
-                className="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-2"
+                className="px-4 py-2.5 rounded-full bg-white border border-slate-200 hover:border-purple-300 text-slate-800 text-xs font-bold flex items-center gap-2 shadow-sm transition-all"
               >
-                <Download className="w-4 h-4" />
-                <span>Export Conversation</span>
+                <Download className="w-4 h-4 text-[#4F20C9]" />
+                <span>Export Transcript</span>
               </button>
               <button
                 onClick={handleClearHistory}
-                className="px-4 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold flex items-center gap-2"
+                className="px-4 py-2.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold flex items-center gap-2 transition-all"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Clear History</span>
@@ -217,55 +276,77 @@ export const AiConsolePage: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Decision Prompts Rail */}
+        {/* Decision Prompt Templates Rail */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {decisionTemplates.map((template, idx) => (
             <motion.button
               key={idx}
               whileHover={{ y: -3 }}
               onClick={() => handleSend(template.prompt)}
-              className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm text-left space-y-2 hover:border-purple-300 transition-all"
+              className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-md text-left space-y-2 hover:border-purple-300 transition-all group"
             >
-              <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#4F20C9] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#4F20C9] flex items-center justify-center group-hover:bg-[#4F20C9] group-hover:text-white transition-colors">
                 <Zap className="w-4 h-4" />
               </div>
               <h4 className="font-bold text-xs text-[#07031A]">{template.title}</h4>
-              <p className="text-[11px] text-slate-500 line-clamp-2">{template.prompt}</p>
+              <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">{template.prompt}</p>
             </motion.button>
           ))}
         </div>
 
-        {/* Console Chat Body */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-6 min-h-[500px] flex flex-col justify-between">
-          <div className="space-y-6 max-h-[550px] overflow-y-auto pr-2">
+        {/* Console Chat Body Container */}
+        <div className="p-6 sm:p-8 rounded-[32px] bg-white border border-slate-200 shadow-xl space-y-6 min-h-[520px] flex flex-col justify-between">
+          <div className="space-y-6 max-h-[580px] overflow-y-auto pr-2">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                 <div
-                  className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                  className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
                     msg.role === 'user'
                       ? 'bg-[#4F20C9] text-white shadow-md'
-                      : 'bg-purple-50 text-[#4F20C9] border border-purple-200'
+                      : 'bg-gradient-to-br from-purple-100 to-purple-200 text-[#4F20C9] border border-purple-300'
                   }`}
                 >
                   {msg.role === 'user' ? <UserIcon className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
                 </div>
 
-                <div
-                  className={`p-6 rounded-3xl max-w-[85%] text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
-                    msg.role === 'user'
-                      ? 'bg-[#4F20C9] text-white rounded-tr-none shadow-md'
-                      : 'bg-slate-50 text-slate-800 rounded-tl-none border border-slate-200'
-                  }`}
-                >
-                  {msg.text}
+                <div className="space-y-1.5 max-w-[85%]">
+                  <div
+                    className={`p-6 rounded-3xl text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
+                      msg.role === 'user'
+                        ? 'bg-[#4F20C9] text-white rounded-tr-none shadow-md font-medium'
+                        : 'bg-slate-50 text-slate-800 rounded-tl-none border border-slate-200/90 font-normal'
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+
+                  {msg.role === 'model' && (
+                    <div className="flex items-center gap-3 pl-2 text-xs text-slate-400">
+                      <button
+                        onClick={() => copyMessage(msg.text, idx)}
+                        className="hover:text-slate-800 flex items-center gap-1 font-semibold transition-colors"
+                      >
+                        {copiedIdx === idx ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copiedIdx === idx ? 'Copied Answer' : 'Copy Answer'}</span>
+                      </button>
+                      <span>•</span>
+                      <button
+                        onClick={() => speakText(msg.text)}
+                        className="hover:text-slate-800 flex items-center gap-1 font-semibold transition-colors"
+                      >
+                        {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-rose-500" /> : <Volume2 className="w-3.5 h-3.5" />}
+                        <span>{isSpeaking ? 'Stop Audio' : 'Listen Readout'}</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
 
             {loading && (
-              <div className="flex items-center gap-3 text-slate-400 text-xs py-3 pl-2">
+              <div className="flex items-center gap-3 text-slate-500 text-xs py-3 pl-2">
                 <Sparkles className="w-5 h-5 text-[#4F20C9] animate-spin" />
-                <span className="font-bold">PathSeeker AI is analyzing global market trends and Career Bank data...</span>
+                <span className="font-bold">Ask Pathseeker Agent is synthesizing market intelligence...</span>
               </div>
             )}
 
@@ -280,13 +361,25 @@ export const AiConsolePage: React.FC = () => {
             }}
             className="flex items-center gap-3 pt-4 border-t border-slate-100"
           >
+            <button
+              type="button"
+              onClick={toggleMic}
+              className={`p-3.5 rounded-2xl transition-all ${
+                isListening ? 'bg-rose-500 text-white animate-pulse' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+              title={isListening ? 'Listening...' : 'Voice Dictation'}
+            >
+              {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            </button>
+
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your career decision, goal, or question..."
+              placeholder={isListening ? 'Listening to your voice...' : 'Ask Pathseeker about careers, skills, or degree paths...'}
               className="flex-1 px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4F20C9] font-medium"
             />
+
             <button
               type="submit"
               disabled={loading || !input.trim()}
@@ -301,3 +394,4 @@ export const AiConsolePage: React.FC = () => {
     </div>
   );
 };
+
