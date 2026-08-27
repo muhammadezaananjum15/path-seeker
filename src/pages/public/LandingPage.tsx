@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -91,7 +91,7 @@ export const LandingPage: React.FC = () => {
   const convertedSalary = Math.round(baseSalary * (currencyRates[selectedCurrency] || 1));
 
   return (
-    <div className="bg-white dark:bg-black text-[#07031A] dark:text-white min-h-screen overflow-x-hidden transition-colors duration-300">
+    <div className="bg-white text-[#07031A] min-h-screen overflow-x-hidden">
 
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Clean 3D Hero (No Overlay Sub Badges)
@@ -103,9 +103,9 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 text-[#4F20C9] dark:text-purple-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
         >
-          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] dark:text-purple-400 animate-spin shrink-0" />
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] animate-spin shrink-0" />
           <span className="truncate sm:whitespace-normal">Next-Gen Career Intelligence OS</span>
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
         </motion.div>

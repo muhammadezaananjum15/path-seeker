@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -139,7 +139,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
+    <div className="bg-white text-slate-900 min-h-screen">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 py-4 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8">
 
@@ -242,18 +242,18 @@ export const DashboardPage: React.FC = () => {
             {/* ── 4 Metrics ── */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Skill Growth Index', value: '87%', icon: Brain, color: 'text-[#4F20C9] dark:text-purple-400' },
-                { label: 'Target Career Matches', value: metrics.careerMatches, icon: Target, color: 'text-purple-600 dark:text-purple-300' },
+                { label: 'Skill Growth Index', value: '87%', icon: Brain, color: 'text-[#4F20C9]' },
+                { label: 'Target Career Matches', value: metrics.careerMatches, icon: Target, color: 'text-purple-600' },
                 { label: 'Saved Study Guides', value: metrics.bookmarksCount, icon: Bookmark, color: 'text-amber-500' },
-                { label: 'Activity Records', value: metrics.activityCount, icon: Clock, color: 'text-emerald-600 dark:text-emerald-400' },
+                { label: 'Activity Records', value: metrics.activityCount, icon: Clock, color: 'text-emerald-600' },
               ].map(({ label, value, icon: Icon, color }, i) => (
                 <ScrollAnimation key={label} delay={i * 0.08} enable3DTilt={true}>
-                  <div className="p-5 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-sm space-y-2 h-full">
+                  <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-2 h-full">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-400 dark:text-slate-500">{label}</span>
+                      <span className="text-xs font-bold text-slate-400">{label}</span>
                       <Icon className={`w-4 h-4 ${color}`} />
                     </div>
-                    <p className="text-2xl font-black text-slate-900 dark:text-white">{value}</p>
+                    <p className="text-2xl font-black text-slate-900">{value}</p>
                   </div>
                 </ScrollAnimation>
               ))}
@@ -261,34 +261,34 @@ export const DashboardPage: React.FC = () => {
 
             {/* ── AI Intelligence Match & Recommendations ── */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-              <div className="md:col-span-5 p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-sm text-center flex flex-col items-center justify-center space-y-4">
-                <h3 className="text-base font-black text-slate-900 dark:text-white">Personalized Role Fit</h3>
+              <div className="md:col-span-5 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center flex flex-col items-center justify-center space-y-4">
+                <h3 className="text-base font-black text-slate-900">Personalized Role Fit</h3>
                 <div className="relative w-36 h-36 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                    <path className="text-slate-100 dark:text-slate-700" strokeWidth="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path className="text-[#4F20C9] dark:text-purple-400" strokeDasharray="91, 100" strokeWidth="3.8" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path className="text-slate-100" strokeWidth="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path className="text-[#4F20C9]" strokeDasharray="91, 100" strokeWidth="3.8" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-black text-[#4F20C9] dark:text-purple-400">91%</span>
+                    <span className="text-3xl font-black text-[#4F20C9]">91%</span>
                     <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Strong alignment with Software Engineering, Data Science, and Leadership.</p>
+                <p className="text-xs text-slate-500 font-medium">Strong alignment with Software Engineering, Data Science, and Leadership.</p>
               </div>
 
-              <div className="md:col-span-7 p-6 rounded-3xl bg-purple-50/60 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800/40 shadow-sm space-y-3 flex flex-col justify-between">
+              <div className="md:col-span-7 p-6 rounded-3xl bg-purple-50/60 border border-purple-200 shadow-sm space-y-3 flex flex-col justify-between">
                 <div className="space-y-2">
-                  <span className="text-xs font-black text-[#4F20C9] dark:text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-black text-[#4F20C9] uppercase tracking-wider flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4" /> AI Career Match Analysis
                   </span>
-                  <h3 className="text-lg font-black text-[#07031A] dark:text-white">Why Your Profile Stands Out</h3>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                  <h3 className="text-lg font-black text-[#07031A]">Why Your Profile Stands Out</h3>
+                  <p className="text-xs text-slate-700 leading-relaxed font-medium">
                     {aiExplanation}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-purple-200 dark:border-purple-800/40 flex items-center justify-between text-xs font-bold">
-                  <span className="text-slate-500 dark:text-slate-400">Tailored for: {role}</span>
-                  <Link to="/quiz" className="text-[#4F20C9] dark:text-purple-400 hover:underline flex items-center gap-1">
+                <div className="pt-3 border-t border-purple-200 flex items-center justify-between text-xs font-bold">
+                  <span className="text-slate-500">Tailored for: {role}</span>
+                  <Link to="/quiz" className="text-[#4F20C9] hover:underline flex items-center gap-1">
                     Retake Assessment <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -299,13 +299,13 @@ export const DashboardPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Live Remote Jobs Feed */}
-              <div className="p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-md space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" />
-                    <h3 className="text-base font-black text-slate-900 dark:text-white">Live Remote Jobs</h3>
+                    <Briefcase className="w-5 h-5 text-[#4F20C9]" />
+                    <h3 className="text-base font-black text-slate-900">Live Remote Jobs</h3>
                   </div>
-                  <Link to="/resources" className="text-xs font-bold text-[#4F20C9] dark:text-purple-400 hover:underline">View All →</Link>
+                  <Link to="/resources" className="text-xs font-bold text-[#4F20C9] hover:underline">View All →</Link>
                 </div>
 
                 <div className="space-y-3">
@@ -313,12 +313,12 @@ export const DashboardPage: React.FC = () => {
                     { id: 1, title: 'Senior Full-Stack Engineer (React)', company: 'Lemon.io', salary: '$120,000 - $160,000', url: 'https://remotive.com' },
                     { id: 2, title: 'AI Systems Architect', company: 'DataSphere Labs', salary: '$135,000 - $175,000', url: 'https://remotive.com' },
                   ]).map((j) => (
-                    <div key={j.id} className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
+                    <div key={j.id} className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
                       <div className="space-y-0.5">
-                        <p className="font-black text-slate-900 dark:text-white">{j.title}</p>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">{j.company} • <span className="text-emerald-700 dark:text-emerald-400 font-extrabold">{j.salary}</span></p>
+                        <p className="font-black text-slate-900">{j.title}</p>
+                        <p className="text-[10px] text-slate-500 font-bold">{j.company} • <span className="text-emerald-700 font-extrabold">{j.salary}</span></p>
                       </div>
-                      <a href={j.url} target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-purple-50 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 hover:bg-purple-100">
+                      <a href={j.url} target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-purple-50 text-[#4F20C9] hover:bg-purple-100">
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     </div>
@@ -327,13 +327,13 @@ export const DashboardPage: React.FC = () => {
               </div>
 
               {/* GitHub Trending Projects */}
-              <div className="p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-md space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <Code className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" />
-                    <h3 className="text-base font-black text-slate-900 dark:text-white">Open-Source Repositories</h3>
+                    <Code className="w-5 h-5 text-[#4F20C9]" />
+                    <h3 className="text-base font-black text-slate-900">Open-Source Repositories</h3>
                   </div>
-                  <Link to="/resources" className="text-xs font-bold text-[#4F20C9] dark:text-purple-400 hover:underline">View All →</Link>
+                  <Link to="/resources" className="text-xs font-bold text-[#4F20C9] hover:underline">View All →</Link>
                 </div>
 
                 <div className="space-y-3">
@@ -341,12 +341,12 @@ export const DashboardPage: React.FC = () => {
                     { id: 101, name: 'react', stars: 220000, description: 'User interface library for web.', url: 'https://github.com/facebook/react' },
                     { id: 102, name: 'next.js', stars: 120000, description: 'React framework for production.', url: 'https://github.com/vercel/next.js' },
                   ]).map((r) => (
-                    <div key={r.id} className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
+                    <div key={r.id} className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
                       <div className="space-y-0.5 min-w-0 pr-2">
-                        <p className="font-black text-[#4F20C9] dark:text-purple-400 truncate">{r.name}</p>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{r.description}</p>
+                        <p className="font-black text-[#4F20C9] truncate">{r.name}</p>
+                        <p className="text-[10px] text-slate-500 truncate">{r.description}</p>
                       </div>
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 px-2 py-1 rounded shrink-0">
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded shrink-0">
                         <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                         {r.stars?.toLocaleString()}
                       </span>
@@ -358,15 +358,15 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             {/* ── FULL CRUD SYSTEM: Personal Career Goals & Target Notes ── */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-md space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                 <div>
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" /> My Career Goals &amp; Action Notes (CRUD)
+                  <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-[#4F20C9]" /> My Career Goals &amp; Action Notes (CRUD)
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Create, track, update, and manage your custom milestones directly from your dashboard.</p>
+                  <p className="text-xs text-slate-500">Create, track, update, and manage your custom milestones directly from your dashboard.</p>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-xs font-bold self-start sm:self-auto">
+                <span className="px-3 py-1 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-bold self-start sm:self-auto">
                   {notes.length} Active Items
                 </span>
               </div>
@@ -378,12 +378,12 @@ export const DashboardPage: React.FC = () => {
                   value={newNoteTitle}
                   onChange={(e) => setNewNoteTitle(e.target.value)}
                   placeholder="Add a new career goal or action item (e.g. Learn TypeScript, Apply to 5 companies)..."
-                  className="flex-1 px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#4F20C9]"
+                  className="flex-1 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4F20C9]"
                 />
                 <select
                   value={newNoteCategory}
                   onChange={(e) => setNewNoteCategory(e.target.value)}
-                  className="px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white focus:outline-none"
+                  className="px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none"
                 >
                   <option value="Skill Development">Skill Development</option>
                   <option value="Career Prep">Career Prep</option>
@@ -404,7 +404,7 @@ export const DashboardPage: React.FC = () => {
                 {notes.map((note) => (
                   <div
                     key={note.id}
-                    className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-purple-200 transition-all"
+                    className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-purple-200 transition-all"
                   >
                     <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
                       <button
@@ -412,7 +412,7 @@ export const DashboardPage: React.FC = () => {
                         className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 border transition-all mt-0.5 sm:mt-0 cursor-pointer ${
                           note.status === 'Completed'
                             ? 'bg-emerald-600 border-emerald-600 text-white'
-                            : 'bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-transparent hover:border-[#4F20C9]'
+                            : 'bg-white border-slate-300 text-transparent hover:border-[#4F20C9]'
                         }`}
                       >
                         <Check className="w-4 h-4 stroke-[3]" />
@@ -424,7 +424,7 @@ export const DashboardPage: React.FC = () => {
                             type="text"
                             value={editingTitle}
                             onChange={(e) => setEditingTitle(e.target.value)}
-                            className="flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-700 border border-purple-300 text-xs font-bold text-slate-900 dark:text-white focus:outline-none"
+                            className="flex-1 px-3 py-1.5 rounded-xl bg-white border border-purple-300 text-xs font-bold text-slate-900 focus:outline-none"
                           />
                           <button
                             onClick={() => handleSaveEdit(note.id)}
@@ -434,7 +434,7 @@ export const DashboardPage: React.FC = () => {
                           </button>
                           <button
                             onClick={() => setEditingNoteId(null)}
-                            className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 cursor-pointer"
+                            className="p-1.5 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 cursor-pointer"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -442,17 +442,17 @@ export const DashboardPage: React.FC = () => {
                       ) : (
                         <div className="min-w-0">
                           <p
-                            className={`text-xs font-bold text-slate-900 dark:text-white truncate ${
-                              note.status === 'Completed' ? 'line-through text-slate-400 dark:text-slate-500' : ''
+                            className={`text-xs font-bold text-slate-900 truncate ${
+                              note.status === 'Completed' ? 'line-through text-slate-400' : ''
                             }`}
                           >
                             {note.title}
                           </p>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-[9px] font-black uppercase">
+                            <span className="px-2 py-0.5 rounded bg-purple-100 text-[#4F20C9] text-[9px] font-black uppercase">
                               {note.category}
                             </span>
-                            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">{note.date}</span>
+                            <span className="text-[10px] text-slate-400 font-semibold">{note.date}</span>
                           </div>
                         </div>
                       )}
@@ -462,14 +462,14 @@ export const DashboardPage: React.FC = () => {
                       <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
                         <button
                           onClick={() => handleStartEdit(note)}
-                          className="p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:text-[#4F20C9] hover:border-purple-200 cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-[#4F20C9] hover:border-purple-200 cursor-pointer"
                           title="Edit Title"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteNote(note.id)}
-                          className="p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-rose-600 hover:border-rose-200 cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-200 cursor-pointer"
                           title="Delete Note"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -482,31 +482,31 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             {/* ── Real MongoDB User Activity Log Feed ── */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" /> My Activity Record (Stored in MongoDB)
+            <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-[#4F20C9]" /> My Activity Record (Stored in MongoDB)
                 </h3>
-                <span className="text-xs font-bold text-slate-400 dark:text-slate-500">Live Activity Feed</span>
+                <span className="text-xs font-bold text-slate-400">Live Activity Feed</span>
               </div>
 
               <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                 {userLogs.length > 0 ? (
                   userLogs.map((log: any, idx: number) => (
-                    <div key={log._id || log.id || idx} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs">
+                    <div key={log._id || log.id || idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs">
                       <div className="space-y-0.5">
-                        <p className="font-bold text-slate-800 dark:text-slate-200">{log.details || log.action}</p>
-                        <span className="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-[9px] font-bold uppercase">
+                        <p className="font-bold text-slate-800">{log.details || log.action}</p>
+                        <span className="px-2 py-0.5 rounded bg-purple-50 text-[#4F20C9] text-[9px] font-bold uppercase">
                           {log.category || 'ACTION'}
                         </span>
                       </div>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">
+                      <span className="text-[10px] text-slate-400 font-semibold">
                         {new Date(log.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
                   ))
                 ) : (
-                  <p className="text-xs text-slate-400 dark:text-slate-500 font-medium py-4 text-center">
+                  <p className="text-xs text-slate-400 font-medium py-4 text-center">
                     No recent activity records found in MongoDB. Perform searches, watch videos, or take quizzes to record activity!
                   </p>
                 )}

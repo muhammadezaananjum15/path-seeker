@@ -1,46 +1,18 @@
 import { create } from 'zustand';
 
 interface ThemeState {
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  setTheme: (theme: 'light' | 'dark') => void;
+  theme: 'light';
 }
 
-const getSavedTheme = (): 'light' | 'dark' => {
-  try {
-    const saved = localStorage.getItem('pathseeker_theme');
-    if (saved === 'dark' || saved === 'light') return saved;
-  } catch {}
-  return 'light';
-};
-
-const applyThemeToDOM = (theme: 'light' | 'dark') => {
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
-  } else {
-    document.documentElement.classList.remove('dark');
-    document.documentElement.classList.add('light');
-  }
-};
-
-const initialTheme = getSavedTheme();
-applyThemeToDOM(initialTheme);
-
-export const useThemeStore = create<ThemeState>((set) => ({
-  theme: initialTheme,
-
-  toggleTheme: () =>
-    set((state) => {
-      const nextTheme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('pathseeker_theme', nextTheme);
-      applyThemeToDOM(nextTheme);
-      return { theme: nextTheme };
-    }),
-
-  setTheme: (theme: 'light' | 'dark') => {
-    localStorage.setItem('pathseeker_theme', theme);
-    applyThemeToDOM(theme);
-    set({ theme });
-  },
+// Theme is permanently locked to 'light' (white background).
+// Dark mode toggle has been removed from the application.
+export const useThemeStore = create<ThemeState>(() => ({
+  theme: 'light',
 }));
+
+// Ensure DOM never has dark class
+if (typeof document !== 'undefined') {
+  document.documentElement.classList.remove('dark');
+  document.documentElement.classList.add('light');
+  localStorage.removeItem('pathseeker_theme');
+}

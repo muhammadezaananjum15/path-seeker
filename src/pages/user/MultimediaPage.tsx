@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Play, ExternalLink, Sparkles, Filter, Video, X, Star, Eye } from 'lucide-react';
 import { multimediaApi } from '../../services/multimediaApi';
@@ -231,7 +231,7 @@ export const MultimediaPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen py-6 sm:py-10 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white min-h-screen py-6 sm:py-10 text-slate-900">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
@@ -268,19 +268,19 @@ export const MultimediaPage: React.FC = () => {
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
-            <div className="text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">
-              Showing <span className="text-[#4F20C9] dark:text-purple-400 font-black">{videos.length}</span> Videos
+            <div className="text-xs font-bold text-slate-500 shrink-0">
+              Showing <span className="text-[#4F20C9] font-black">{videos.length}</span> Videos
             </div>
           </div>
 
           {/* 7 Required Categories Chips */}
-          <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700 overflow-x-auto scrollbar-none pb-1 max-w-full sm:flex-wrap">
+          <div className="flex items-center gap-2 pt-2 border-t border-slate-100 overflow-x-auto scrollbar-none pb-1 max-w-full sm:flex-wrap">
             {CATEGORIES.map((cat) => {
               const isActive = selectedCategory === cat;
               return (
@@ -290,7 +290,7 @@ export const MultimediaPage: React.FC = () => {
                   className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                     isActive
                       ? 'bg-[#4F20C9] text-white shadow-md scale-105'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-[#4F20C9] dark:hover:text-purple-300'
+                      : 'bg-slate-100 text-slate-700 hover:bg-purple-50 hover:text-[#4F20C9]'
                   }`}
                 >
                   {cat}
@@ -304,7 +304,7 @@ export const MultimediaPage: React.FC = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-72 rounded-3xl bg-slate-100 dark:bg-slate-800 animate-pulse" />
+              <div key={i} className="h-72 rounded-3xl bg-slate-100 animate-pulse" />
             ))}
           </div>
         ) : (
@@ -313,13 +313,13 @@ export const MultimediaPage: React.FC = () => {
               <ScrollAnimation key={item.youtubeVideoId || item._id || idx} delay={idx * 0.05} enable3DTilt={true}>
                 <motion.div
                   whileHover={{ y: -6 }}
-                  className="p-5 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group h-full"
+                  className="p-5 rounded-3xl bg-white border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group h-full"
                 >
                   <div className="space-y-3">
                     {/* Video Thumbnail Box with Play Hover Overlay */}
                     <div
                       onClick={() => handleOpenVideo(item)}
-                      className="aspect-video rounded-2xl bg-slate-900 overflow-hidden relative cursor-pointer group/thumb border border-slate-100 dark:border-slate-700 shadow-inner"
+                      className="aspect-video rounded-2xl bg-slate-900 overflow-hidden relative cursor-pointer group/thumb border border-slate-100 shadow-inner"
                     >
                       <img
                         src={item.thumbnail || `https://i.ytimg.com/vi/${item.youtubeVideoId}/hqdefault.jpg`}
@@ -344,10 +344,10 @@ export const MultimediaPage: React.FC = () => {
 
                     {/* Metadata Header */}
                     <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-900/30 text-[#4F20C9] dark:text-purple-300 text-[10px] font-extrabold uppercase truncate max-w-[170px]">
+                      <span className="px-2.5 py-1 rounded-md bg-purple-50 text-[#4F20C9] text-[10px] font-extrabold uppercase truncate max-w-[170px]">
                         {item.category || 'Technology'}
                       </span>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold truncate max-w-[120px]">
+                      <span className="text-[10px] text-slate-400 font-bold truncate max-w-[120px]">
                         {item.channelTitle || 'PathSeeker Video'}
                       </span>
                     </div>
@@ -355,16 +355,16 @@ export const MultimediaPage: React.FC = () => {
                     {/* Title & Description */}
                     <h3
                       onClick={() => handleOpenVideo(item)}
-                      className="font-black text-base text-[#07031A] dark:text-white line-clamp-2 leading-snug cursor-pointer group-hover:text-[#4F20C9] dark:group-hover:text-purple-400 transition-colors"
+                      className="font-black text-base text-[#07031A] line-clamp-2 leading-snug cursor-pointer group-hover:text-[#4F20C9] transition-colors"
                     >
                       {item.title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                       {item.description || item.transcript}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-2">
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                     <button
                       onClick={() => handleOpenVideo(item)}
                       className="w-full py-2.5 rounded-xl bg-[#4F20C9] hover:bg-purple-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all uppercase tracking-wider"
@@ -381,10 +381,10 @@ export const MultimediaPage: React.FC = () => {
 
         {/* Empty State */}
         {videos.length === 0 && !loading && (
-          <div className="p-12 text-center bg-white dark:bg-[#16161A] rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4">
-            <Video className="w-12 h-12 text-[#4F20C9] dark:text-purple-400 mx-auto animate-bounce" />
-            <h3 className="text-xl font-black text-[#07031A] dark:text-white">No videos found for this search</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 space-y-4">
+            <Video className="w-12 h-12 text-[#4F20C9] mx-auto animate-bounce" />
+            <h3 className="text-xl font-black text-[#07031A]">No videos found for this search</h3>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">
               Try searching a broader term or select "All" categories to view our full collection of 100+ videos.
             </p>
             <button
@@ -392,7 +392,7 @@ export const MultimediaPage: React.FC = () => {
                 setSearch('');
                 setSelectedCategory('All');
               }}
-              className="px-6 py-2.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 font-bold text-xs"
+              className="px-6 py-2.5 rounded-full bg-purple-100 text-[#4F20C9] font-bold text-xs"
             >
               Reset Filters
             </button>
@@ -413,26 +413,26 @@ export const MultimediaPage: React.FC = () => {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                className="w-full max-w-4xl bg-white dark:bg-[#1C1C22] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4 p-6 max-h-[90vh] overflow-y-auto"
+                className="w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 space-y-4 p-6 max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-xs font-bold">
+                    <span className="px-3 py-1 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-bold">
                       {selectedVideo.category || 'Video Guide'}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Channel: {selectedVideo.channelTitle || 'PathSeeker'}</span>
+                    <span className="text-xs text-slate-500 font-medium">Channel: {selectedVideo.channelTitle || 'PathSeeker'}</span>
                   </div>
                   <button
                     onClick={() => setSelectedVideo(null)}
-                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    className="p-2 rounded-xl bg-slate-100 text-slate-500 hover:text-slate-900"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 {/* Embedded Responsive Video Player (HTML5 or YouTube) */}
-                <div className="aspect-video w-full rounded-2xl bg-black overflow-hidden shadow-inner border border-slate-200 dark:border-slate-700">
+                <div className="aspect-video w-full rounded-2xl bg-black overflow-hidden shadow-inner border border-slate-200">
                   {selectedVideo.videoUrl && selectedVideo.videoUrl.endsWith('.mp4') ? (
                     <video
                       src={selectedVideo.videoUrl}
@@ -453,22 +453,22 @@ export const MultimediaPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-3 pt-2">
-                  <h2 className="text-xl font-black text-[#07031A] dark:text-white">{selectedVideo.title}</h2>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <h2 className="text-xl font-black text-[#07031A]">{selectedVideo.title}</h2>
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     {selectedVideo.description || selectedVideo.transcript}
                   </p>
 
                   {selectedVideo.tags && selectedVideo.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pt-2">
                       {selectedVideo.tags.map((t: string, i: number) => (
-                        <span key={i} className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-semibold">
+                        <span key={i} className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-semibold">
                           #{t}
                         </span>
                       ))}
                     </div>
                   )}
 
-                  <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                     <a
                       href={`https://youtube.com/watch?v=${selectedVideo.youtubeVideoId || 'rfscVS0vtbw'}`}
                       target="_blank"
@@ -479,7 +479,7 @@ export const MultimediaPage: React.FC = () => {
                     </a>
                     <button
                       onClick={() => setSelectedVideo(null)}
-                      className="px-6 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs"
+                      className="px-6 py-2.5 rounded-full bg-slate-100 text-slate-700 font-bold text-xs"
                     >
                       Close Player
                     </button>

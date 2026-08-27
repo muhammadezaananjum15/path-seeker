@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -22,7 +22,7 @@ export const QuizResultsPage: React.FC = () => {
   if (!result) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-6 text-center px-4 transition-colors duration-300">
-        <div className="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center">
           <Brain className="w-8 h-8 text-[#4F20C9]" />
         </div>
         <h1 className="text-2xl font-black text-[#07031A]">No Quiz Result Found</h1>
@@ -67,7 +67,7 @@ export const QuizResultsPage: React.FC = () => {
   const barColors = ['from-[#4F20C9] to-purple-400', 'from-purple-500 to-indigo-400', 'from-indigo-400 to-blue-400', 'from-blue-400 to-cyan-400', 'from-cyan-400 to-teal-400'];
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen py-10 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white min-h-screen py-10 text-slate-900">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
         {/* Hero Result Banner */}
@@ -107,18 +107,18 @@ export const QuizResultsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-[#16161A] border border-purple-100 dark:border-purple-800/50 shadow-sm"
+          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-purple-50 to-white border border-purple-100 shadow-sm"
         >
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-2xl bg-[#4F20C9] flex items-center justify-center shrink-0">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs font-extrabold text-[#07031A] dark:text-white mb-2 uppercase tracking-wider flex items-center gap-2">
+              <p className="text-xs font-extrabold text-[#07031A] mb-2 uppercase tracking-wider flex items-center gap-2">
                 Gemini AI Career Analysis
-                <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/50 text-[#4F20C9] dark:text-purple-300 text-[9px]">LIVE AI</span>
+                <span className="px-1.5 py-0.5 rounded bg-purple-100 text-[#4F20C9] text-[9px]">LIVE AI</span>
               </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{aiAnalysis}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{aiAnalysis}</p>
             </div>
           </div>
         </motion.div>
@@ -128,15 +128,15 @@ export const QuizResultsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="p-8 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-6"
+          className="p-8 rounded-3xl bg-white border border-slate-200 shadow-md space-y-6"
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" />
+            <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-[#4F20C9]" />
             </div>
             <div>
-              <h2 className="text-lg font-black text-[#07031A] dark:text-white">Domain Aptitude Breakdown</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Your compatibility score across career fields</p>
+              <h2 className="text-lg font-black text-[#07031A]">Domain Aptitude Breakdown</h2>
+              <p className="text-xs text-slate-500">Your compatibility score across career fields</p>
             </div>
           </div>
           <div className="space-y-5">
@@ -149,10 +149,10 @@ export const QuizResultsPage: React.FC = () => {
                 className="space-y-2"
               >
                 <div className="flex items-center justify-between text-xs font-bold">
-                  <span className="text-slate-700 dark:text-slate-300">{item.domain}</span>
-                  <span className="text-[#4F20C9] dark:text-purple-400 font-black">{item.match}%</span>
+                  <span className="text-slate-700">{item.domain}</span>
+                  <span className="text-[#4F20C9] font-black">{item.match}%</span>
                 </div>
-                <div className="h-3 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                <div className="h-3 rounded-full bg-slate-100 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.match}%` }}
@@ -174,10 +174,10 @@ export const QuizResultsPage: React.FC = () => {
             className="space-y-6"
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-black text-[#07031A] dark:text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <h2 className="text-xl font-black text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Top Matched Career Roles
               </h2>
-              <Link to="/quiz" className="text-xs font-bold text-[#4F20C9] dark:text-purple-400 hover:underline flex items-center gap-1">
+              <Link to="/quiz" className="text-xs font-bold text-[#4F20C9] hover:underline flex items-center gap-1">
                 <RotateCcw className="w-3.5 h-3.5" /> Retake
               </Link>
             </div>
@@ -190,28 +190,28 @@ export const QuizResultsPage: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + idx * 0.06 }}
-                    className="p-6 rounded-3xl bg-white dark:bg-[#1C1C22] border border-slate-200 dark:border-slate-700 shadow-sm space-y-4 flex flex-col justify-between hover:border-purple-300 dark:hover:border-purple-600 transition-all"
+                    className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between hover:border-purple-300 transition-all"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="px-3 py-1 rounded-full bg-purple-50 dark:bg-purple-900/30 text-[#4F20C9] dark:text-purple-300 text-xs font-bold">
+                        <span className="px-3 py-1 rounded-full bg-purple-50 text-[#4F20C9] text-xs font-bold">
                           {c.domain || 'Technology'}
                         </span>
-                        <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">
+                        <span className="text-xs font-black text-emerald-600">
                           {rec.matchPercentage || 92}% Match
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-[#07031A] dark:text-white">{c.title || recommendedRole}</h3>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{c.description}</p>
+                      <h3 className="text-xl font-bold text-[#07031A]">{c.title || recommendedRole}</h3>
+                      <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{c.description}</p>
                       {rec.reason && (
-                        <div className="p-3 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-[11px] text-[#4F20C9] dark:text-purple-300 font-medium flex items-start gap-2">
+                        <div className="p-3 rounded-2xl bg-purple-50 text-[11px] text-[#4F20C9] font-medium flex items-start gap-2">
                           <Sparkles className="w-4 h-4 shrink-0 mt-0.5" />
                           <span>{rec.reason}</span>
                         </div>
                       )}
                     </div>
-                    <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-700">
                         ${c.expectedSalaryRange?.max?.toLocaleString() || '155,000'}/yr
                       </span>
                       <Link
@@ -234,13 +234,13 @@ export const QuizResultsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-8 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-6"
+          className="p-8 rounded-3xl bg-white border border-slate-200 shadow-md space-y-6"
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
-              <Target className="w-5 h-5 text-[#4F20C9] dark:text-purple-400" />
+            <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center">
+              <Target className="w-5 h-5 text-[#4F20C9]" />
             </div>
-            <h3 className="text-lg font-black text-[#07031A] dark:text-white">Your Personalised Next Steps</h3>
+            <h3 className="text-lg font-black text-[#07031A]">Your Personalised Next Steps</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {nextSteps.map((step: string, idx: number) => (
@@ -249,12 +249,12 @@ export const QuizResultsPage: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 + idx * 0.1 }}
-                className="p-5 rounded-2xl bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-[#1C1C22] border border-purple-100 dark:border-purple-800/40 space-y-3"
+                className="p-5 rounded-2xl bg-gradient-to-br from-purple-50 to-white border border-purple-100 space-y-3"
               >
                 <div className="w-8 h-8 rounded-xl bg-[#4F20C9] text-white flex items-center justify-center font-black text-xs shadow-sm">
                   {idx + 1}
                 </div>
-                <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 leading-relaxed">{step}</p>
+                <p className="text-xs font-semibold text-slate-700 leading-relaxed">{step}</p>
               </motion.div>
             ))}
           </div>
@@ -268,18 +268,18 @@ export const QuizResultsPage: React.FC = () => {
           className="space-y-4 pb-8"
         >
           {/* Share card */}
-          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#1C1C22] border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-4 flex-wrap">
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <p className="text-xs font-bold text-slate-700 flex items-center gap-2">
                 <Share2 className="w-4 h-4 text-[#4F20C9]" /> Share Your Results
               </p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Copy your career match summary to share with friends or mentors</p>
+              <p className="text-[11px] text-slate-500 mt-0.5">Copy your career match summary to share with friends or mentors</p>
             </div>
             <button
               onClick={handleShare}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 copied
-                  ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700'
+                  ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
                   : 'bg-[#4F20C9] text-white hover:bg-purple-700'
               }`}
             >
@@ -291,7 +291,7 @@ export const QuizResultsPage: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/resources"
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all"
             >
               <BookOpen className="w-4 h-4" /> Download Free PDFs
             </Link>
@@ -303,13 +303,13 @@ export const QuizResultsPage: React.FC = () => {
             </Link>
             <button
               onClick={() => navigate('/quiz')}
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold text-sm hover:border-purple-300 dark:hover:border-purple-500 transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 text-slate-600 font-bold text-sm hover:border-purple-300 transition-all"
             >
               <RefreshCw className="w-4 h-4" /> Retake Quiz
             </button>
             <Link
               to="/dashboard"
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold text-sm hover:border-purple-300 dark:hover:border-purple-500 transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 text-slate-600 font-bold text-sm hover:border-purple-300 transition-all"
             >
               Go to Dashboard <ArrowRight className="w-4 h-4" />
             </Link>

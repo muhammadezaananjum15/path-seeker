@@ -77,7 +77,7 @@ const ProgressRing: React.FC<{ percent: number; size?: number }> = ({ percent, s
   const offset = circ - (percent / 100) * circ;
   return (
     <svg width={size} height={size} className="rotate-[-90deg]">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e2e8f0" strokeWidth={6} className="dark:stroke-slate-700" />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e2e8f0" strokeWidth={6} />
       <circle
         cx={size / 2} cy={size / 2} r={r} fill="none"
         stroke="#4F20C9" strokeWidth={6}
@@ -100,7 +100,7 @@ const TimerRing: React.FC<{ seconds: number; total: number }> = ({ seconds, tota
   return (
     <div className="relative flex items-center justify-center w-12 h-12">
       <svg width={48} height={48} className="rotate-[-90deg] absolute">
-        <circle cx={24} cy={24} r={r} fill="none" stroke="#e2e8f0" strokeWidth={4} className="dark:stroke-slate-700" />
+        <circle cx={24} cy={24} r={r} fill="none" stroke="#e2e8f0" strokeWidth={4} />
         <circle
           cx={24} cy={24} r={r} fill="none"
           stroke={color} strokeWidth={4} strokeLinecap="round"
@@ -255,31 +255,31 @@ export const QuizPage: React.FC = () => {
     : ['1. Interests', '2. Skills', '3. Work Style', '4. Values', '5. Preferences'];
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen py-6 sm:py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white min-h-screen py-6 sm:py-8 text-slate-900">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* Quiz Header */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-4 max-w-2xl mx-auto">
-          <span className="px-3.5 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-xs font-black uppercase tracking-wider">
+          <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-black uppercase tracking-wider">
             CAREER QUIZ
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-[#07031A] dark:text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Discover What Fits <span className="text-[#4F20C9] dark:text-purple-400">You Best</span>
+          <h1 className="text-3xl sm:text-5xl font-black text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            Discover What Fits <span className="text-[#4F20C9]">You Best</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-600">
             Answer a few questions and get AI-personalized career recommendations matched to your interests and strengths.
           </p>
 
           {/* Metrics */}
-          <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs font-bold text-slate-600 dark:text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs font-bold text-slate-600">
             <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#4F20C9] dark:text-purple-400" /> Takes 8-10 Minutes
+              <Clock className="w-4 h-4 text-[#4F20C9]" /> Takes 8-10 Minutes
             </span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-[#4F20C9] dark:text-purple-400" /> AI-Powered & Reliable
+              <ShieldCheck className="w-4 h-4 text-[#4F20C9]" /> AI-Powered & Reliable
             </span>
             <span className="flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-[#4F20C9] dark:text-purple-400" /> Personalized Results
+              <Award className="w-4 h-4 text-[#4F20C9]" /> Personalized Results
             </span>
           </div>
 
@@ -296,7 +296,7 @@ export const QuizPage: React.FC = () => {
               }
             </button>
             {generateMsg && (
-              <motion.p initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              <motion.p initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="text-xs font-bold text-emerald-600">
                 {generateMsg}
               </motion.p>
             )}
@@ -307,10 +307,10 @@ export const QuizPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Sidebar Stepper */}
-          <div className="lg:col-span-4 bg-white dark:bg-[#16161A] p-6 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-6 h-fit shadow-sm">
+          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200 space-y-6 h-fit shadow-sm">
             <div className="space-y-2">
-              <h3 className="font-bold text-xs uppercase text-slate-400 dark:text-slate-500">Quiz Progress</h3>
-              <p className="font-black text-lg text-[#07031A] dark:text-white">
+              <h3 className="font-bold text-xs uppercase text-slate-400">Quiz Progress</h3>
+              <p className="font-black text-lg text-[#07031A]">
                 Question {currentIdx + 1} of {questions.length || 5}
               </p>
 
@@ -318,16 +318,16 @@ export const QuizPage: React.FC = () => {
               <div className="pt-2 flex items-center gap-4">
                 <div className="relative flex items-center justify-center">
                   <ProgressRing percent={progressPercent} size={72} />
-                  <span className="absolute text-xs font-black text-[#4F20C9] dark:text-purple-400">{progressPercent}%</span>
+                  <span className="absolute text-xs font-black text-[#4F20C9]">{progressPercent}%</span>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Career passport progress</p>
-                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{answeredCount} of {questions.length} answered</p>
+                  <p className="text-xs text-slate-500 font-semibold">Career passport progress</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{answeredCount} of {questions.length} answered</p>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-2 border-t border-slate-100 dark:border-slate-700 pt-4">
+            <div className="space-y-2 border-t border-slate-100 pt-4">
               {steps.map((step, idx) => (
                 <div
                   key={step}
@@ -335,8 +335,8 @@ export const QuizPage: React.FC = () => {
                     idx === currentIdx
                       ? 'bg-[#4F20C9] text-white shadow-sm shadow-purple-500/30'
                       : idx < currentIdx
-                      ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
-                      : 'text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50'
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : 'text-slate-400 bg-slate-50'
                   }`}
                   onClick={() => idx <= currentIdx && setCurrentIdx(idx)}
                 >
@@ -348,13 +348,13 @@ export const QuizPage: React.FC = () => {
             </div>
 
             {/* Answer stats */}
-            <div className="border-t border-slate-100 dark:border-slate-700 pt-4 space-y-1">
-              <p className="text-[11px] uppercase font-bold text-slate-400 dark:text-slate-500">Session Stats</p>
-              <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
+            <div className="border-t border-slate-100 pt-4 space-y-1">
+              <p className="text-[11px] uppercase font-bold text-slate-400">Session Stats</p>
+              <div className="flex justify-between text-xs font-semibold text-slate-600">
                 <span>Answered</span>
-                <span className="text-[#4F20C9] dark:text-purple-400 font-black">{answeredCount}</span>
+                <span className="text-[#4F20C9] font-black">{answeredCount}</span>
               </div>
-              <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
+              <div className="flex justify-between text-xs font-semibold text-slate-600">
                 <span>Remaining</span>
                 <span className="font-black">{questions.length - currentIdx - 1}</span>
               </div>
@@ -362,27 +362,27 @@ export const QuizPage: React.FC = () => {
           </div>
 
           {/* Question Card */}
-          <div className="lg:col-span-8 bg-white dark:bg-[#16161A] p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md space-y-8 flex flex-col justify-between">
+          <div className="lg:col-span-8 bg-white p-8 rounded-3xl border border-slate-200 shadow-md space-y-8 flex flex-col justify-between">
             {loading ? (
               <div className="py-20 text-center space-y-4">
-                <div className="w-12 h-12 mx-auto rounded-2xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
+                <div className="w-12 h-12 mx-auto rounded-2xl bg-purple-50 flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-[#4F20C9] animate-pulse" />
                 </div>
-                <p className="text-slate-400 dark:text-slate-500 text-sm font-semibold">Loading quiz questions...</p>
+                <p className="text-slate-400 text-sm font-semibold">Loading quiz questions...</p>
               </div>
             ) : currentQ ? (
               <>
                 {/* Timer + Question */}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-900/30 text-[#4F20C9] dark:text-purple-300 text-xs font-bold uppercase mb-3">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-50 text-[#4F20C9] text-xs font-bold uppercase mb-3">
                       {CATEGORY_ICONS[currentQ.category] || <Target className="w-4 h-4" />}
                       {currentQ.category}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-[#07031A] dark:text-white leading-snug" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                    <h3 className="text-xl sm:text-2xl font-black text-[#07031A] leading-snug" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                       {currentQ.questionText}
                     </h3>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">Select the option that best describes you:</p>
+                    <p className="text-xs text-slate-400 mt-2">Select the option that best describes you:</p>
                   </div>
                   <TimerRing seconds={timeLeft} total={QUESTION_TIMER_SECS} />
                 </div>
@@ -408,12 +408,12 @@ export const QuizPage: React.FC = () => {
                           className={`p-5 rounded-2xl border text-left text-xs font-bold transition-all flex items-center justify-between gap-3 ${
                             selected
                               ? 'bg-[#4F20C9] text-white border-[#4F20C9] shadow-lg shadow-purple-500/20'
-                              : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-200 hover:border-purple-300 dark:hover:border-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/20'
+                              : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-purple-300 hover:bg-purple-50/50'
                           }`}
                         >
                           <span className="leading-relaxed">{opt.label}</span>
                           <div className={`w-5 h-5 shrink-0 rounded-md flex items-center justify-center border ${
-                            selected ? 'bg-white text-[#4F20C9] border-white' : 'border-slate-300 dark:border-slate-500'
+                            selected ? 'bg-white text-[#4F20C9] border-white' : 'border-slate-300'
                           }`}>
                             {selected && <Check className="w-3.5 h-3.5" />}
                           </div>
@@ -426,11 +426,11 @@ export const QuizPage: React.FC = () => {
             ) : null}
 
             {/* Navigation */}
-            <div className="pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
               <button
                 onClick={handlePrev}
                 disabled={currentIdx === 0}
-                className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold disabled:opacity-40 flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold disabled:opacity-40 flex items-center gap-1.5 hover:bg-slate-200 transition-all"
               >
                 <ArrowLeft className="w-4 h-4" /> Previous
               </button>
@@ -442,7 +442,7 @@ export const QuizPage: React.FC = () => {
                     key={i}
                     onClick={() => setCurrentIdx(i)}
                     className={`rounded-full transition-all ${
-                      i === currentIdx ? 'w-5 h-2 bg-[#4F20C9]' : i < currentIdx ? 'w-2 h-2 bg-emerald-400' : 'w-2 h-2 bg-slate-200 dark:bg-slate-600'
+                      i === currentIdx ? 'w-5 h-2 bg-[#4F20C9]' : i < currentIdx ? 'w-2 h-2 bg-emerald-400' : 'w-2 h-2 bg-slate-200'
                     }`}
                   />
                 ))}

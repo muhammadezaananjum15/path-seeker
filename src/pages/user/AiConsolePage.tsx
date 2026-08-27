@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
@@ -155,7 +155,7 @@ export const AiConsolePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white min-h-screen py-8 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header Banner */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
@@ -208,7 +208,7 @@ export const AiConsolePage: React.FC = () => {
               </button>
               <button
                 onClick={handleClearHistory}
-                className="px-4 py-2.5 rounded-2xl bg-rose-50 dark:bg-rose-900/30 hover:bg-rose-100 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-2"
+                className="px-4 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold flex items-center gap-2"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Clear History</span>
@@ -224,19 +224,19 @@ export const AiConsolePage: React.FC = () => {
               key={idx}
               whileHover={{ y: -3 }}
               onClick={() => handleSend(template.prompt)}
-              className="p-5 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-sm text-left space-y-2 hover:border-purple-300 dark:hover:border-purple-500 transition-all"
+              className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm text-left space-y-2 hover:border-purple-300 transition-all"
             >
-              <div className="w-8 h-8 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-[#4F20C9] dark:text-purple-300 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-purple-50 text-[#4F20C9] flex items-center justify-center">
                 <Zap className="w-4 h-4" />
               </div>
-              <h4 className="font-bold text-xs text-[#07031A] dark:text-white">{template.title}</h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">{template.prompt}</p>
+              <h4 className="font-bold text-xs text-[#07031A]">{template.title}</h4>
+              <p className="text-[11px] text-slate-500 line-clamp-2">{template.prompt}</p>
             </motion.button>
           ))}
         </div>
 
         {/* Console Chat Body */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-xl space-y-6 min-h-[500px] flex flex-col justify-between">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-6 min-h-[500px] flex flex-col justify-between">
           <div className="space-y-6 max-h-[550px] overflow-y-auto pr-2">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
@@ -244,7 +244,7 @@ export const AiConsolePage: React.FC = () => {
                   className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
                     msg.role === 'user'
                       ? 'bg-[#4F20C9] text-white shadow-md'
-                      : 'bg-purple-50 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 border border-purple-200 dark:border-purple-800'
+                      : 'bg-purple-50 text-[#4F20C9] border border-purple-200'
                   }`}
                 >
                   {msg.role === 'user' ? <UserIcon className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
@@ -254,7 +254,7 @@ export const AiConsolePage: React.FC = () => {
                   className={`p-6 rounded-3xl max-w-[85%] text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
                     msg.role === 'user'
                       ? 'bg-[#4F20C9] text-white rounded-tr-none shadow-md'
-                      : 'bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 rounded-tl-none border border-slate-200 dark:border-slate-700'
+                      : 'bg-slate-50 text-slate-800 rounded-tl-none border border-slate-200'
                   }`}
                 >
                   {msg.text}
@@ -263,8 +263,8 @@ export const AiConsolePage: React.FC = () => {
             ))}
 
             {loading && (
-              <div className="flex items-center gap-3 text-slate-400 dark:text-slate-500 text-xs py-3 pl-2">
-                <Sparkles className="w-5 h-5 text-[#4F20C9] dark:text-purple-400 animate-spin" />
+              <div className="flex items-center gap-3 text-slate-400 text-xs py-3 pl-2">
+                <Sparkles className="w-5 h-5 text-[#4F20C9] animate-spin" />
                 <span className="font-bold">PathSeeker AI is analyzing global market trends and Career Bank data...</span>
               </div>
             )}
@@ -278,14 +278,14 @@ export const AiConsolePage: React.FC = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-slate-700"
+            className="flex items-center gap-3 pt-4 border-t border-slate-100"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your career decision, goal, or question..."
-              className="flex-1 px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#4F20C9] font-medium"
+              className="flex-1 px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4F20C9] font-medium"
             />
             <button
               type="submit"
