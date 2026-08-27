@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LogIn, UserPlus, Menu, X } from 'lucide-react';
+import { LogIn, UserPlus, Menu, X, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '../../stores/useAuthStore';
+import { useThemeStore } from '../../stores/useThemeStore';
 import apiClient from '../../services/apiClient';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { theme, toggleTheme } = useThemeStore();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -45,12 +47,18 @@ export const Navbar: React.FC = () => {
     navigate('/login');
   };
 
+  const isDark = theme === 'dark';
+
   return (
     <>
-      {/* ── Lumio Floating Pill Navigation Header ──────── */}
+      {/* ── Floating Pill Navigation Header ────────── */}
       <header className="fixed top-[12px] sm:top-[16px] left-0 right-0 z-50 flex items-center justify-center px-2 sm:px-4 w-full pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-[1280px] 2xl:max-w-[1440px] flex items-center justify-between bg-white/95 text-slate-900 backdrop-blur-xl rounded-full px-3 sm:px-5 py-2 shadow-xl border border-slate-200 min-h-[58px] sm:h-[62px]">
-          
+        <div className={`pointer-events-auto w-full max-w-[1280px] 2xl:max-w-[1440px] flex items-center justify-between backdrop-blur-xl rounded-full px-3 sm:px-5 py-2 shadow-xl border min-h-[58px] sm:h-[62px] transition-colors duration-300 ${
+          isDark
+            ? 'bg-[#16161A]/95 text-slate-100 border-slate-700'
+            : 'bg-white/95 text-slate-900 border-slate-200'
+        }`}>
+
           {/* Left Brand Badge */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <Link to="/" className="flex items-center gap-2 group">
@@ -83,8 +91,8 @@ export const Navbar: React.FC = () => {
                   </g>
                 </svg>
               </div>
-              <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">
-                Path<span className="text-purple-600">Seeker</span>
+              <span className={`font-extrabold text-sm sm:text-base tracking-tight transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Path<span className="text-purple-500">Seeker</span>
               </span>
             </Link>
 
@@ -98,7 +106,9 @@ export const Navbar: React.FC = () => {
                     to={link.path}
                     className={`text-[12px] xl:text-[13px] font-semibold tracking-wide transition-all px-2.5 py-1 rounded-full whitespace-nowrap ${
                       isActive
-                        ? 'text-purple-700 bg-purple-50 font-bold'
+                        ? 'text-purple-600 bg-purple-100 dark:text-purple-300 dark:bg-purple-900/40 font-bold'
+                        : isDark
+                        ? 'text-slate-300 hover:text-purple-300 hover:bg-slate-700/70'
                         : 'text-slate-600 hover:text-purple-600 hover:bg-slate-100'
                     }`}
                   >
@@ -111,11 +121,44 @@ export const Navbar: React.FC = () => {
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+
+            {/* ── Dark / Light Toggle ─────────────────── */}
+            <button
+              onClick={toggleTheme}
+              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              className={`relative w-[52px] h-[28px] rounded-full border transition-all duration-300 flex items-center shrink-0 ${
+                isDark
+                  ? 'bg-[#4F20C9] border-purple-600 shadow-[0_0_12px_rgba(79,32,201,0.4)]'
+                  : 'bg-slate-100 border-slate-200'
+              }`}
+            >
+              {/* Track icons */}
+              <Sun className={`absolute left-1.5 w-3 h-3 transition-all duration-300 ${isDark ? 'opacity-40 text-white' : 'opacity-100 text-amber-500'}`} />
+              <Moon className={`absolute right-1.5 w-3 h-3 transition-all duration-300 ${isDark ? 'opacity-100 text-white' : 'opacity-40 text-slate-400'}`} />
+              {/* Thumb */}
+              <span
+                className={`absolute w-[22px] h-[22px] rounded-full shadow-md transition-all duration-300 flex items-center justify-center ${
+                  isDark
+                    ? 'translate-x-[25px] bg-white'
+                    : 'translate-x-[2px] bg-white border border-slate-200'
+                }`}
+              >
+                {isDark
+                  ? <Moon className="w-3 h-3 text-[#4F20C9]" />
+                  : <Sun className="w-3 h-3 text-amber-500" />
+                }
+              </span>
+            </button>
+
             {isAuthenticated ? (
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:pl-2 sm:pr-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition-all border border-slate-200 text-xs font-bold text-slate-800"
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:pl-2 sm:pr-3 py-1.5 rounded-full transition-all border text-xs font-bold ${
+                    isDark
+                      ? 'bg-slate-700 hover:bg-slate-600 border-slate-600 text-slate-200'
+                      : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
+                  }`}
                 >
                   <div className="w-6 h-6 rounded-full bg-[#4F20C9] text-white flex items-center justify-center font-black text-[10px]">
                     {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -124,29 +167,51 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-3 w-60 rounded-2xl bg-white border border-slate-200 text-slate-800 shadow-2xl py-2 z-50 p-1.5 space-y-1">
-                    <div className="px-3 py-2 border-b border-slate-100">
+                  <div className={`absolute right-0 mt-3 w-60 rounded-2xl border shadow-2xl py-2 z-50 p-1.5 space-y-1 transition-colors ${
+                    isDark
+                      ? 'bg-[#1C1C22] border-slate-700 text-slate-200'
+                      : 'bg-white border-slate-200 text-slate-800'
+                  }`}>
+                    <div className={`px-3 py-2 border-b ${isDark ? 'border-slate-700' : 'border-slate-100'}`}>
                       <p className="text-[10px] text-slate-400 uppercase font-semibold">Signed in as</p>
-                      <p className="text-xs font-bold truncate text-slate-900">{user?.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-extrabold uppercase rounded bg-purple-100 text-purple-700">
+                      <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>{user?.email}</p>
+                      <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-extrabold uppercase rounded bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300">
                         {user?.role || 'User'}
                       </span>
                     </div>
-                    <Link to="/profile" onClick={() => setUserDropdownOpen(false)} className="block px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-100">
-                      My Profile
-                    </Link>
-                    <Link to="/dashboard" onClick={() => setUserDropdownOpen(false)} className="block px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-100">
-                      Dashboard
-                    </Link>
-                    <Link to="/bookmarks" onClick={() => setUserDropdownOpen(false)} className="block px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-100">
-                      Saved Bookmarks
-                    </Link>
+                    {[
+                      { to: '/profile', label: 'My Profile' },
+                      { to: '/dashboard', label: 'Dashboard' },
+                      { to: '/bookmarks', label: 'Saved Bookmarks' },
+                    ].map(item => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        onClick={() => setUserDropdownOpen(false)}
+                        className={`block px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                          isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
                     {user?.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setUserDropdownOpen(false)} className="block px-3 py-2 rounded-xl text-xs font-bold text-purple-600 hover:bg-purple-50">
+                      <Link
+                        to="/admin"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className={`block px-3 py-2 rounded-xl text-xs font-bold text-purple-600 dark:text-purple-400 transition-colors ${
+                          isDark ? 'hover:bg-purple-900/30' : 'hover:bg-purple-50'
+                        }`}
+                      >
                         Admin Suite Panel
                       </Link>
                     )}
-                    <button onClick={handleLogout} className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50">
+                    <button
+                      onClick={handleLogout}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 transition-colors ${
+                        isDark ? 'hover:bg-rose-900/30' : 'hover:bg-rose-50'
+                      }`}
+                    >
                       Log Out
                     </button>
                   </div>
@@ -156,7 +221,11 @@ export const Navbar: React.FC = () => {
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Link
                   to="/login"
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-slate-700 hover:text-purple-600 hover:bg-slate-100 font-bold text-[12px] transition-all whitespace-nowrap"
+                  className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-[12px] transition-all whitespace-nowrap ${
+                    isDark
+                      ? 'text-slate-300 hover:text-purple-300 hover:bg-slate-700'
+                      : 'text-slate-700 hover:text-purple-600 hover:bg-slate-100'
+                  }`}
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Log In</span>
@@ -171,10 +240,12 @@ export const Navbar: React.FC = () => {
               </div>
             )}
 
-            {/* Mobile Menu Toggle Button */}
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-full text-slate-700 hover:bg-slate-100 shrink-0 ml-0.5"
+              className={`lg:hidden p-1.5 sm:p-2 rounded-full shrink-0 ml-0.5 transition-colors ${
+                isDark ? 'text-slate-300 hover:bg-slate-700' : 'text-slate-700 hover:bg-slate-100'
+              }`}
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -185,8 +256,12 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-x-4 top-[85px] z-50 bg-white text-slate-900 rounded-3xl p-5 shadow-2xl border border-slate-200 space-y-2 lg:hidden animate-in fade-in slide-in-from-top-4 duration-200">
-          <div className="grid grid-cols-2 gap-2 mb-3 pb-3 border-b border-slate-100">
+        <div className={`fixed inset-x-4 top-[85px] z-50 rounded-3xl p-5 shadow-2xl border space-y-2 lg:hidden animate-in fade-in slide-in-from-top-4 duration-200 transition-colors ${
+          isDark
+            ? 'bg-[#1C1C22] text-slate-100 border-slate-700'
+            : 'bg-white text-slate-900 border-slate-200'
+        }`}>
+          <div className={`grid grid-cols-2 gap-2 mb-3 pb-3 border-b ${isDark ? 'border-slate-700' : 'border-slate-100'}`}>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -194,7 +269,9 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block px-3 py-2.5 rounded-2xl text-xs font-bold transition-all ${
                   location.pathname === link.path
-                    ? 'bg-purple-100 text-purple-700'
+                    ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300'
+                    : isDark
+                    ? 'hover:bg-slate-700 text-slate-300'
                     : 'hover:bg-slate-100'
                 }`}
               >
@@ -208,7 +285,9 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl border border-slate-300 text-slate-800 font-bold text-xs"
+                className={`w-full text-center py-2.5 rounded-xl border font-bold text-xs transition-colors ${
+                  isDark ? 'border-slate-600 text-slate-300' : 'border-slate-300 text-slate-800'
+                }`}
               >
                 Log In
               </Link>

@@ -3,209 +3,142 @@ import { ChatLog } from '../models/ChatLog.js';
 import { Profile } from '../models/Profile.js';
 import { Career } from '../models/Career.js';
 
-// Pre-seeded comprehensive Career & Technology Knowledge Base stored for instant retrieval
-const STORED_KNOWLEDGE_BASE = [
-  {
-    keywords: ['become full stack', 'full stack roadmap', 'full stack developer', 'mern stack', 'web developer'],
-    question: 'How do I become a Full Stack Web Developer?',
-    answer: `### 🚀 Step-by-Step Roadmap to Become a Full Stack Developer (2025)
+// ─── PathSeeker System Prompt Builder ──────────────────────────────────────────
+const buildSystemPrompt = ({ userName, userRole, careers, profileBio, profileSkills }) => {
+  const careerList = careers.length > 0
+    ? careers.map(c => `- ${c.title} (${c.domain}) — Salary: $${c.expectedSalaryRange?.min?.toLocaleString() || '60k'}–$${c.expectedSalaryRange?.max?.toLocaleString() || '140k'}`).join('\n')
+    : '- Software Developer\n- Data Scientist\n- UI/UX Designer\n- Cybersecurity Analyst\n- Cloud Engineer';
 
-#### 1. Core Fundamentals (Weeks 1 - 6)
-- **Languages**: HTML5, CSS3, Modern JavaScript (ES6+), TypeScript.
-- **Concepts**: DOM manipulation, Async/Await, Promises, Responsive Design (Flexbox, Grid).
+  const skills = profileSkills && profileSkills.length > 0
+    ? `User's existing skills: ${profileSkills.join(', ')}`
+    : '';
 
-#### 2. Frontend Mastery (Weeks 7 - 14)
-- **Frameworks**: React.js 19 or Next.js 15.
-- **Styling**: Tailwind CSS v4, CSS Modules.
-- **State Management**: Zustand, Redux Toolkit.
+  const bio = profileBio ? `User bio: ${profileBio}` : '';
 
-#### 3. Backend & Database Architecture (Weeks 15 - 22)
-- **Runtime**: Node.js & Express.js.
-- **Databases**: MongoDB (NoSQL) and PostgreSQL (Relational SQL).
-- **Authentication**: JWT, OAuth 2.0, HTTP-Only cookies.
+  return `You are PathSeeker AI, an elite Career Guidance Advisor and Technology Strategist for the PathSeeker platform.
 
-#### 4. DevOps & Cloud Deployment (Weeks 23 - 28)
-- **Deployment**: Vercel, Render, AWS S3, Docker containers.
-- **Version Control**: Git & GitHub actions.
+User Profile:
+- Name: ${userName}
+- Role: ${userRole}
+${bio}
+${skills}
 
-💰 **Average Salary**: $85,000 – $155,000/year depending on location & experience.`
-  },
-  {
-    keywords: ['become data scientist', 'data science roadmap', 'data analyst', 'machine learning', 'python for data'],
-    question: 'How do I become a Data Scientist or Data Analyst?',
-    answer: `### 📊 Data Science & Analytics Career Roadmap (2025)
+PathSeeker's Live Career Bank (available career paths):
+${careerList}
 
-#### 1. Mathematics & Programming (Weeks 1 - 8)
-- **Language**: Python 3.12, SQL (PostgreSQL / Snowflake).
-- **Math**: Linear Algebra, Probability, Calculus, Inferential Statistics.
+Instructions:
+- Give structured, personalized, actionable career guidance using markdown formatting.
+- Use bold headers (###), bullet points, and numbered lists for clarity.
+- Reference specific PathSeeker platform features when relevant (/careers, /quiz, /resources, /multimedia).
+- Include realistic salary ranges and skill timelines where appropriate.
+- Be encouraging but realistic — give honest assessments.
+- Keep responses comprehensive but scannable (not a wall of text).
+- Always end with 1-2 specific next steps the user can take TODAY.
 
-#### 2. Data Wrangling & Visualization (Weeks 9 - 16)
-- **Libraries**: Pandas, NumPy, Matplotlib, Seaborn, Plotly.
-- **BI Tools**: Tableau, Power BI, Metabase.
+Respond only about career guidance, education paths, skill development, job market trends, resume tips, interview preparation, and tech industry insights.`;
+};
 
-#### 3. Machine Learning & Predictive Modeling (Weeks 17 - 24)
-- **Frameworks**: Scikit-Learn, PyTorch, TensorFlow.
-- **Algorithms**: Regression, Decision Trees, Random Forests, XGBoost, Clustering.
-
-#### 4. Big Data & AI Pipelines (Weeks 25 - 30)
-- **Tools**: Apache Spark, Airflow, Vector Databases (Pinecone, ChromaDB), LangChain.
-
-💰 **Average Salary**: $95,000 – $180,000/year.`
-  },
-  {
-    keywords: ['become cybersecurity', 'ethical hacking', 'security analyst', 'cyber security', 'comptia security'],
-    question: 'How do I get started in Cybersecurity & Ethical Hacking?',
-    answer: `### 🛡️ Cybersecurity & Ethical Hacking Career Blueprint
-
-#### 1. Foundational Networking & Systems (Weeks 1 - 8)
-- **OS**: Linux Administration (Ubuntu/Kali), Windows PowerShell.
-- **Networking**: TCP/IP stack, DNS, Routing, Wireshark packet analysis.
-
-#### 2. Security Fundamentals & Defenses (Weeks 9 - 16)
-- **Concepts**: Cryptography, Firewalls, OWASP Top 10 web vulnerabilities, IAM.
-- **SIEM Tools**: Splunk, Elastic Security, Logstash.
-
-#### 3. Offensive Security & Penetration Testing (Weeks 17 - 24)
-- **Tools**: Nmap, Metasploit, Burp Suite, John the Ripper, Hydra.
-- **Scripting**: Python & Bash automation.
-
-#### 4. Industry Certifications
-- CompTIA Security+, Certified Ethical Hacker (CEH), OSCP (Offensive Security Certified Professional).
-
-💰 **Average Salary**: $90,000 – $165,000/year.`
-  },
-  {
-    keywords: ['ui ux', 'graphic design', 'become designer', 'figma', 'design system'],
-    question: 'How do I become a UI/UX Designer?',
-    answer: `### 🎨 UI/UX & Product Design Mastery Blueprint
-
-#### 1. Design Principles & User Research
-- **Foundations**: Typography, Color Theory, Grid Systems, Information Architecture.
-- **Research**: User personas, journey mapping, usability testing.
-
-#### 2. Industry Tooling
-- **Primary Tool**: Figma (Auto-layout, Components, Variants, Design Systems).
-- **Prototyping**: Framer, Protopie, Adobe XD.
-
-#### 3. Portfolio & Case Studies
-- Build 3 complete ATS-ready case studies highlighting problem definition, wireframes, iteration, and final interactive prototypes.
-
-💰 **Average Salary**: $75,000 – $140,000/year.`
-  },
-  {
-    keywords: ['cloud architect', 'devops', 'aws', 'docker', 'kubernetes'],
-    question: 'How do I become a Cloud Architect or DevOps Engineer?',
-    answer: `### ☁️ Cloud & DevOps Engineering Roadmap (2025)
-
-#### 1. Linux & Infrastructure as Code (IaC)
-- **Linux**: Command line, SSH, Shell Scripting.
-- **IaC**: Terraform, Ansible, CloudFormation.
-
-#### 2. Containerization & Orchestration
-- **Docker**: Container images, Docker Compose.
-- **Kubernetes**: Pods, Services, Ingress, Helm charts.
-
-#### 3. Public Cloud Providers
-- AWS (Solutions Architect), Google Cloud Platform (GCP), or Azure.
-
-💰 **Average Salary**: $110,000 – $210,000/year.`
-  },
-  {
-    keywords: ['ats resume', 'resume tips', 'prepare interview', 'job application'],
-    question: 'How do I write an ATS-friendly resume for tech jobs?',
-    answer: `### 📝 Top 5 ATS-Friendly Resume Best Practices
-
-1. **Use Single-Column Layouts**: Avoid tables, graphic bars, or custom icons that break ATS parsers.
-2. **Include Action Verbs & Metrics**: Example: *"Engineered REST APIs reducing latency by 45% using Node.js & Redis."*
-3. **Target Relevant Keywords**: Match key terms directly from the job description in your Skills section.
-4. **Standard File Format**: Export as clean text-searchable PDF.
-5. **Add GitHub & Portfolio Links**: Place live links prominently at the top.`
-  }
-];
-
+// ─── Send Message — Always Uses Gemini Live API ─────────────────────────────
 export const sendMessage = async (req, res, next) => {
   try {
     const { message } = req.body;
-    if (!message) {
+    if (!message || !message.trim()) {
       return res.status(400).json({ success: false, message: 'Message text is required.' });
     }
 
-    const userId = req.user._id || req.user.id || 'usr-101';
-    const query = message.toLowerCase().trim();
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(503).json({
+        success: false,
+        message: 'AI service is not configured. Please add GEMINI_API_KEY to your environment.',
+      });
+    }
 
-    // Fetch user profile & database context if available
-    let profile = null;
+    const userId = req.user._id || req.user.id;
+    const userName = req.user.name || 'Explorer';
+    const userRole = req.user.role || 'student';
+
+    // ── Fetch user profile and career context from MongoDB ──────────────────
+    let profileBio = '';
+    let profileSkills = [];
     let topCareers = [];
-    try {
-      profile = await Profile.findOne({ userId });
-      topCareers = await Career.find().select('title domain expectedSalaryRange demandLevel').limit(10);
-    } catch (e) {}
 
+    try {
+      const profile = await Profile.findOne({ userId });
+      if (profile) {
+        profileBio = profile.bio || '';
+        profileSkills = profile.skills || [];
+      }
+    } catch (e) { /* non-blocking */ }
+
+    try {
+      topCareers = await Career.find({})
+        .select('title domain expectedSalaryRange')
+        .limit(12)
+        .lean();
+    } catch (e) { /* non-blocking */ }
+
+    // ── Fetch or create chat log ─────────────────────────────────────────────
     let chatLog = null;
     try {
       chatLog = await ChatLog.findOne({ userId });
-    } catch (e) {}
+    } catch (e) { /* non-blocking */ }
 
     if (!chatLog) {
       chatLog = new ChatLog({ userId, messages: [] });
     }
 
-    // Save user message to log
+    // ── Save user message ────────────────────────────────────────────────────
     chatLog.messages.push({ role: 'user', text: message });
 
+    // ── Build conversation history for Gemini ────────────────────────────────
+    const recentMessages = chatLog.messages.slice(-12); // last 6 turns
+    const history = recentMessages.slice(0, -1).map(m => ({
+      role: m.role === 'model' ? 'model' : 'user',
+      parts: [{ text: m.text }],
+    }));
+
+    // ── Call Gemini API ──────────────────────────────────────────────────────
+    const systemPrompt = buildSystemPrompt({ userName, userRole, careers: topCareers, profileBio, profileSkills });
     let aiResponseText = '';
 
-    // 1. Direct Knowledge Base Lookup (Check pre-stored DB answers first)
-    const matchedKbItem = STORED_KNOWLEDGE_BASE.find(item =>
-      item.keywords.some(kw => query.includes(kw))
-    );
+    const candidateModels = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-pro'];
 
-    if (matchedKbItem) {
-      aiResponseText = matchedKbItem.answer;
-    }
-
-    // 2. Fallback to Gemini AI Engine if API key is provided and no exact KB match
-    if (!aiResponseText && process.env.GEMINI_API_KEY) {
+    for (const modelName of candidateModels) {
       try {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const candidateModels = ['gemini-3.6-flash'];
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          systemInstruction: systemPrompt,
+        });
 
-        const systemPrompt = `You are PathSeeker AI, an expert Career Guidance Advisor.
-User Name: ${req.user.name || 'Explorer'}
-User Role: ${req.user.role || 'student'}
-Provide clean markdown formatting with bullet points and bold headers. Keep answers structured, encouraging, and actionable.`;
-
-        for (const modelName of candidateModels) {
-          try {
-            const model = genAI.getGenerativeModel({ model: modelName });
-            const result = await model.generateContent(`${systemPrompt}\n\nUser Question: ${message}`);
-            const response = await result.response;
-            aiResponseText = response.text();
-            if (aiResponseText) break;
-          } catch (err) {}
+        let result;
+        if (history.length > 0) {
+          // Multi-turn conversation
+          const chat = model.startChat({ history });
+          result = await chat.sendMessage(message);
+        } else {
+          result = await model.generateContent(message);
         }
-      } catch (err) {}
+
+        const response = await result.response;
+        aiResponseText = response.text();
+
+        if (aiResponseText && aiResponseText.trim()) break;
+      } catch (modelErr) {
+        // Try next model
+      }
     }
 
-    // 3. Fallback to General Smart Advisor
-    if (!aiResponseText) {
-      aiResponseText = `### PathSeeker AI Career Guidance 🎯
-
-Hello **${req.user.name || 'Explorer'}**! Here are recommended steps for your career path:
-
-- **1. Take our AI Interest Assessment Quiz**: Determine your RIASEC score and match percentages across 1,000+ tech streams.
-- **2. Explore Detailed Roadmaps**: Visit our **Career Bank** (`/careers`) to view step-by-step learning stages, skill checklists, and salary progressions.
-- **3. Master Technical Tools**: Watch 150+ video masterclasses in our **Multimedia Hub** (`/multimedia`).
-- **4. Download ATS Toolkits**: Access free resume templates and interview guides in our **Resource Vault** (`/resources`).
-
-*Feel free to ask about Software Engineering, Cybersecurity, AI/ML, Data Science, or Resume Tips!*`;
+    if (!aiResponseText || !aiResponseText.trim()) {
+      aiResponseText = `### PathSeeker AI is temporarily unavailable 🔧\n\nI'm experiencing a brief service interruption. Please try again in a moment.\n\nIn the meantime, you can:\n- **Explore Career Paths**: Browse our comprehensive roadmaps at [/careers](/careers)\n- **Take the Assessment Quiz**: Get instant recommendations at [/quiz](/quiz)\n- **Download Resources**: Access free ATS resume templates at [/resources](/resources)`;
     }
 
-    // Save AI response to chat log
+    // ── Save AI response to MongoDB ──────────────────────────────────────────
     chatLog.messages.push({ role: 'model', text: aiResponseText });
+
     try {
       await chatLog.save();
-    } catch (e) {}
+    } catch (saveErr) { /* non-blocking, still return response */ }
 
     res.json({
       success: true,
@@ -217,12 +150,14 @@ Hello **${req.user.name || 'Explorer'}**! Here are recommended steps for your ca
   }
 };
 
+// ─── Get Chat History ────────────────────────────────────────────────────────
 export const getChatHistory = async (req, res, next) => {
   try {
+    const userId = req.user._id || req.user.id;
     let chatLog = null;
     try {
-      chatLog = await ChatLog.findOne({ userId: req.user._id || req.user.id });
-    } catch (e) {}
+      chatLog = await ChatLog.findOne({ userId });
+    } catch (e) { /* non-blocking */ }
 
     res.json({ success: true, messages: chatLog ? chatLog.messages : [] });
   } catch (error) {
@@ -230,11 +165,14 @@ export const getChatHistory = async (req, res, next) => {
   }
 };
 
+// ─── Clear Chat History ──────────────────────────────────────────────────────
 export const clearChatHistory = async (req, res, next) => {
   try {
+    const userId = req.user._id || req.user.id;
     try {
-      await ChatLog.findOneAndDelete({ userId: req.user._id || req.user.id });
-    } catch (e) {}
+      await ChatLog.findOneAndDelete({ userId });
+    } catch (e) { /* non-blocking */ }
+
     res.json({ success: true, message: 'Chat history cleared.' });
   } catch (error) {
     next(error);

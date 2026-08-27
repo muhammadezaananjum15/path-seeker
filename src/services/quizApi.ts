@@ -5,6 +5,7 @@ export const quizApi = {
   submitQuiz: (answers: { questionId: string; selectedValues: string | string[] }[]) =>
     apiClient.post('/quiz/submit', { answers }),
   getQuizHistory: () => apiClient.get('/quiz/history'),
+  generateAiQuestions: () => apiClient.post('/quiz/questions/generate-ai'),
   createQuestion: (data: any) => apiClient.post('/quiz/questions', data),
   updateQuestion: (id: string, data: any) => apiClient.put(`/quiz/questions/${id}`, data),
   deleteQuestion: (id: string) => apiClient.delete(`/quiz/questions/${id}`),

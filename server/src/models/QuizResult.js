@@ -34,6 +34,15 @@ const quizResultSchema = new mongoose.Schema(
         reason: String,
       },
     ],
+    // Gemini-generated personalized analysis stored in MongoDB
+    aiAnalysis: {
+      type: String,
+      default: '',
+    },
+    recommendedRole: {
+      type: String,
+      default: '',
+    },
     takenAt: {
       type: Date,
       default: Date.now,

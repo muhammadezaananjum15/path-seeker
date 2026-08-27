@@ -38,6 +38,7 @@
   --text-main: #FAF9F5;
   --text-muted: #A1A1AA;
   --line-border: #27272A;
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.3);
 }
 
 * { box-sizing: border-box; }
@@ -48,7 +49,7 @@ html, body {
 }
 
 body {
-  background-color: #FFFFFF;
+  background-color: var(--page-bg);
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -128,6 +129,13 @@ button, a, input, select, textarea {
   box-shadow: 0 24px 60px rgba(27,27,27,0.1);
   transform: translateY(-3px);
 }
+.dark .card-lumio {
+  background-color: #1C1C22;
+  border-color: #27272A;
+}
+.dark .card-lumio:hover {
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
 
 /* ── SaaS Card Utility ───────────────────────── */
 .card-saas {
@@ -140,6 +148,14 @@ button, a, input, select, textarea {
 .card-saas:hover {
   border-color: #CBD5E1;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+.dark .card-saas {
+  background-color: #1C1C22;
+  border-color: #27272A;
+}
+.dark .card-saas:hover {
+  border-color: #3f3f46;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 /* ── OTP Input ─────────────────────────────────── */

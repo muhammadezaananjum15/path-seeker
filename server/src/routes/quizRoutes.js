@@ -6,6 +6,7 @@ import {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  generateDynamicQuestions,
 } from '../controllers/quizController.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { roleMiddleware } from '../middleware/role.js';
@@ -13,6 +14,7 @@ import { roleMiddleware } from '../middleware/role.js';
 const router = express.Router();
 
 router.get('/questions', getQuestions);
+router.post('/questions/generate-ai', authMiddleware, generateDynamicQuestions);
 router.post('/submit', authMiddleware, submitQuiz);
 router.get('/history', authMiddleware, getQuizHistory);
 
