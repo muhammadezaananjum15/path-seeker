@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, ArrowRight, Quote, PlusCircle, Search, Sparkles, Heart, Clock, Compass, Filter } from 'lucide-react';
 import { storyApi } from '../../services/storyApi';
+import { mockStories } from '../../data/mockStories';
 import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
 
 export const StoriesPage: React.FC = () => {
@@ -19,12 +20,38 @@ export const StoriesPage: React.FC = () => {
     storyApi
       .getApprovedStories({ domain: selectedDomain === 'All' ? undefined : selectedDomain })
       .then((res) => {
-        if (res.data.success && Array.isArray(res.data.stories)) {
+        if (res.data.success && Array.isArray(res.data.stories) && res.data.stories.length > 0) {
           setStories(res.data.stories);
+        } else {
+          // API returned empty — use mock fallback
+          const fallback = mockStories.map((s) => ({
+            _id: s.id,
+            authorName: s.candidateName,
+            headline: s.title,
+            storyText: s.summary,
+            domain: s.domain,
+            imageUrl: s.avatar,
+            timeline: s.timeline?.map((t) => ({ year: t.period, title: t.title, description: t.description })),
+            status: 'approved',
+          }));
+          const filtered = selectedDomain === 'All' ? fallback : fallback.filter((s) => s.domain === selectedDomain);
+          setStories(filtered);
         }
       })
       .catch((err) => {
-        console.warn('Failed to load stories from MongoDB:', err);
+        console.warn('Failed to load stories from MongoDB, using local fallback:', err);
+        const fallback = mockStories.map((s) => ({
+          _id: s.id,
+          authorName: s.candidateName,
+          headline: s.title,
+          storyText: s.summary,
+          domain: s.domain,
+          imageUrl: s.avatar,
+          timeline: s.timeline?.map((t) => ({ year: t.period, title: t.title, description: t.description })),
+          status: 'approved',
+        }));
+        const filtered = selectedDomain === 'All' ? fallback : fallback.filter((s) => s.domain === selectedDomain);
+        setStories(filtered);
       })
       .finally(() => setLoading(false));
   }, [selectedDomain]);
