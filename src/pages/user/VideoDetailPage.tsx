@@ -56,7 +56,7 @@ export const VideoDetailPage: React.FC = () => {
   const finalVid = vid || 'rfscVS0vtbw';
 
   return (
-    <div className="bg-white min-h-screen py-8 text-slate-900 transition-colors duration-300">
+    <div className="bg-white dark:bg-black min-h-screen py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <Link
           to="/multimedia"

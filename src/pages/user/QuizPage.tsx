@@ -255,7 +255,7 @@ export const QuizPage: React.FC = () => {
     : ['1. Interests', '2. Skills', '3. Work Style', '4. Values', '5. Preferences'];
 
   return (
-    <div className="bg-white min-h-screen py-6 sm:py-8 text-slate-900 transition-colors duration-300">
+    <div className="bg-white dark:bg-black min-h-screen py-6 sm:py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* Quiz Header */}

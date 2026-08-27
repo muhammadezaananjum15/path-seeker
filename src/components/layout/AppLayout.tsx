@@ -9,7 +9,7 @@ export const AppLayout: React.FC = () => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-black text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
       <main className="flex-1 pt-20 sm:pt-24 overflow-x-hidden w-full">
         <AnimatePresence mode="wait">
