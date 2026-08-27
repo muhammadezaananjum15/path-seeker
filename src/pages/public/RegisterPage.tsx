@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Target, Lock, Mail, User as UserIcon, ArrowRight, Eye, EyeOff, Award, Users, BookOpen, Zap, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Target, Lock, Mail, User as UserIcon, ArrowRight, Eye, EyeOff, Award, Users, BookOpen, Zap, Sparkles, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react';
 import { authApi } from '../../services/authApi';
 import { gsap } from 'gsap';
 
