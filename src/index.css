@@ -61,8 +61,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html:not(.dark),
+html.light {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
 html:not(.dark) body,
-html.light body {
+html.light body,
+html:not(.dark) #root,
+html.light #root {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
 }
@@ -175,8 +183,8 @@ html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, 
 }
 
 .card-lumio {
-  background-color: #FFFDF8;
-  border: 1px solid #D9D7D0;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 32px;
   box-shadow: var(--shadow-lumio);
   transition: box-shadow 0.25s ease, transform 0.25s ease;

@@ -8,14 +8,14 @@ interface ThemeState {
 
 const getSavedTheme = (): 'light' | 'dark' => {
   try {
-    const defaultReset = localStorage.getItem('pathseeker_theme_v3_reset');
-    if (!defaultReset) {
+    const saved = localStorage.getItem('pathseeker_theme_v6_force_light');
+    if (!saved) {
       localStorage.setItem('pathseeker_theme', 'light');
-      localStorage.setItem('pathseeker_theme_v3_reset', 'true');
+      localStorage.setItem('pathseeker_theme_v6_force_light', 'true');
       return 'light';
     }
-    const saved = localStorage.getItem('pathseeker_theme');
-    if (saved === 'dark' || saved === 'light') return saved;
+    const themeVal = localStorage.getItem('pathseeker_theme');
+    if (themeVal === 'dark' || themeVal === 'light') return themeVal;
   } catch {}
   return 'light';
 };
