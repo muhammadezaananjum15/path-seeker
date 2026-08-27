@@ -11,7 +11,7 @@ const getSavedTheme = (): 'light' | 'dark' => {
     const saved = localStorage.getItem('pathseeker_theme');
     if (saved === 'dark' || saved === 'light') return saved;
   } catch {}
-  return 'dark';
+  return 'light';
 };
 
 const applyThemeToDOM = (theme: 'light' | 'dark') => {
