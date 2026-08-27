@@ -8,6 +8,12 @@ interface ThemeState {
 
 const getSavedTheme = (): 'light' | 'dark' => {
   try {
+    const defaultReset = localStorage.getItem('pathseeker_theme_v3_reset');
+    if (!defaultReset) {
+      localStorage.setItem('pathseeker_theme', 'light');
+      localStorage.setItem('pathseeker_theme_v3_reset', 'true');
+      return 'light';
+    }
     const saved = localStorage.getItem('pathseeker_theme');
     if (saved === 'dark' || saved === 'light') return saved;
   } catch {}
