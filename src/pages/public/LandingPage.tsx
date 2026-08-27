@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -451,7 +451,7 @@ export const LandingPage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 text-center">
         <ScrollAnimation direction="3d-flip">
           <div className="p-10 sm:p-16 rounded-[40px] bg-gradient-to-r from-[#07031A] via-purple-950 to-[#4F20C9] text-white space-y-6 shadow-2xl">
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               Ready to Accelerate Your Career?
             </h2>
             <p className="text-sm sm:text-base text-purple-100 max-w-xl mx-auto leading-relaxed">

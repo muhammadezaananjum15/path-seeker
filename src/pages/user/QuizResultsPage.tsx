@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -83,7 +83,7 @@ export const QuizResultsPage: React.FC = () => {
           <div className="w-16 h-16 mx-auto rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20">
             <Award className="w-9 h-9 text-amber-300 animate-bounce" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black relative z-10" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <h1 className="text-3xl sm:text-4xl font-black text-white relative z-10" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Your Career Passport is Ready 🎉
           </h1>
           <p className="text-sm text-purple-200 max-w-xl mx-auto relative z-10">

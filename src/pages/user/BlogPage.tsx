@@ -367,7 +367,7 @@ export const BlogPage: React.FC = () => {
               <Bot className="w-5 h-5 text-amber-300" />
             </div>
             <div>
-              <h2 className="text-xl font-black" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <h2 className="text-xl font-black text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Generate a Custom AI Career Article
               </h2>
               <p className="text-xs text-purple-200">Powered by PathSeeker Gemini AI — instant deep-dive career guides</p>

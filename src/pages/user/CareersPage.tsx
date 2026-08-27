@@ -180,7 +180,7 @@ export const CareersPage: React.FC = () => {
               <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-amber-300 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                 1,000+ Verified Tech Streams
               </span>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight mt-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mt-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Career Exploration Bank
               </h1>
             </div>

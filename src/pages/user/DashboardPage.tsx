@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -218,7 +218,7 @@ export const DashboardPage: React.FC = () => {
                     {role === 'admin' && '🛡️ Administrator Control Suite'}
                   </span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                   Welcome back, {user?.name || 'Explorer'} 👋
                 </h1>
                 <p className="text-xs sm:text-sm text-purple-200">
