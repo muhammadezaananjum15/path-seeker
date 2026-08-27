@@ -91,7 +91,7 @@ export const LandingPage: React.FC = () => {
   const convertedSalary = Math.round(baseSalary * (currencyRates[selectedCurrency] || 1));
 
   return (
-    <div className="bg-white dark:bg-[#0E0E10] text-[#07031A] dark:text-white min-h-screen overflow-x-hidden transition-colors duration-300">
+    <div className="bg-white dark:bg-black text-[#07031A] dark:text-white min-h-screen overflow-x-hidden transition-colors duration-300">
 
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Clean 3D Hero (No Overlay Sub Badges)

@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
       <header className="fixed top-[12px] sm:top-[16px] left-0 right-0 z-50 flex items-center justify-center px-2 sm:px-4 w-full pointer-events-none">
         <div className={`pointer-events-auto w-full max-w-[1280px] 2xl:max-w-[1440px] flex items-center justify-between backdrop-blur-xl rounded-full px-3 sm:px-5 py-2 shadow-xl border min-h-[58px] sm:h-[62px] transition-colors duration-300 ${
           isDark
-            ? 'bg-[#16161A]/95 text-slate-100 border-slate-700'
+            ? 'bg-black/95 text-slate-100 border-slate-800'
             : 'bg-white/95 text-slate-900 border-slate-200'
         }`}>
 
@@ -169,7 +169,7 @@ export const Navbar: React.FC = () => {
                 {userDropdownOpen && (
                   <div className={`absolute right-0 mt-3 w-60 rounded-2xl border shadow-2xl py-2 z-50 p-1.5 space-y-1 transition-colors ${
                     isDark
-                      ? 'bg-[#1C1C22] border-slate-700 text-slate-200'
+                      ? 'bg-zinc-950 border-slate-800 text-slate-200'
                       : 'bg-white border-slate-200 text-slate-800'
                   }`}>
                     <div className={`px-3 py-2 border-b ${isDark ? 'border-slate-700' : 'border-slate-100'}`}>
@@ -258,7 +258,7 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <div className={`fixed inset-x-4 top-[85px] z-50 rounded-3xl p-5 shadow-2xl border space-y-2 lg:hidden animate-in fade-in slide-in-from-top-4 duration-200 transition-colors ${
           isDark
-            ? 'bg-[#1C1C22] text-slate-100 border-slate-700'
+            ? 'bg-zinc-950 text-slate-100 border-slate-800'
             : 'bg-white text-slate-900 border-slate-200'
         }`}>
           <div className={`grid grid-cols-2 gap-2 mb-3 pb-3 border-b ${isDark ? 'border-slate-700' : 'border-slate-100'}`}>

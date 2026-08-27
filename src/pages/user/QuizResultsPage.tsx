@@ -21,7 +21,7 @@ export const QuizResultsPage: React.FC = () => {
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0E0E10] flex flex-col items-center justify-center gap-6 text-center px-4 transition-colors duration-300">
+      <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center gap-6 text-center px-4 transition-colors duration-300">
         <div className="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
           <Brain className="w-8 h-8 text-[#4F20C9]" />
         </div>
@@ -67,7 +67,7 @@ export const QuizResultsPage: React.FC = () => {
   const barColors = ['from-[#4F20C9] to-purple-400', 'from-purple-500 to-indigo-400', 'from-indigo-400 to-blue-400', 'from-blue-400 to-cyan-400', 'from-cyan-400 to-teal-400'];
 
   return (
-    <div className="bg-white dark:bg-[#0E0E10] min-h-screen py-10 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-white dark:bg-black min-h-screen py-10 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
         {/* Hero Result Banner */}

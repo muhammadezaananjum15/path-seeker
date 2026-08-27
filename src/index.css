@@ -32,13 +32,13 @@
 }
 
 .dark {
-  --page-bg: #0E0E10;
-  --panel-bg: #16161A;
-  --card-white: #1C1C22;
+  --page-bg: #000000;
+  --panel-bg: #0A0A0C;
+  --card-white: #121215;
   --text-main: #FAF9F5;
   --text-muted: #A1A1AA;
   --line-border: #27272A;
-  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.4);
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.8);
   color-scheme: dark;
 }
 
@@ -80,8 +80,9 @@ html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, 
 }
 
 /* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
-.dark body {
-  background-color: #0E0E10 !important;
+.dark body,
+.dark #root {
+  background-color: #000000 !important;
   color: #F4F4F5 !important;
 }
 
