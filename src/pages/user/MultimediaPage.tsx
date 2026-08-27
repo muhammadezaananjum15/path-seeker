@@ -231,30 +231,30 @@ export const MultimediaPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen py-6 sm:py-10 text-slate-900 transition-colors duration-300">
+    <div className="bg-white dark:bg-black min-h-screen py-6 sm:py-10 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="px-3.5 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-[#4F20C9] dark:text-purple-300 text-xs font-bold uppercase tracking-wider">
+            <span className="px-3.5 py-1.5 rounded-full bg-purple-100 text-[#4F20C9] text-xs font-bold uppercase tracking-wider">
               MULTIMEDIA HUB
             </span>
-            <span className="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs font-bold flex items-center gap-1">
+            <span className="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold flex items-center gap-1">
               <Play className="w-3.5 h-3.5 fill-red-600 text-red-600" />
               100+ Video Guides &amp; Tech Trends
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-[#07031A] dark:text-white tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Explore <span className="text-[#4F20C9] dark:text-purple-400">Career Video Libraries</span>
+          <h1 className="text-4xl sm:text-5xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            Explore <span className="text-[#4F20C9]">Career Video Libraries</span>
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">
             Watch 100+ curated video guides across Current Affairs, Software Engineering, Cybersecurity, AI/ML, Graphic Design, and Hiring Trends.
           </p>
         </div>
 
         {/* ── Search & Filter Controls ───────────────────────────────────── */}
-        <div className="p-6 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
+        <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="relative flex-1 w-full">
               <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -263,7 +263,7 @@ export const MultimediaPage: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Real-time search videos by title, tech topic, or keyword..."
-                className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#4F20C9]"
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4F20C9]"
               />
               {search && (
                 <button

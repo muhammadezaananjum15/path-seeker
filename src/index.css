@@ -32,14 +32,14 @@
 }
 
 .dark {
-  --page-bg: #FFFFFF;
-  --panel-bg: #F8FAFC;
-  --card-white: #FFFFFF;
-  --text-main: #0F172A;
-  --text-muted: #64748B;
-  --line-border: #E2E8F0;
-  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.04);
-  color-scheme: light;
+  --page-bg: #000000;
+  --panel-bg: #0A0A0C;
+  --card-white: #121215;
+  --text-main: #FAF9F5;
+  --text-muted: #A1A1AA;
+  --line-border: #27272A;
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.8);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -50,7 +50,7 @@ html, body {
 }
 
 body {
-  background-color: #FFFFFF !important;
+  background-color: #FFFFFF;
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -62,18 +62,28 @@ body {
 }
 
 html:not(.dark),
-html.light,
-html.dark {
+html.light {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
 }
 
-html body,
-html #root,
-.dark body,
-.dark #root {
+html:not(.dark) body,
+html.light body,
+html:not(.dark) #root,
+html.light #root {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
+}
+
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6 {
+  color: #07031A;
+}
+
+/* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
+.dark body,
+.dark #root {
+  background-color: #000000 !important;
+  color: #F4F4F5 !important;
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
@@ -102,9 +112,9 @@ html #root,
 .dark input,
 .dark select,
 .dark textarea {
-  background-color: #1C1C22 !important;
+  background-color: #121215 !important;
   color: #FAFAFA !important;
-  border-color: #3F3F46 !important;
+  border-color: #27272A !important;
 }
 
 .dark input::placeholder,
@@ -185,11 +195,11 @@ html #root,
   transform: translateY(-3px);
 }
 .dark .card-lumio {
-  background-color: #1C1C22;
-  border-color: #27272A;
+  background-color: #FFFFFF;
+  border-color: #E2E8F0;
 }
 .dark .card-lumio:hover {
-  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.08);
 }
 
 /* ── SaaS Card Utility ───────────────────────── */
@@ -205,8 +215,8 @@ html #root,
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 .dark .card-saas {
-  background-color: #1C1C22;
-  border-color: #27272A;
+  background-color: #FFFFFF;
+  border-color: #E2E8F0;
 }
 .dark .card-saas:hover {
   border-color: #3F3F46;
