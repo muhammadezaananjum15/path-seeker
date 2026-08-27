@@ -1,14 +1,8 @@
 [providers]
 providers = ['node']
 
-[phases.setup]
-nixPkgs = ['nodejs']
-
-[phases.install]
+[build]
 cmds = ['npm install']
-
-[phases.build]
-cmds = ['npm run build']
 
 [start]
 cmd = 'node server/src/server.js'
