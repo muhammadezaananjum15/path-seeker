@@ -20,7 +20,7 @@ export const ChatbotWidget: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'model',
-      text: `Hello! 👋 I am your **PathSeeker AI Career Advisor**. Ask me anything about career choices, high-paying jobs, skills, or degree paths!`,
+      text: `Hello! I am your **PathSeeker AI Career Advisor**. Ask me anything about career choices, high-paying jobs, skills, or degree paths!`,
       timestamp: new Date().toISOString(),
     },
   ]);

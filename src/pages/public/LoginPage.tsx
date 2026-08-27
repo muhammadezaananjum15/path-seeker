@@ -66,7 +66,7 @@ export const LoginPage: React.FC = () => {
           {/* Heading */}
           <div className="space-y-2">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              Welcome back 👋
+              Welcome back
             </h1>
             <p className="text-sm text-slate-500 font-medium">Enter your credentials to access your Career Passport</p>
           </div>

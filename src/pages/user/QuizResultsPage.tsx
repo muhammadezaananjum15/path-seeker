@@ -57,7 +57,7 @@ export const QuizResultsPage: React.FC = () => {
   const recommendedCareers: any[] = result?.recommendedCareers || [];
 
   const handleShare = () => {
-    const text = `🎯 My PathSeeker Career Quiz Result:\n📊 Match Score: ${score}%\n💼 Best Career Fit: ${recommendedRole}\n\n${aiAnalysis.slice(0, 120)}...\n\nTake the quiz at PathSeeker! 🚀`;
+    const text = `My PathSeeker Career Quiz Result:\nMatch Score: ${score}%\nBest Career Fit: ${recommendedRole}\n\n${aiAnalysis.slice(0, 120)}...\n\nTake the quiz at PathSeeker!`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
@@ -84,7 +84,7 @@ export const QuizResultsPage: React.FC = () => {
             <Award className="w-9 h-9 text-amber-300 animate-bounce" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white relative z-10" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Your Career Passport is Ready 🎉
+            Your Career Passport is Ready
           </h1>
           <p className="text-sm text-purple-200 max-w-xl mx-auto relative z-10">
             We analyzed your preferences and matched your profile against 1,000+ global career roadmaps using AI.

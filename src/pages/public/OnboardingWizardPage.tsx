@@ -47,7 +47,7 @@ export const OnboardingWizardPage: React.FC = () => {
             STEP {step} OF 3
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-[#07031A]" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Welcome to PathSeeker, {user?.name || 'Explorer'}! 🎉
+            Welcome to PathSeeker, {user?.name || 'Explorer'}!
           </h2>
           <p className="text-xs text-slate-500">Let's setup your Career Passport profile for personalized recommendations.</p>
         </div>

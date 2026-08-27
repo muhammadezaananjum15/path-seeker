@@ -175,7 +175,7 @@ export const QuizPage: React.FC = () => {
         setQuestions(res.data.questions);
         setCurrentIdx(0);
         setAnswers({});
-        setGenerateMsg(`✨ ${res.data.count} AI-powered questions ready!`);
+        setGenerateMsg(`${res.data.count} AI-powered questions ready!`);
       }
     } catch {
       setGenerateMsg('Generation failed — using existing questions.');

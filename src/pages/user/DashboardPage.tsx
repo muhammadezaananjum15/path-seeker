@@ -212,14 +212,14 @@ export const DashboardPage: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 rounded-full bg-white/20 text-amber-300 text-xs font-black uppercase tracking-wider">
-                    {role === 'student' && '🎓 Student Career Passport'}
-                    {role === 'graduate' && '🎓 Graduate Career Launcher'}
-                    {role === 'professional' && '💼 Working Professional Pivot Hub'}
-                    {role === 'admin' && '🛡️ Administrator Control Suite'}
+                    {role === 'student' && 'Student Career Passport'}
+                    {role === 'graduate' && 'Graduate Career Launcher'}
+                    {role === 'professional' && 'Working Professional Pivot Hub'}
+                    {role === 'admin' && 'Administrator Control Suite'}
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                  Welcome back, {user?.name || 'Explorer'} 👋
+                  Welcome back, {user?.name || 'Explorer'}
                 </h1>
                 <p className="text-xs sm:text-sm text-purple-200">
                   {role === 'student' && 'Track course roadmaps, build fundamental skills, and explore entry-level tech careers.'}

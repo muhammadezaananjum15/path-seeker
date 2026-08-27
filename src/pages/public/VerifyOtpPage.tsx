@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Mail, RefreshCw, ArrowRight, ShieldCheck, Clock, CheckCircle2 } from 'lucide-react';
+import { Target, Mail, RefreshCw, ArrowRight, ShieldCheck, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { authApi } from '../../services/authApi';
 import { useAuthStore } from '../../stores/useAuthStore';
 
@@ -190,9 +190,10 @@ export const VerifyOtpPage: React.FC = () => {
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-600 text-center"
+                  className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-600 text-center flex items-center justify-center gap-2"
                 >
-                  ⚠️ {error}
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{error}</span>
                 </motion.div>
               )}
               {success && (

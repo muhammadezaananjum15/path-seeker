@@ -52,7 +52,7 @@ export const SubmitStoryPage: React.FC = () => {
 
           {submitted ? (
             <div className="p-6 rounded-2xl bg-emerald-50 text-emerald-700 text-center space-y-3">
-              <h3 className="text-lg font-bold">Story Submitted for Review! 🎉</h3>
+              <h3 className="text-lg font-bold">Story Submitted for Review!</h3>
               <p className="text-xs">Your story has been sent to our admin team. Once approved, it will be published on the platform.</p>
               <button
                 onClick={() => navigate('/stories')}

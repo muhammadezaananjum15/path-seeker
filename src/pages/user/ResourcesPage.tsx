@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FileText, Download, Search, Sparkles, Filter, Tag, X, CheckCircle2,
-  BookOpen, Layers, Globe, ExternalLink, RefreshCw, Newspaper, ArrowRight, Code, DollarSign, Star, Briefcase, MapPin, TrendingUp, ShieldCheck, Eye, Award
+  BookOpen, Layers, Globe, ExternalLink, RefreshCw, Newspaper, ArrowRight, Code, DollarSign, Star, Briefcase, MapPin, TrendingUp, ShieldCheck, Eye, Award, HardDrive
 } from 'lucide-react';
 import { resourceApi } from '../../services/resourceApi';
 import { articleApi } from '../../services/articleApi';
@@ -20,7 +20,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'PDF',
     fileSize: '4.8 MB',
     pagesCount: '18 Pages',
-    rating: '4.9 ★ (1,420 ratings)',
+    rating: '4.9 (1,420 ratings)',
     difficulty: 'All Experience Levels',
     author: 'PathSeeker Senior Hiring Board',
     downloadCount: 3420,
@@ -47,7 +47,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'PDF',
     fileSize: '5.2 MB',
     pagesCount: '32 Pages',
-    rating: '4.8 ★ (980 ratings)',
+    rating: '4.8 (980 ratings)',
     difficulty: 'Intermediate to Advanced',
     author: 'Lead Data Science Mentor',
     downloadCount: 2890,
@@ -74,7 +74,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'ZIP',
     fileSize: '12.4 MB',
     pagesCount: '24 Pages',
-    rating: '4.9 ★ (750 ratings)',
+    rating: '4.9 (750 ratings)',
     difficulty: 'Beginner to Intermediate',
     author: 'Principal Product Designer',
     downloadCount: 1750,
@@ -100,7 +100,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'PDF',
     fileSize: '6.1 MB',
     pagesCount: '40 Pages',
-    rating: '5.0 ★ (1,120 ratings)',
+    rating: '5.0 (1,120 ratings)',
     difficulty: 'Intermediate to Advanced',
     author: 'Senior Cloud DevOps Architect',
     downloadCount: 2110,
@@ -126,7 +126,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'DOCX',
     fileSize: '3.1 MB',
     pagesCount: '15 Pages',
-    rating: '4.7 ★ (630 ratings)',
+    rating: '4.7 (630 ratings)',
     difficulty: 'All Experience Levels',
     author: 'VP of Product Management',
     downloadCount: 1980,
@@ -152,7 +152,7 @@ const ENHANCED_RESOURCES: ResourceItem[] = [
     fileType: 'PDF',
     fileSize: '7.4 MB',
     pagesCount: '48 Pages',
-    rating: '4.9 ★ (890 ratings)',
+    rating: '4.9 (890 ratings)',
     difficulty: 'Intermediate',
     author: 'Certified Ethical Hacker (CEH)',
     downloadCount: 1640,
@@ -583,13 +583,16 @@ export const ResourcesPage: React.FC = () => {
                     {/* Extra Detailed Information Pills Bar */}
                     <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 pt-1">
                       <span className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 flex items-center gap-1">
-                        📄 {res.pagesCount || '24 Pages'}
+                        <FileText className="w-3 h-3 text-slate-500" />
+                        <span>{res.pagesCount || '24 Pages'}</span>
                       </span>
                       <span className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 flex items-center gap-1">
-                        💾 {res.fileSize || '4.2 MB'}
+                        <HardDrive className="w-3 h-3 text-slate-500" />
+                        <span>{res.fileSize || '4.2 MB'}</span>
                       </span>
                       <span className="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1 font-extrabold">
-                        {res.rating || '4.9 ★'}
+                        <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                        <span>{res.rating || '4.9'}</span>
                       </span>
                       <span className="px-2.5 py-1 rounded-lg bg-purple-50 text-[#4F20C9] border border-purple-200 font-extrabold">
                         {res.difficulty || 'Intermediate'}
@@ -615,7 +618,10 @@ export const ResourcesPage: React.FC = () => {
                   {/* Card Bottom Footer Controls */}
                   <div className="pt-4 border-t border-slate-100 space-y-3">
                     <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold">
-                      <span>📥 {res.downloadCount?.toLocaleString() || '1,420'} Downloads</span>
+                      <span className="flex items-center gap-1">
+                        <Download className="w-3 h-3 text-purple-600" />
+                        <span>{res.downloadCount?.toLocaleString() || '1,420'} Downloads</span>
+                      </span>
                       <span className="text-[#4F20C9]">Verified PDF Asset</span>
                     </div>
 
@@ -694,7 +700,10 @@ export const ResourcesPage: React.FC = () => {
                   </div>
                   <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-center">
                     <p className="text-[9px] font-black uppercase text-amber-700">Rating</p>
-                    <p className="text-sm font-black text-amber-900">{previewResource.rating || '4.9 ★'}</p>
+                    <p className="text-sm font-black text-amber-900 flex items-center justify-center gap-1">
+                      <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                      <span>{previewResource.rating || '4.9'}</span>
+                    </p>
                   </div>
                   <div className="p-3 rounded-2xl bg-purple-50 border border-purple-200 text-center">
                     <p className="text-[9px] font-black uppercase text-purple-700">Difficulty</p>
@@ -735,7 +744,10 @@ export const ResourcesPage: React.FC = () => {
 
                 {/* Footer Modal Action */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <span className="text-xs text-slate-500 font-bold">📥 {previewResource.downloadCount?.toLocaleString() || '1,200'} Downloads</span>
+                  <span className="text-xs text-slate-500 font-bold flex items-center gap-1">
+                    <Download className="w-3.5 h-3.5 text-purple-600" />
+                    <span>{previewResource.downloadCount?.toLocaleString() || '1,200'} Downloads</span>
+                  </span>
                   <button
                     onClick={() => {
                       handleDownloadPdf(previewResource);

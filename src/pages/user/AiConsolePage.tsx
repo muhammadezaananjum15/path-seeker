@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
@@ -35,7 +35,7 @@ export const AiConsolePage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'model',
-      text: `Welcome to the **PathSeeker AI Career Strategy Console**! 🚀\n\nI analyze global hiring data, required skillsets, compensation benchmarks, and PathSeeker's Career Bank to help you make confident career choices.\n\nWhat career transition, degree choice, or skill roadmap would you like to explore today?`,
+      text: `Welcome to the **PathSeeker AI Career Strategy Console**!\n\nI analyze global hiring data, required skillsets, compensation benchmarks, and PathSeeker's Career Bank to help you make confident career choices.\n\nWhat career transition, degree choice, or skill roadmap would you like to explore today?`,
       timestamp: new Date().toISOString(),
     },
   ]);

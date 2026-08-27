@@ -6,9 +6,9 @@ import { authApi } from '../../services/authApi';
 import { gsap } from 'gsap';
 
 const ROLES = [
-  { id: 'student', label: '🎓 Student', desc: 'High School / College' },
-  { id: 'graduate', label: '🎓 Graduate', desc: 'Job Hunting' },
-  { id: 'professional', label: '💼 Professional', desc: 'Career Pivot' },
+  { id: 'student', label: 'Student', desc: 'High School / College' },
+  { id: 'graduate', label: 'Graduate', desc: 'Job Hunting' },
+  { id: 'professional', label: 'Professional', desc: 'Career Pivot' },
 ] as const;
 
 export const RegisterPage: React.FC = () => {
@@ -80,7 +80,7 @@ export const RegisterPage: React.FC = () => {
           {/* Title */}
           <div className="space-y-1">
             <h1 className="text-2xl sm:text-3xl font-black text-[#07031A] tracking-tight" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              Create your account ✨
+              Create your account
             </h1>
             <p className="text-xs text-slate-500 font-medium">Join PathSeeker to unlock AI career passport tools</p>
           </div>
@@ -92,7 +92,8 @@ export const RegisterPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-600 flex items-center gap-2"
             >
-              ⚠️ {error}
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{error}</span>
             </motion.div>
           )}
 
@@ -244,7 +245,7 @@ export const RegisterPage: React.FC = () => {
 
         {/* Bottom Card */}
         <div className="relative z-10 p-6 rounded-3xl bg-white/10 border border-white/15 backdrop-blur-md space-y-2">
-          <p className="text-xs font-extrabold text-amber-300 uppercase tracking-wider">🌟 Lifetime Free Exploration</p>
+          <p className="text-xs font-extrabold text-amber-300 uppercase tracking-wider">Lifetime Free Exploration</p>
           <p className="text-xs text-purple-100 leading-relaxed font-medium">
             PathSeeker is built for student accessibility. Zero subscription fees required to explore career paths and download toolkits.
           </p>
