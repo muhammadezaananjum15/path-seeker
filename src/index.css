@@ -32,14 +32,14 @@
 }
 
 .dark {
-  --page-bg: #000000;
-  --panel-bg: #0A0A0C;
-  --card-white: #121215;
-  --text-main: #FAF9F5;
-  --text-muted: #A1A1AA;
-  --line-border: #27272A;
-  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.8);
-  color-scheme: dark;
+  --page-bg: #FFFFFF;
+  --panel-bg: #F8FAFC;
+  --card-white: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --line-border: #E2E8F0;
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.04);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -62,28 +62,18 @@ body {
 }
 
 html:not(.dark),
-html.light {
+html.light,
+html.dark {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
 }
 
-html:not(.dark) body,
-html.light body,
-html:not(.dark) #root,
-html.light #root {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-}
-
-html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6 {
-  color: #07031A;
-}
-
-/* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
+html body,
+html #root,
 .dark body,
 .dark #root {
-  background-color: #000000 !important;
-  color: #F4F4F5 !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {

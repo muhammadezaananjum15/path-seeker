@@ -139,7 +139,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black min-h-screen transition-colors duration-300">
+    <div className="bg-white min-h-screen transition-colors duration-300">
       <div className="max-w-[1700px] mx-auto px-3 sm:px-6 py-4 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8">
 
