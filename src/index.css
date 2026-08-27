@@ -75,6 +75,29 @@ button, a, input, select, textarea {
   color: #F4F4F5 !important;
 }
 
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #FFFFFF !important;
+}
+
+.dark .text-[#07031A],
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-[#181818],
+.dark .text-[#1B1B1B] {
+  color: #FAFAFA !important;
+}
+
+.dark .text-[#475569],
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #E4E4E7 !important;
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #A1A1AA !important;
+}
+
 .dark .bg-white {
   background-color: #16161A !important;
 }
@@ -86,22 +109,6 @@ button, a, input, select, textarea {
 
 .dark .bg-slate-200 {
   background-color: #27272A !important;
-}
-
-.dark .text-[#07031A],
-.dark .text-slate-900,
-.dark .text-slate-800 {
-  color: #FAFAFA !important;
-}
-
-.dark .text-slate-700,
-.dark .text-slate-600 {
-  color: #E4E4E7 !important;
-}
-
-.dark .text-slate-500,
-.dark .text-slate-400 {
-  color: #A1A1AA !important;
 }
 
 .dark .border-slate-100,

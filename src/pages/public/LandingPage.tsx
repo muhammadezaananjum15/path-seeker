@@ -91,7 +91,7 @@ export const LandingPage: React.FC = () => {
   const convertedSalary = Math.round(baseSalary * (currencyRates[selectedCurrency] || 1));
 
   return (
-    <div className="bg-white text-[#07031A] min-h-screen overflow-x-hidden">
+    <div className="bg-white dark:bg-[#0E0E10] text-[#07031A] dark:text-white min-h-screen overflow-x-hidden transition-colors duration-300">
 
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Clean 3D Hero (No Overlay Sub Badges)
@@ -103,26 +103,26 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 text-[#4F20C9] dark:text-purple-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
         >
-          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] animate-spin shrink-0" />
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] dark:text-purple-400 animate-spin shrink-0" />
           <span className="truncate sm:whitespace-normal">Next-Gen Career Intelligence OS</span>
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
         </motion.div>
 
         {/* Headline */}
         <h1
-          className="gsap-hero-title text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[90px] xl:text-[100px] font-extrabold text-[#07031A] mb-4 sm:mb-6 tracking-tighter leading-[1.08] sm:leading-[0.95] max-w-5xl break-words px-2"
+          className="gsap-hero-title text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[90px] xl:text-[100px] font-extrabold text-[#07031A] dark:text-white mb-4 sm:mb-6 tracking-tighter leading-[1.08] sm:leading-[0.95] max-w-5xl break-words px-2"
           style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           Architect Your Future.<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F20C9] via-indigo-600 to-purple-600">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F20C9] via-indigo-500 to-purple-400">
             Own Your Trajectory.
           </span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-[#475569] text-xs sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-normal px-2 mb-8">
+        <p className="text-[#475569] dark:text-slate-300 text-xs sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-normal px-2 mb-8">
           The unified platform powering students, graduates, and working professionals with AI career matching, 150+ video masterclasses, ATS resume tools, and live hiring feeds.
         </p>
 
@@ -148,7 +148,7 @@ export const LandingPage: React.FC = () => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/careers')}
-            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
+            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
           >
             Explore 1,000+ Careers
           </motion.button>

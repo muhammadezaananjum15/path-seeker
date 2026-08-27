@@ -161,8 +161,10 @@ export const MultimediaPage: React.FC = () => {
 
   const fetchVideos = async (searchQuery?: string, catQuery?: string) => {
     setLoading(true);
-    const q = searchQuery !== undefined ? searchQuery : search;
+    const q = (searchQuery !== undefined ? searchQuery : search).trim();
     const cat = catQuery !== undefined ? catQuery : selectedCategory;
+
+    let baseItems: any[] = [];
 
     try {
       const res = await apiClient.get('/youtube/search', {
@@ -173,37 +175,42 @@ export const MultimediaPage: React.FC = () => {
         },
       });
       if (res.data.success && Array.isArray(res.data.items) && res.data.items.length > 0) {
-        setVideos(res.data.items.map(normalizeVideoItem));
-        setLoading(false);
-        return;
+        baseItems = res.data.items;
       }
     } catch (e) {}
 
-    try {
-      const mRes = await multimediaApi.getMedia({ search: q || undefined, category: cat !== 'All' ? cat : undefined });
-      if (mRes.data.success && Array.isArray(mRes.data.media) && mRes.data.media.length > 0) {
-        setVideos(mRes.data.media.map(normalizeVideoItem));
-        setLoading(false);
-        return;
-      }
-    } catch (e) {}
+    if (baseItems.length === 0) {
+      try {
+        const mRes = await multimediaApi.getMedia({ search: q || undefined, category: cat !== 'All' ? cat : undefined });
+        if (mRes.data.success && Array.isArray(mRes.data.media) && mRes.data.media.length > 0) {
+          baseItems = mRes.data.media;
+        }
+      } catch (e) {}
+    }
 
-    // Fallback if network or API error occurs
-    let list = CURATED_DEFAULT_VIDEOS;
-    if (cat !== 'All') {
+    if (baseItems.length === 0) {
+      baseItems = CURATED_DEFAULT_VIDEOS;
+    }
+
+    let list = baseItems.map(normalizeVideoItem);
+
+    if (cat && cat !== 'All') {
       const catLower = cat.toLowerCase();
       list = list.filter(v => v.category && v.category.toLowerCase().includes(catLower));
     }
-    if (q.trim()) {
-      const qLower = q.trim().toLowerCase();
+
+    if (q) {
+      const qLower = q.toLowerCase();
       list = list.filter(v =>
         (v.title && v.title.toLowerCase().includes(qLower)) ||
         (v.description && v.description.toLowerCase().includes(qLower)) ||
-        (v.category && v.category.toLowerCase().includes(qLower))
+        (v.category && v.category.toLowerCase().includes(qLower)) ||
+        (v.channelTitle && v.channelTitle.toLowerCase().includes(qLower)) ||
+        (v.tags && Array.isArray(v.tags) && v.tags.some((t: string) => t.toLowerCase().includes(qLower)))
       );
     }
 
-    setVideos((list.length > 0 ? list : CURATED_DEFAULT_VIDEOS).map(normalizeVideoItem));
+    setVideos(list);
     setLoading(false);
   };
 
