@@ -6,52 +6,69 @@ import { SuccessStory } from '../models/SuccessStory.js';
 import { Feedback } from '../models/Feedback.js';
 import { Multimedia } from '../models/Multimedia.js';
 import { QuizQuestion } from '../models/QuizQuestion.js';
+import { ActivityLog } from '../models/ActivityLog.js';
+import { getCache, setCache } from '../utils/cache.js';
 
 export const getAnalyticsOverview = async (req, res, next) => {
   try {
-    const totalUsers = await User.countDocuments();
-    const studentCount = await User.countDocuments({ role: 'student' });
-    const graduateCount = await User.countDocuments({ role: 'graduate' });
-    const proCount = await User.countDocuments({ role: 'professional' });
-    const totalCareers = await Career.countDocuments();
-    const quizAttempts = await QuizResult.countDocuments();
-    const pendingStories = await SuccessStory.countDocuments({ status: 'pending' });
-    const openFeedback = await Feedback.countDocuments({ status: 'open' });
-    const totalResources = await Resource.countDocuments();
-    const totalMultimedia = await Multimedia.countDocuments();
-    const totalQuizQuestions = await QuizQuestion.countDocuments();
+    const cacheKey = 'admin_analytics_overview';
+    const cached = getCache(cacheKey);
+    if (cached) {
+      return res.json({ success: true, source: 'cache', analytics: cached });
+    }
 
-    const topResources = await Resource.find().sort({ downloadCount: -1 }).limit(5);
-
-    // Recent signups — last 7 days bucketed by day
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    const recentSignupAgg = await User.aggregate([
-      { $match: { createdAt: { $gte: sevenDaysAgo } } },
-      {
-        $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-          count: { $sum: 1 },
+    const [
+      totalUsers, studentCount, graduateCount, proCount, adminCount,
+      totalCareers, quizAttempts, pendingStories, openFeedback,
+      totalResources, totalMultimedia, totalQuizQuestions, totalLogs,
+      topResources, recentLogs, recentSignupAgg
+    ] = await Promise.all([
+      User.countDocuments(),
+      User.countDocuments({ role: 'student' }),
+      User.countDocuments({ role: 'graduate' }),
+      User.countDocuments({ role: 'professional' }),
+      User.countDocuments({ role: 'admin' }),
+      Career.countDocuments(),
+      QuizResult.countDocuments(),
+      SuccessStory.countDocuments({ status: 'pending' }),
+      Feedback.countDocuments({ status: 'open' }),
+      Resource.countDocuments(),
+      Multimedia.countDocuments(),
+      QuizQuestion.countDocuments(),
+      ActivityLog.countDocuments(),
+      Resource.find().sort({ downloadCount: -1 }).limit(5).lean(),
+      ActivityLog.find().sort({ createdAt: -1 }).limit(10).populate('userId', 'name email role').lean(),
+      User.aggregate([
+        { $match: { createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } } },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+            count: { $sum: 1 },
+          },
         },
-      },
-      { $sort: { _id: 1 } },
+        { $sort: { _id: 1 } },
+      ]),
     ]);
 
-    res.json({
-      success: true,
-      analytics: {
-        totalUsers,
-        roleBreakdown: { student: studentCount, graduate: graduateCount, professional: proCount },
-        totalCareers,
-        quizAttempts,
-        pendingStories,
-        openFeedback,
-        totalResources,
-        totalMultimedia,
-        totalQuizQuestions,
-        topResources,
-        recentSignups: recentSignupAgg,
-      },
-    });
+    const analytics = {
+      totalUsers,
+      roleBreakdown: { student: studentCount, graduate: graduateCount, professional: proCount, admin: adminCount },
+      totalCareers,
+      quizAttempts,
+      pendingStories,
+      openFeedback,
+      totalResources,
+      totalMultimedia,
+      totalQuizQuestions,
+      totalLogs,
+      topResources,
+      recentLogs,
+      recentSignups: recentSignupAgg,
+    };
+
+    setCache(cacheKey, analytics, 30); // 30-sec fast cache for instant loading
+
+    res.json({ success: true, analytics });
   } catch (error) {
     next(error);
   }
@@ -118,7 +135,7 @@ export const toggleBanUser = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
-    user.isVerified = !user.isVerified; // Using isVerified as active/banned flag
+    user.isVerified = !user.isVerified;
     await user.save();
     res.json({
       success: true,

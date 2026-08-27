@@ -6,19 +6,31 @@ import { YOUTUBE_VIDEO_DATASET } from '../utils/videoData.js';
 const router = express.Router();
 const CURATED_CAREER_VIDEOS = YOUTUBE_VIDEO_DATASET;
 
+// Helper to normalize every video item
+const normalizeVideo = (v) => {
+  const vid = v.youtubeVideoId || v.videoId || v.id?.videoId || (typeof v.id === 'string' ? v.id : '') || 'rfscVS0vtbw';
+  return {
+    ...v,
+    youtubeVideoId: vid,
+    videoId: vid,
+    thumbnail: v.thumbnail || `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
+  };
+};
+
 // Helper to filter dataset by query / category
 const filterDataset = (queryStr, categoryStr) => {
-  let list = [...CURATED_CAREER_VIDEOS];
+  let list = CURATED_CAREER_VIDEOS.map(normalizeVideo);
   if (categoryStr && categoryStr !== 'All') {
-    list = list.filter((v) => v.category.toLowerCase() === categoryStr.toLowerCase());
+    const catLower = categoryStr.toLowerCase();
+    list = list.filter((v) => v.category && v.category.toLowerCase().includes(catLower));
   }
   if (queryStr && queryStr.trim() !== '') {
     const q = queryStr.trim().toLowerCase();
     const matches = list.filter(
       (v) =>
-        v.title.toLowerCase().includes(q) ||
-        v.description.toLowerCase().includes(q) ||
-        v.category.toLowerCase().includes(q) ||
+        (v.title && v.title.toLowerCase().includes(q)) ||
+        (v.description && v.description.toLowerCase().includes(q)) ||
+        (v.category && v.category.toLowerCase().includes(q)) ||
         (v.tags && v.tags.some((t) => t.toLowerCase().includes(q)))
     );
     if (matches.length > 0) return matches;
@@ -33,7 +45,7 @@ router.get('/search', async (req, res) => {
     const cacheKey = `yt_search_${(q || 'all').toLowerCase().replace(/\s+/g, '_').substring(0, 80)}_${category || ''}`;
 
     const cached = getCache(cacheKey);
-    if (cached) return res.json({ success: true, source: 'cache', items: cached });
+    if (cached) return res.json({ success: true, source: 'cache', items: cached.map(normalizeVideo) });
 
     const apiKey = process.env.YOUTUBE_API_KEY;
     const isKeyValid = Boolean(apiKey && !apiKey.includes('your_') && apiKey.length > 20);
@@ -55,16 +67,16 @@ router.get('/search', async (req, res) => {
           safeSearch: 'moderate',
           order: 'relevance',
         },
-        timeout: 8000,
+        timeout: 6000,
       });
 
-      const liveItems = (response.data.items || []).map((item) => ({
-        youtubeVideoId: item.id.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description.substring(0, 120),
-        thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url,
-        channelTitle: item.snippet.channelTitle,
-        publishedAt: item.snippet.publishedAt,
+      const liveItems = (response.data.items || []).map((item) => normalizeVideo({
+        youtubeVideoId: item.id?.videoId,
+        title: item.snippet?.title,
+        description: item.snippet?.description?.substring(0, 120),
+        thumbnail: item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url,
+        channelTitle: item.snippet?.channelTitle,
+        publishedAt: item.snippet?.publishedAt,
         category: category || 'Technology',
       }));
 
@@ -83,6 +95,7 @@ router.get('/search', async (req, res) => {
       setCache(cacheKey, finalItems, 7200);
       return res.json({ success: true, source: 'live', items: finalItems });
     } catch (apiErr) {
+      // If live API quota exceeded or key fails, fallback smoothly to 105+ video dataset
       const filtered = filterDataset(q, category);
       return res.json({ success: true, source: 'fallback', items: filtered });
     }
@@ -100,7 +113,7 @@ router.get('/career-videos', async (req, res) => {
     res.json({ success: true, source: 'curated', items: filtered });
   } catch (error) {
     console.error('[YouTube Career Videos Route Error]', error.message);
-    res.json({ success: true, source: 'fallback', items: CURATED_CAREER_VIDEOS });
+    res.json({ success: true, source: 'fallback', items: CURATED_CAREER_VIDEOS.map(normalizeVideo) });
   }
 });
 

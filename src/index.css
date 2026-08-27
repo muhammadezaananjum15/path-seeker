@@ -38,7 +38,8 @@
   --text-main: #FAF9F5;
   --text-muted: #A1A1AA;
   --line-border: #27272A;
-  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.3);
+  --shadow-lumio: 0 10px 40px rgba(0,0,0,0.4);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -68,7 +69,61 @@ button, a, input, select, textarea {
               opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1.0);
 }
 
-/* ── Responsive Container (290px to 1700px) ───── */
+/* ── Global Dark Theme Overrides (applies ONLY when .dark is on html) ── */
+.dark body {
+  background-color: #0E0E10 !important;
+  color: #F4F4F5 !important;
+}
+
+.dark .bg-white {
+  background-color: #16161A !important;
+}
+
+.dark .bg-slate-50,
+.dark .bg-slate-100 {
+  background-color: #1C1C22 !important;
+}
+
+.dark .bg-slate-200 {
+  background-color: #27272A !important;
+}
+
+.dark .text-[#07031A],
+.dark .text-slate-900,
+.dark .text-slate-800 {
+  color: #FAFAFA !important;
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #E4E4E7 !important;
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #A1A1AA !important;
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300 {
+  border-color: #27272A !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #1C1C22 !important;
+  color: #FAFAFA !important;
+  border-color: #3F3F46 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #71717A !important;
+}
+
+/* ── Responsive Container ─────────────────────────────────── */
 .saas-container {
   width: 100%;
   max-width: 1700px;
@@ -88,7 +143,7 @@ button, a, input, select, textarea {
 .dark ::-webkit-scrollbar-thumb { background: #27272A; }
 
 /* ── Selection ─────────────────────────────────── */
-::selection { background-color: #181818; color: #FFFFFF; }
+::selection { background-color: #4F20C9; color: #FFFFFF; }
 
 /* ── Pill Buttons & Lumio Cards ────────────────── */
 .btn-pill-black {
@@ -103,6 +158,10 @@ button, a, input, select, textarea {
   background-color: #333333;
   transform: translateY(-1px);
 }
+.dark .btn-pill-black {
+  background-color: #4F20C9;
+  color: #FFFFFF;
+}
 
 .btn-pill-outline {
   background-color: transparent;
@@ -116,6 +175,13 @@ button, a, input, select, textarea {
 .btn-pill-outline:hover {
   background-color: #181818;
   color: #FAF9F5;
+}
+.dark .btn-pill-outline {
+  border-color: #3F3F46;
+  color: #FAFAFA;
+}
+.dark .btn-pill-outline:hover {
+  background-color: #27272A;
 }
 
 .card-lumio {
@@ -154,7 +220,7 @@ button, a, input, select, textarea {
   border-color: #27272A;
 }
 .dark .card-saas:hover {
-  border-color: #3f3f46;
+  border-color: #3F3F46;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
@@ -184,6 +250,11 @@ button, a, input, select, textarea {
 .otp-input:focus {
   border-color: #181818;
   box-shadow: 0 0 0 4px rgba(24,24,24,0.12);
+}
+.dark .otp-input {
+  background: #1C1C22;
+  border-color: #3F3F46;
+  color: #FAFAFA;
 }
 
 /* ── Marquee Animation ────────────────────────── */

@@ -34,36 +34,65 @@ export const VideoDetailPage: React.FC = () => {
   };
 
   if (!media) {
-    return <div className="max-w-7xl mx-auto py-20 text-center text-slate-500">Loading video...</div>;
+    return <div className="max-w-7xl mx-auto py-20 text-center text-slate-500 dark:text-slate-400">Loading video...</div>;
   }
 
+  let vid = '';
+  if (media.youtubeVideoId && typeof media.youtubeVideoId === 'string' && media.youtubeVideoId.length >= 10) {
+    vid = media.youtubeVideoId;
+  } else if (media.videoId && typeof media.videoId === 'string' && media.videoId.length >= 10) {
+    vid = media.videoId;
+  }
+  const urlToCheck = media.videoUrl || media.url || '';
+  if (!vid && urlToCheck) {
+    const match = urlToCheck.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    if (match && match[1]) {
+      vid = match[1];
+    }
+  }
+  if (!vid && media.id && typeof media.id === 'string' && media.id.length === 11 && !media.id.includes('-')) {
+    vid = media.id;
+  }
+  const finalVid = vid || 'rfscVS0vtbw';
+
   return (
-    <div className="bg-white min-h-screen py-8 text-slate-900">
+    <div className="bg-white dark:bg-[#0E0E10] min-h-screen py-8 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <Link
           to="/multimedia"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#4F20C9]"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-[#4F20C9] dark:hover:text-purple-400 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Multimedia Center
         </Link>
 
-        <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-md space-y-6">
-          <div className="relative aspect-video rounded-3xl bg-slate-900 overflow-hidden shadow-2xl">
-            <iframe
-              src={`https://www.youtube.com/embed/${media.youtubeVideoId}`}
-              title={media.title}
-              className="w-full h-full"
-              allowFullScreen
-            />
+        <div className="p-8 rounded-3xl bg-white dark:bg-[#16161A] border border-slate-200 dark:border-slate-700 shadow-md space-y-6">
+          <div className="relative aspect-video rounded-3xl bg-slate-900 overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+            {media.videoUrl && media.videoUrl.endsWith('.mp4') ? (
+              <video
+                src={media.videoUrl}
+                controls
+                autoPlay
+                poster={media.thumbnailUrl || media.thumbnail}
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <iframe
+                src={`https://www.youtube.com/embed/${finalVid}?autoplay=1`}
+                title={media.title}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-700 pb-4">
             <div>
-              <span className="px-3 py-1 rounded-md bg-purple-50 text-[#4F20C9] text-xs font-bold uppercase">
+              <span className="px-3 py-1 rounded-md bg-purple-50 dark:bg-purple-900/30 text-[#4F20C9] dark:text-purple-300 text-xs font-bold uppercase">
                 {media.category}
               </span>
-              <h1 className="text-2xl font-black text-[#07031A] mt-2">{media.title}</h1>
+              <h1 className="text-2xl font-black text-[#07031A] dark:text-white mt-2">{media.title}</h1>
             </div>
 
             {/* Rating Control */}
@@ -88,12 +117,12 @@ export const VideoDetailPage: React.FC = () => {
           </div>
 
           {/* Video Transcript Section */}
-          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
-            <h3 className="font-bold text-sm text-[#07031A] flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#4F20C9]" />
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 space-y-3">
+            <h3 className="font-bold text-sm text-[#07031A] dark:text-white flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[#4F20C9] dark:text-purple-400" />
               Video Transcript & Key Highlights
             </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">{media.transcript}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{media.transcript || media.description}</p>
           </div>
         </div>
       </div>
