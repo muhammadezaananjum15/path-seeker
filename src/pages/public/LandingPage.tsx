@@ -95,17 +95,30 @@ export const LandingPage: React.FC = () => {
           SECTION 2: GLOBAL STATS & IMPACT METRICS (PREMIUM BENTO)
       ═══════════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="p-8 sm:p-12 rounded-[40px] bg-gradient-to-b from-slate-900 via-slate-950 to-[#07031A] text-white shadow-2xl border border-slate-800/80 relative overflow-hidden">
-          {/* Subtle Ambient Glow inside stats box */}
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#4F20C9]/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="p-8 sm:p-14 rounded-[44px] bg-gradient-to-b from-slate-900 via-slate-950 to-[#07031A] text-white shadow-2xl border border-slate-800/80 relative overflow-hidden group"
+        >
+          {/* Dynamic Ambient Background Glows inside Bento Box */}
+          <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-[#4F20C9]/25 rounded-full blur-[100px] pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
+          <div className="absolute -bottom-32 -left-32 w-[450px] h-[450px] bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-purple-500/10 blur-[120px] pointer-events-none rounded-full" />
 
-          <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-8 border-b border-slate-800">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-8 border-b border-slate-800/80">
             <div>
-              <span className="px-3.5 py-1.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold uppercase tracking-wider">
-                Proven Platform Impact
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white mt-3" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-black uppercase tracking-wider mb-3 shadow-inner"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-purple-300 animate-pulse" />
+                <span>Proven Platform Impact</span>
+              </motion.div>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white mt-1" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Engineered for Measurable Career Growth
               </h2>
             </div>
@@ -122,6 +135,7 @@ export const LandingPage: React.FC = () => {
                 sublabel: 'Optimized for modern corporate parsers',
                 badge: 'Top Tier',
                 badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+                glowColor: 'group-hover:border-emerald-500/40',
                 icon: Award,
               },
               {
@@ -130,6 +144,7 @@ export const LandingPage: React.FC = () => {
                 sublabel: 'From architecture to interview prep',
                 badge: 'Updated Weekly',
                 badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+                glowColor: 'group-hover:border-purple-500/40',
                 icon: Video,
               },
               {
@@ -138,6 +153,7 @@ export const LandingPage: React.FC = () => {
                 sublabel: 'Across 40+ countries & domains',
                 badge: '+34% this month',
                 badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+                glowColor: 'group-hover:border-indigo-500/40',
                 icon: Users,
               },
               {
@@ -146,30 +162,42 @@ export const LandingPage: React.FC = () => {
                 sublabel: 'Live verified compensation index',
                 badge: 'High Demand',
                 badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+                glowColor: 'group-hover:border-amber-500/40',
                 icon: DollarSign,
               },
-            ].map(({ metric, label, sublabel, badge, badgeColor, icon: Icon }, idx) => (
-              <ScrollAnimation key={label} delay={idx * 0.08} enable3DTilt={true}>
-                <div className="p-6 rounded-3xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-purple-500/50 hover:bg-white/[0.08] transition-all duration-300 flex flex-col justify-between space-y-4 h-full group">
+            ].map(({ metric, label, sublabel, badge, badgeColor, glowColor, icon: Icon }, idx) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="h-full"
+              >
+                <div className={`p-6 sm:p-7 rounded-3xl bg-white/[0.04] backdrop-blur-xl border border-white/10 ${glowColor} hover:bg-white/[0.07] hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 flex flex-col justify-between space-y-5 h-full group/card relative overflow-hidden`}>
+                  {/* Subtle top card glow line */}
+                  <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity" />
+
                   <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-purple-300 group-hover:scale-110 transition-transform">
-                      <Icon className="w-5 h-5" />
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-purple-300 group-hover/card:scale-110 group-hover/card:bg-purple-500/20 transition-all duration-300 shadow-md">
+                      <Icon className="w-6 h-6" />
                     </div>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}`}>
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold border ${badgeColor} shadow-sm`}>
                       {badge}
                     </span>
                   </div>
 
-                  <div className="space-y-1">
-                    <p className="text-3xl sm:text-4xl font-black text-white tracking-tight">{metric}</p>
+                  <div className="space-y-1.5">
+                    <p className="text-3xl sm:text-4xl font-black text-white tracking-tight group-hover/card:text-purple-100 transition-colors">{metric}</p>
                     <p className="text-xs font-bold text-slate-200">{label}</p>
                     <p className="text-[11px] text-slate-400 font-medium leading-normal">{sublabel}</p>
                   </div>
                 </div>
-              </ScrollAnimation>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════

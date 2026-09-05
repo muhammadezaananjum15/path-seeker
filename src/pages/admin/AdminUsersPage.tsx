@@ -46,6 +46,7 @@ interface UserWithStats {
 export const AdminUsersPage: React.FC = () => {
   const { addToast } = useUIStore();
   const [users, setUsers] = useState<UserWithStats[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
@@ -68,7 +69,10 @@ export const AdminUsersPage: React.FC = () => {
         sort,
       } as any)
       .then((res) => {
-        if (res.data?.success) setUsers(res.data.users || []);
+        if (res.data?.success) {
+          setUsers(res.data.users || []);
+          setTotalCount(typeof res.data.total === 'number' ? res.data.total : (res.data.users?.length || 0));
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -159,7 +163,7 @@ export const AdminUsersPage: React.FC = () => {
             <span className="text-[10px] font-black uppercase">Registered Users</span>
             <Users className="w-4 h-4 text-purple-600" />
           </div>
-          <p className="text-xl font-black text-slate-900">{users.length}</p>
+          <p className="text-xl font-black text-slate-900">{loading && !totalCount ? '...' : (totalCount || users.length)}</p>
         </div>
 
         <div className="p-4 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-1">
@@ -168,7 +172,7 @@ export const AdminUsersPage: React.FC = () => {
             <Brain className="w-4 h-4 text-emerald-600" />
           </div>
           <p className="text-xl font-black text-slate-900">
-            {totalQuizTakers} <span className="text-xs font-bold text-slate-400">({users.length ? Math.round((totalQuizTakers / users.length) * 100) : 0}%)</span>
+            {totalQuizTakers} <span className="text-xs font-bold text-slate-400">({(totalCount || users.length) ? Math.round((totalQuizTakers / (totalCount || users.length)) * 100) : 0}%)</span>
           </p>
         </div>
 

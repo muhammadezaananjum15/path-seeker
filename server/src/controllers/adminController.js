@@ -51,15 +51,15 @@ export const getAnalyticsOverview = async (req, res, next) => {
           },
         },
       ]),
-      User.estimatedDocumentCount ? User.estimatedDocumentCount() : User.countDocuments(),
-      Career.estimatedDocumentCount ? Career.estimatedDocumentCount() : Career.countDocuments(),
+      User.countDocuments(),
+      Career.countDocuments(),
       QuizResult.countDocuments(),
       SuccessStory.countDocuments({ status: 'pending' }),
       Feedback.countDocuments({ status: 'open' }),
-      Resource.estimatedDocumentCount ? Resource.estimatedDocumentCount() : Resource.countDocuments(),
-      Multimedia.estimatedDocumentCount ? Multimedia.estimatedDocumentCount() : Multimedia.countDocuments(),
-      QuizQuestion.estimatedDocumentCount ? QuizQuestion.estimatedDocumentCount() : QuizQuestion.countDocuments(),
-      ActivityLog.estimatedDocumentCount ? ActivityLog.estimatedDocumentCount() : ActivityLog.countDocuments(),
+      Resource.countDocuments(),
+      Multimedia.countDocuments(),
+      QuizQuestion.countDocuments(),
+      ActivityLog.countDocuments(),
       Resource.find().sort({ downloadCount: -1 }).limit(5).lean(),
       ActivityLog.find().sort({ createdAt: -1 }).limit(10).populate('userId', 'name email role').lean(),
       User.aggregate([
@@ -72,10 +72,10 @@ export const getAnalyticsOverview = async (req, res, next) => {
         },
         { $sort: { _id: 1 } },
       ]),
-      Content.estimatedDocumentCount ? Content.estimatedDocumentCount() : Content.countDocuments(),
-      PageActivity.estimatedDocumentCount ? PageActivity.estimatedDocumentCount() : PageActivity.countDocuments(),
-      LinkClick.estimatedDocumentCount ? LinkClick.estimatedDocumentCount() : LinkClick.countDocuments(),
-      QuizAttempt.estimatedDocumentCount ? QuizAttempt.estimatedDocumentCount() : QuizAttempt.countDocuments(),
+      Content.countDocuments(),
+      PageActivity.countDocuments(),
+      LinkClick.countDocuments(),
+      QuizAttempt.countDocuments(),
       PageActivity.aggregate([
         { $group: { _id: null, totalDurationMs: { $sum: '$durationMs' } } }
       ]),
@@ -96,10 +96,13 @@ export const getAnalyticsOverview = async (req, res, next) => {
       roleMap[r._id] = r.count;
     });
 
+    const sumRoleUsers = (roleMap.student || 0) + (roleMap.graduate || 0) + (roleMap.professional || 0) + (roleMap.admin || 0);
+    const finalTotalUsers = totalUsers > 0 ? totalUsers : (sumRoleUsers > 0 ? sumRoleUsers : 0);
+
     const totalSiteDurationMs = pageDurationAgg[0]?.totalDurationMs || 0;
 
     const analytics = {
-      totalUsers,
+      totalUsers: finalTotalUsers,
       roleBreakdown: {
         student: roleMap.student || 0,
         graduate: roleMap.graduate || 0,
