@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ChatbotWidget } from '../ui/ChatbotWidget';
+import { usePageTracking } from '../../hooks/usePageTracking';
 
 export const AppLayout: React.FC = () => {
   const location = useLocation();
+  usePageTracking();
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 transition-colors duration-300">

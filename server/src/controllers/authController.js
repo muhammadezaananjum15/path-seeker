@@ -304,6 +304,7 @@ export const login = async (req, res, next) => {
       if (isMatch) {
         const { accessToken, refreshToken } = generateTokens(dbUser);
         dbUser.refreshToken = refreshToken;
+        dbUser.lastLogin = new Date();
         await dbUser.save().catch(() => {});
 
         res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 15 * 60 * 1000 });

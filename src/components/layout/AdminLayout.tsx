@@ -11,6 +11,7 @@ import {
   Users,
   ShieldAlert,
   ArrowLeft,
+  Newspaper,
 } from 'lucide-react';
 import { useAuthStore } from '../../stores/useAuthStore';
 
@@ -41,13 +42,14 @@ export const AdminLayout: React.FC = () => {
 
   const adminMenu = [
     { name: 'Analytics & Overview', path: '/admin', icon: LayoutDashboard },
+    { name: 'Content & Articles CRUD', path: '/admin/content', icon: Newspaper },
     { name: 'Career Bank CRUD', path: '/admin/careers', icon: Briefcase },
     { name: 'Quiz Questions', path: '/admin/quiz', icon: HelpCircle },
     { name: 'Multimedia Center', path: '/admin/multimedia', icon: Video },
     { name: 'Success Stories Review', path: '/admin/success-stories', icon: Award },
     { name: 'Resource Library', path: '/admin/resources', icon: FileText },
     { name: 'Feedback & Queries', path: '/admin/feedback', icon: MessageSquare },
-    { name: 'User Role Management', path: '/admin/users', icon: Users },
+    { name: 'User & Analytics View', path: '/admin/users', icon: Users },
   ];
 
   return (

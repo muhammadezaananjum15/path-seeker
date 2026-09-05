@@ -21,9 +21,13 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['student', 'graduate', 'professional', 'admin'],
+      enum: ['student', 'graduate', 'professional', 'admin', 'user'],
       default: 'student',
       index: true,
+    },
+    lastLogin: {
+      type: Date,
+      default: null,
     },
     isVerified: {
       type: Boolean,

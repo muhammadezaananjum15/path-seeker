@@ -6,6 +6,7 @@ import {
   Check, Sparkles, RefreshCw, Zap, Brain, Star, Layers, Briefcase, Heart
 } from 'lucide-react';
 import { quizApi } from '../../services/quizApi';
+import { analyticsApi } from '../../services/analyticsApi';
 
 const FALLBACK_QUESTIONS = [
   {
@@ -234,12 +235,25 @@ export const QuizPage: React.FC = () => {
 
     try {
       const res = await quizApi.submitQuiz(payload.length > 0 ? payload : []);
-      if (res.data.success && res.data.result) {
-        navigate('/quiz/results', { state: { result: res.data.result } });
-      } else {
-        navigate('/quiz/results', { state: { result: defaultResult } });
-      }
+      const finalResult = res.data?.success && res.data?.result ? res.data.result : defaultResult;
+      
+      // Track real-time quiz attempt completion in analytics
+      analyticsApi.quizEvent({
+        quizTitle: 'Career Aptitude Assessment',
+        score: finalResult.overallScore || 88,
+        totalQuestions: questions.length || 5,
+        status: 'completed',
+      }).catch(() => {});
+
+      navigate('/quiz/results', { state: { result: finalResult } });
     } catch {
+      analyticsApi.quizEvent({
+        quizTitle: 'Career Aptitude Assessment',
+        score: defaultResult.overallScore,
+        totalQuestions: questions.length || 5,
+        status: 'completed',
+      }).catch(() => {});
+
       navigate('/quiz/results', { state: { result: defaultResult } });
     } finally {
       setSubmitting(false);

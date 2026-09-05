@@ -54,6 +54,8 @@ import claudeRoutes from './routes/claudeRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 import activityRoutes from './routes/activityRoutes.js';
 import publicApiRoutes from './routes/publicApiRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
+import contentRoutes from './routes/contentRoutes.js';
 // ─────────────────────────────────────────────────────────────────────────────
 
 const app = express();
@@ -90,6 +92,9 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// ─── Support navigator.sendBeacon (which may send text/plain or blob JSON) ────
+app.use(express.text({ type: ['text/plain', 'application/json'] }));
+
 // Serve uploaded files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,6 +130,8 @@ app.use('/api/multimedia', multimediaRoutes);
 app.use('/api/stories', storyRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
 app.use('/api/feedback', feedbackRoutes);

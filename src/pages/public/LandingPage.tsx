@@ -9,6 +9,7 @@ import {
 import apiClient from '../../services/apiClient';
 import { publicApi } from '../../services/publicApi';
 import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
+import { HeroParallaxLayers } from '../../components/ui/HeroParallaxLayers';
 import { gsap } from 'gsap';
 
 const FEATURED_HOME_VIDEOS = [
@@ -94,79 +95,15 @@ export const LandingPage: React.FC = () => {
     <div className="bg-white text-[#07031A] min-h-screen overflow-x-hidden">
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 1: HERO — Clean 3D Hero (No Overlay Sub Badges)
+          SECTION 1: HERO PARALLAX LAYERS (3D Scrolling Animation)
       ═══════════════════════════════════════════════════════ */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 flex flex-col items-center justify-center text-center">
-        
-        {/* Top Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm max-w-full text-center"
-        >
-          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] animate-spin shrink-0" />
-          <span className="truncate sm:whitespace-normal">Next-Gen Career Intelligence OS</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
-        </motion.div>
-
-        {/* Headline */}
-        <h1
-          className="gsap-hero-title text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[90px] xl:text-[100px] font-extrabold text-[#07031A] mb-4 sm:mb-6 tracking-tighter leading-[1.08] sm:leading-[0.95] max-w-5xl break-words px-2"
-          style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-        >
-          Architect Your Future.<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F20C9] via-indigo-500 to-purple-400">
-            Own Your Trajectory.
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-slate-600 text-xs sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-normal px-2 mb-8">
-          The unified platform powering students, graduates, and working professionals with AI career matching, 150+ video masterclasses, ATS resume tools, and live hiring feeds.
-        </p>
-
-        {/* Call-to-Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 w-full max-w-md px-2"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/quiz')}
-            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap"
-          >
-            <Brain className="w-4 h-4 text-purple-200 shrink-0" />
-            <span>Take AI Assessment</span>
-            <ArrowRight className="w-4 h-4 shrink-0" />
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/careers')}
-            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
-          >
-            Explore 1,000+ Careers
-          </motion.button>
-        </motion.div>
-
-        {/* Clean 3D Platform Dashboard Visual (Sub Badges Removed) */}
-        <ScrollAnimation enable3DTilt={true} direction="3d-flip" className="w-full">
-          <div className="relative w-full rounded-[36px] overflow-hidden shadow-2xl border border-slate-200 aspect-video max-h-[550px] group">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop"
-              alt="PathSeeker AI Career Platform"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#07031A]/60 via-transparent to-transparent" />
-          </div>
-        </ScrollAnimation>
-
-      </section>
+      <HeroParallaxLayers
+        headerTitle="Architect Your Future."
+        headerHighlight="Own Your Trajectory."
+        headerSubtitle="The unified platform powering students, graduates, and working professionals with AI career matching, 150+ video masterclasses, ATS resume tools, and live hiring feeds."
+        onTakeQuiz={() => navigate('/quiz')}
+        onExploreCareers={() => navigate('/careers')}
+      />
 
       {/* ═══════════════════════════════════════════════════════
           SECTION 2: GLOBAL STATS & IMPACT METRICS (NEW SECTION)

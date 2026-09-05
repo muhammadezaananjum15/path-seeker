@@ -46,6 +46,7 @@ import { AdminStoriesPage } from './pages/admin/AdminStoriesPage';
 import { AdminResourcesPage } from './pages/admin/AdminResourcesPage';
 import { AdminFeedbackPage } from './pages/admin/AdminFeedbackPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
+import { AdminContentPage } from './pages/admin/AdminContentPage';
 
 export function App() {
   return (
@@ -129,6 +130,7 @@ export function App() {
           {/* Admin Control Suite Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboardPage />} />
+            <Route path="content" element={<AdminContentPage />} />
             <Route path="careers" element={<AdminCareersPage />} />
             <Route path="multimedia" element={<AdminMultimediaPage />} />
             <Route path="quiz" element={<AdminQuizPage />} />

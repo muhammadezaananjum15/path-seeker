@@ -7,6 +7,10 @@ import { Feedback } from '../models/Feedback.js';
 import { Multimedia } from '../models/Multimedia.js';
 import { QuizQuestion } from '../models/QuizQuestion.js';
 import { ActivityLog } from '../models/ActivityLog.js';
+import { PageActivity } from '../models/PageActivity.js';
+import { LinkClick } from '../models/LinkClick.js';
+import { QuizAttempt } from '../models/QuizAttempt.js';
+import { Content } from '../models/Content.js';
 import { getCache, setCache } from '../utils/cache.js';
 
 export const getAnalyticsOverview = async (req, res, next) => {
@@ -21,7 +25,9 @@ export const getAnalyticsOverview = async (req, res, next) => {
       totalUsers, studentCount, graduateCount, proCount, adminCount,
       totalCareers, quizAttempts, pendingStories, openFeedback,
       totalResources, totalMultimedia, totalQuizQuestions, totalLogs,
-      topResources, recentLogs, recentSignupAgg
+      topResources, recentLogs, recentSignupAgg,
+      totalContentCount, totalPageViews, totalLinkClicks, totalQuizEvents,
+      pageDurationAgg, topPagesAgg, topLinksAgg
     ] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ role: 'student' }),
@@ -48,13 +54,32 @@ export const getAnalyticsOverview = async (req, res, next) => {
         },
         { $sort: { _id: 1 } },
       ]),
+      Content.countDocuments(),
+      PageActivity.countDocuments(),
+      LinkClick.countDocuments(),
+      QuizAttempt.countDocuments(),
+      PageActivity.aggregate([
+        { $group: { _id: null, totalDurationMs: { $sum: '$durationMs' } } }
+      ]),
+      PageActivity.aggregate([
+        { $group: { _id: '$page', totalDurationMs: { $sum: '$durationMs' }, count: { $sum: 1 } } },
+        { $sort: { totalDurationMs: -1 } },
+        { $limit: 6 }
+      ]),
+      LinkClick.aggregate([
+        { $group: { _id: '$url', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 6 }
+      ])
     ]);
+
+    const totalSiteDurationMs = pageDurationAgg[0]?.totalDurationMs || 0;
 
     const analytics = {
       totalUsers,
       roleBreakdown: { student: studentCount, graduate: graduateCount, professional: proCount, admin: adminCount },
       totalCareers,
-      quizAttempts,
+      quizAttempts: quizAttempts + totalQuizEvents,
       pendingStories,
       openFeedback,
       totalResources,
@@ -64,9 +89,18 @@ export const getAnalyticsOverview = async (req, res, next) => {
       topResources,
       recentLogs,
       recentSignups: recentSignupAgg,
+      realTimeTracking: {
+        totalContentCount,
+        totalPageViews,
+        totalLinkClicks,
+        totalQuizEvents,
+        totalSiteDurationMs,
+        topPages: topPagesAgg.map(p => ({ page: p._id, durationMs: p.totalDurationMs, count: p.count })),
+        topLinks: topLinksAgg.map(l => ({ url: l._id, count: l.count })),
+      },
     };
 
-    setCache(cacheKey, analytics, 30); // 30-sec fast cache for instant loading
+    setCache(cacheKey, analytics, 15); // 15-sec cache for near real-time updates
 
     res.json({ success: true, analytics });
   } catch (error) {
@@ -76,24 +110,159 @@ export const getAnalyticsOverview = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const { search = '', role, page = 1, limit = 20 } = req.query;
-    const filter = {};
-    if (role && role !== 'all') filter.role = role;
+    const { search = '', role, quizStatus = 'all', page = 1, limit = 20, sort = '-createdAt' } = req.query;
+
+    const pageNum = Math.max(1, Number(page));
+    const limitNum = Math.max(1, Number(limit));
+    const skip = (pageNum - 1) * limitNum;
+
+    // Match Stage
+    const matchStage = {};
+    if (role && role !== 'all') {
+      matchStage.role = role;
+    }
     if (search) {
-      filter.$or = [
+      matchStage.$or = [
         { name: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
       ];
     }
 
-    const users = await User.find(filter)
-      .select('-passwordHash')
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-    const total = await User.countDocuments(filter);
+    // Aggregation pipeline to join quizzes, pageActivity, linkClicks
+    const pipeline = [
+      { $match: matchStage },
+      {
+        $lookup: {
+          from: 'quizattempts',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'quizzes',
+        },
+      },
+      {
+        $lookup: {
+          from: 'pageactivities',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'pageActivity',
+        },
+      },
+      {
+        $lookup: {
+          from: 'linkclicks',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'linkClicks',
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          role: 1,
+          isVerified: 1,
+          createdAt: 1,
+          lastLogin: 1,
+          quizTaken: { $gt: [{ $size: '$quizzes' }, 0] },
+          quizzes: {
+            $map: {
+              input: '$quizzes',
+              as: 'q',
+              in: {
+                _id: '$$q._id',
+                quizTitle: '$$q.quizTitle',
+                score: '$$q.score',
+                totalQuestions: '$$q.totalQuestions',
+                status: '$$q.status',
+                completedAt: '$$q.completedAt',
+                createdAt: '$$q.createdAt',
+              },
+            },
+          },
+          totalPageTimeMs: { $sum: '$pageActivity.durationMs' },
+          totalPagesVisited: { $size: '$pageActivity' },
+          pageBreakdown: {
+            $map: {
+              input: '$pageActivity',
+              as: 'pa',
+              in: {
+                page: '$$pa.page',
+                durationMs: '$$pa.durationMs',
+                enteredAt: '$$pa.enteredAt',
+                exitedAt: '$$pa.exitedAt',
+              },
+            },
+          },
+          externalClicksCount: { $size: '$linkClicks' },
+          linkClicks: {
+            $map: {
+              input: '$linkClicks',
+              as: 'lc',
+              in: {
+                _id: '$$lc._id',
+                url: '$$lc.url',
+                sourcePage: '$$lc.sourcePage',
+                clickedAt: '$$lc.clickedAt',
+              },
+            },
+          },
+        },
+      },
+    ];
 
-    res.json({ success: true, users, total, page: Number(page), pages: Math.ceil(total / limit) });
+    // Filter by quiz status if requested
+    if (quizStatus === 'taken') {
+      pipeline.push({ $match: { quizTaken: true } });
+    } else if (quizStatus === 'not_taken') {
+      pipeline.push({ $match: { quizTaken: false } });
+    }
+
+    // Sort stage
+    let sortObj = { createdAt: -1 };
+    if (sort === 'time_desc') sortObj = { totalPageTimeMs: -1 };
+    if (sort === 'time_asc') sortObj = { totalPageTimeMs: 1 };
+    if (sort === 'clicks_desc') sortObj = { externalClicksCount: -1 };
+    if (sort === 'lastLogin_desc') sortObj = { lastLogin: -1 };
+
+    const countPipeline = [...pipeline, { $count: 'total' }];
+
+    pipeline.push({ $sort: sortObj });
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: limitNum });
+
+    const [users, countResult] = await Promise.all([
+      User.aggregate(pipeline),
+      User.aggregate(countPipeline),
+    ]);
+
+    const total = countResult[0]?.total || 0;
+
+    // Also process aggregated page breakdown summaries for each user
+    const formattedUsers = users.map((u) => {
+      const pageMap = {};
+      (u.pageBreakdown || []).forEach((p) => {
+        if (!p.page) return;
+        if (!pageMap[p.page]) {
+          pageMap[p.page] = { page: p.page, durationMs: 0, visits: 0 };
+        }
+        pageMap[p.page].durationMs += Number(p.durationMs) || 0;
+        pageMap[p.page].visits += 1;
+      });
+
+      return {
+        ...u,
+        pageAggregated: Object.values(pageMap).sort((a, b) => b.durationMs - a.durationMs),
+      };
+    });
+
+    res.json({
+      success: true,
+      users: formattedUsers,
+      total,
+      page: pageNum,
+      limit: limitNum,
+      pages: Math.ceil(total / limitNum) || 1,
+    });
   } catch (error) {
     next(error);
   }
