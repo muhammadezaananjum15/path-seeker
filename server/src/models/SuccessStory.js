@@ -55,4 +55,7 @@ const successStorySchema = new mongoose.Schema(
   }
 );
 
+successStorySchema.index({ status: 1, createdAt: -1 });
+successStorySchema.index({ createdAt: -1 });
+
 export const SuccessStory = mongoose.model('SuccessStory', successStorySchema);

@@ -22,26 +22,44 @@ export const getAnalyticsOverview = async (req, res, next) => {
     }
 
     const [
-      totalUsers, studentCount, graduateCount, proCount, adminCount,
-      totalCareers, quizAttempts, pendingStories, openFeedback,
-      totalResources, totalMultimedia, totalQuizQuestions, totalLogs,
-      topResources, recentLogs, recentSignupAgg,
-      totalContentCount, totalPageViews, totalLinkClicks, totalQuizEvents,
-      pageDurationAgg, topPagesAgg, topLinksAgg
+      roleAgg,
+      totalUsers,
+      totalCareers,
+      quizAttempts,
+      pendingStories,
+      openFeedback,
+      totalResources,
+      totalMultimedia,
+      totalQuizQuestions,
+      totalLogs,
+      topResources,
+      recentLogs,
+      recentSignupAgg,
+      totalContentCount,
+      totalPageViews,
+      totalLinkClicks,
+      totalQuizEvents,
+      pageDurationAgg,
+      topPagesAgg,
+      topLinksAgg
     ] = await Promise.all([
-      User.countDocuments(),
-      User.countDocuments({ role: 'student' }),
-      User.countDocuments({ role: 'graduate' }),
-      User.countDocuments({ role: 'professional' }),
-      User.countDocuments({ role: 'admin' }),
-      Career.countDocuments(),
+      User.aggregate([
+        {
+          $group: {
+            _id: '$role',
+            count: { $sum: 1 },
+          },
+        },
+      ]),
+      User.estimatedDocumentCount ? User.estimatedDocumentCount() : User.countDocuments(),
+      Career.estimatedDocumentCount ? Career.estimatedDocumentCount() : Career.countDocuments(),
       QuizResult.countDocuments(),
       SuccessStory.countDocuments({ status: 'pending' }),
       Feedback.countDocuments({ status: 'open' }),
-      Resource.countDocuments(),
-      Multimedia.countDocuments(),
-      QuizQuestion.countDocuments(),
-      ActivityLog.countDocuments(),
+      Resource.estimatedDocumentCount ? Resource.estimatedDocumentCount() : Resource.countDocuments(),
+      Multimedia.estimatedDocumentCount ? Multimedia.estimatedDocumentCount() : Multimedia.countDocuments(),
+      QuizQuestion.estimatedDocumentCount ? QuizQuestion.estimatedDocumentCount() : QuizQuestion.countDocuments(),
+      ActivityLog.estimatedDocumentCount ? ActivityLog.estimatedDocumentCount() : ActivityLog.countDocuments(),
       Resource.find().sort({ downloadCount: -1 }).limit(5).lean(),
       ActivityLog.find().sort({ createdAt: -1 }).limit(10).populate('userId', 'name email role').lean(),
       User.aggregate([
@@ -54,10 +72,10 @@ export const getAnalyticsOverview = async (req, res, next) => {
         },
         { $sort: { _id: 1 } },
       ]),
-      Content.countDocuments(),
-      PageActivity.countDocuments(),
-      LinkClick.countDocuments(),
-      QuizAttempt.countDocuments(),
+      Content.estimatedDocumentCount ? Content.estimatedDocumentCount() : Content.countDocuments(),
+      PageActivity.estimatedDocumentCount ? PageActivity.estimatedDocumentCount() : PageActivity.countDocuments(),
+      LinkClick.estimatedDocumentCount ? LinkClick.estimatedDocumentCount() : LinkClick.countDocuments(),
+      QuizAttempt.estimatedDocumentCount ? QuizAttempt.estimatedDocumentCount() : QuizAttempt.countDocuments(),
       PageActivity.aggregate([
         { $group: { _id: null, totalDurationMs: { $sum: '$durationMs' } } }
       ]),
@@ -73,11 +91,21 @@ export const getAnalyticsOverview = async (req, res, next) => {
       ])
     ]);
 
+    const roleMap = {};
+    (roleAgg || []).forEach((r) => {
+      roleMap[r._id] = r.count;
+    });
+
     const totalSiteDurationMs = pageDurationAgg[0]?.totalDurationMs || 0;
 
     const analytics = {
       totalUsers,
-      roleBreakdown: { student: studentCount, graduate: graduateCount, professional: proCount, admin: adminCount },
+      roleBreakdown: {
+        student: roleMap.student || 0,
+        graduate: roleMap.graduate || 0,
+        professional: roleMap.professional || 0,
+        admin: roleMap.admin || 0,
+      },
       totalCareers,
       quizAttempts: quizAttempts + totalQuizEvents,
       pendingStories,
@@ -100,7 +128,7 @@ export const getAnalyticsOverview = async (req, res, next) => {
       },
     };
 
-    setCache(cacheKey, analytics, 15); // 15-sec cache for near real-time updates
+    setCache(cacheKey, analytics, 30); // 30-sec cache for rapid dashboard loading
 
     res.json({ success: true, analytics });
   } catch (error) {
@@ -116,7 +144,7 @@ export const getUsers = async (req, res, next) => {
     const limitNum = Math.max(1, Number(limit));
     const skip = (pageNum - 1) * limitNum;
 
-    // Match Stage
+    // Build Match Query
     const matchStage = {};
     if (role && role !== 'all') {
       matchStage.role = role;
@@ -128,7 +156,120 @@ export const getUsers = async (req, res, next) => {
       ];
     }
 
-    // Aggregation pipeline to join quizzes, pageActivity, linkClicks
+    if (quizStatus === 'taken' || quizStatus === 'not_taken') {
+      const quizUserIds = await QuizAttempt.distinct('user');
+      if (quizStatus === 'taken') {
+        matchStage._id = { $in: quizUserIds };
+      } else {
+        matchStage._id = { $nin: quizUserIds };
+      }
+    }
+
+    // Determine Sort object
+    let sortObj = { createdAt: -1 };
+    if (sort === 'createdAt') sortObj = { createdAt: 1 };
+    if (sort === '-createdAt') sortObj = { createdAt: -1 };
+    if (sort === 'lastLogin_desc' || sort === '-lastLogin') sortObj = { lastLogin: -1 };
+    if (sort === 'lastLogin_asc' || sort === 'lastLogin') sortObj = { lastLogin: 1 };
+    if (sort === 'name') sortObj = { name: 1 };
+    if (sort === '-name') sortObj = { name: -1 };
+
+    const isDirectSort = !['time_desc', 'time_asc', 'clicks_desc'].includes(sort);
+
+    if (isDirectSort) {
+      // FAST PATH: Direct indexed query with pagination on 20 users, then fast in-memory join
+      const [users, total] = await Promise.all([
+        User.find(matchStage).sort(sortObj).skip(skip).limit(limitNum).select('-passwordHash -otp -otpExpiry').lean(),
+        User.countDocuments(matchStage),
+      ]);
+
+      const userIds = users.map((u) => u._id);
+
+      const [allQuizzes, allPageActivities, allLinkClicks] = await Promise.all([
+        QuizAttempt.find({ user: { $in: userIds } }).sort({ createdAt: -1 }).lean(),
+        PageActivity.find({ user: { $in: userIds } }).lean(),
+        LinkClick.find({ user: { $in: userIds } }).sort({ clickedAt: -1 }).lean(),
+      ]);
+
+      // Group activities by user ID
+      const quizMap = {};
+      allQuizzes.forEach((q) => {
+        const uid = String(q.user);
+        if (!quizMap[uid]) quizMap[uid] = [];
+        quizMap[uid].push(q);
+      });
+
+      const pageMap = {};
+      allPageActivities.forEach((pa) => {
+        const uid = String(pa.user);
+        if (!pageMap[uid]) pageMap[uid] = [];
+        pageMap[uid].push(pa);
+      });
+
+      const clickMap = {};
+      allLinkClicks.forEach((lc) => {
+        const uid = String(lc.user);
+        if (!clickMap[uid]) clickMap[uid] = [];
+        clickMap[uid].push(lc);
+      });
+
+      const formattedUsers = users.map((u) => {
+        const uid = String(u._id);
+        const userQuizzes = quizMap[uid] || [];
+        const userPages = pageMap[uid] || [];
+        const userClicks = clickMap[uid] || [];
+
+        let totalTime = 0;
+        const pageAgg = {};
+        userPages.forEach((p) => {
+          totalTime += Number(p.durationMs) || 0;
+          if (p.page) {
+            if (!pageAgg[p.page]) pageAgg[p.page] = { page: p.page, durationMs: 0, visits: 0 };
+            pageAgg[p.page].durationMs += Number(p.durationMs) || 0;
+            pageAgg[p.page].visits += 1;
+          }
+        });
+
+        return {
+          ...u,
+          quizTaken: userQuizzes.length > 0,
+          quizzes: userQuizzes.map((q) => ({
+            _id: q._id,
+            quizTitle: q.quizTitle,
+            score: q.score,
+            totalQuestions: q.totalQuestions,
+            status: q.status,
+            completedAt: q.completedAt,
+            createdAt: q.createdAt,
+          })),
+          totalPageTimeMs: totalTime,
+          totalPagesVisited: userPages.length,
+          pageAggregated: Object.values(pageAgg).sort((a, b) => b.durationMs - a.durationMs),
+          externalClicksCount: userClicks.length,
+          linkClicks: userClicks.map((lc) => ({
+            _id: lc._id,
+            url: lc.url,
+            sourcePage: lc.sourcePage,
+            clickedAt: lc.clickedAt,
+          })),
+        };
+      });
+
+      return res.json({
+        success: true,
+        users: formattedUsers,
+        total,
+        page: pageNum,
+        limit: limitNum,
+        pages: Math.ceil(total / limitNum) || 1,
+      });
+    }
+
+    // SLOW PATH FALLBACK: For computed sort (time_desc, clicks_desc)
+    let computedSortObj = { totalPageTimeMs: -1 };
+    if (sort === 'time_asc') computedSortObj = { totalPageTimeMs: 1 };
+    if (sort === 'clicks_desc') computedSortObj = { externalClicksCount: -1 };
+
     const pipeline = [
       { $match: matchStage },
       {
@@ -164,80 +305,24 @@ export const getUsers = async (req, res, next) => {
           createdAt: 1,
           lastLogin: 1,
           quizTaken: { $gt: [{ $size: '$quizzes' }, 0] },
-          quizzes: {
-            $map: {
-              input: '$quizzes',
-              as: 'q',
-              in: {
-                _id: '$$q._id',
-                quizTitle: '$$q.quizTitle',
-                score: '$$q.score',
-                totalQuestions: '$$q.totalQuestions',
-                status: '$$q.status',
-                completedAt: '$$q.completedAt',
-                createdAt: '$$q.createdAt',
-              },
-            },
-          },
+          quizzes: 1,
           totalPageTimeMs: { $sum: '$pageActivity.durationMs' },
           totalPagesVisited: { $size: '$pageActivity' },
-          pageBreakdown: {
-            $map: {
-              input: '$pageActivity',
-              as: 'pa',
-              in: {
-                page: '$$pa.page',
-                durationMs: '$$pa.durationMs',
-                enteredAt: '$$pa.enteredAt',
-                exitedAt: '$$pa.exitedAt',
-              },
-            },
-          },
+          pageBreakdown: '$pageActivity',
           externalClicksCount: { $size: '$linkClicks' },
-          linkClicks: {
-            $map: {
-              input: '$linkClicks',
-              as: 'lc',
-              in: {
-                _id: '$$lc._id',
-                url: '$$lc.url',
-                sourcePage: '$$lc.sourcePage',
-                clickedAt: '$$lc.clickedAt',
-              },
-            },
-          },
+          linkClicks: 1,
         },
       },
+      { $sort: computedSortObj },
+      { $skip: skip },
+      { $limit: limitNum },
     ];
 
-    // Filter by quiz status if requested
-    if (quizStatus === 'taken') {
-      pipeline.push({ $match: { quizTaken: true } });
-    } else if (quizStatus === 'not_taken') {
-      pipeline.push({ $match: { quizTaken: false } });
-    }
-
-    // Sort stage
-    let sortObj = { createdAt: -1 };
-    if (sort === 'time_desc') sortObj = { totalPageTimeMs: -1 };
-    if (sort === 'time_asc') sortObj = { totalPageTimeMs: 1 };
-    if (sort === 'clicks_desc') sortObj = { externalClicksCount: -1 };
-    if (sort === 'lastLogin_desc') sortObj = { lastLogin: -1 };
-
-    const countPipeline = [...pipeline, { $count: 'total' }];
-
-    pipeline.push({ $sort: sortObj });
-    pipeline.push({ $skip: skip });
-    pipeline.push({ $limit: limitNum });
-
-    const [users, countResult] = await Promise.all([
+    const [users, total] = await Promise.all([
       User.aggregate(pipeline),
-      User.aggregate(countPipeline),
+      User.countDocuments(matchStage),
     ]);
 
-    const total = countResult[0]?.total || 0;
-
-    // Also process aggregated page breakdown summaries for each user
     const formattedUsers = users.map((u) => {
       const pageMap = {};
       (u.pageBreakdown || []).forEach((p) => {
@@ -346,7 +431,7 @@ export const rejectStory = async (req, res, next) => {
 
 export const getAllFeedback = async (req, res, next) => {
   try {
-    const feedback = await Feedback.find().sort({ createdAt: -1 }).populate('userId', 'name email');
+    const feedback = await Feedback.find().sort({ createdAt: -1 }).populate('userId', 'name email').lean();
     res.json({ success: true, feedback });
   } catch (error) {
     next(error);

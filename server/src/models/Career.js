@@ -55,4 +55,7 @@ const careerSchema = new mongoose.Schema(
   }
 );
 
+careerSchema.index({ createdAt: -1 });
+careerSchema.index({ domain: 1, demandLevel: 1 });
+
 export const Career = mongoose.model('Career', careerSchema);

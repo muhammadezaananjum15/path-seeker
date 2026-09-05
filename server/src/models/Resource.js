@@ -47,4 +47,7 @@ const resourceSchema = new mongoose.Schema(
   }
 );
 
+resourceSchema.index({ downloadCount: -1 });
+resourceSchema.index({ createdAt: -1 });
+
 export const Resource = mongoose.model('Resource', resourceSchema);

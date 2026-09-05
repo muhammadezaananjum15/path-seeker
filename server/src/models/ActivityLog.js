@@ -32,4 +32,8 @@ const activityLogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+activityLogSchema.index({ createdAt: -1 });
+activityLogSchema.index({ userId: 1, createdAt: -1 });
+activityLogSchema.index({ category: 1, createdAt: -1 });
+
 export const ActivityLog = mongoose.model('ActivityLog', activityLogSchema);

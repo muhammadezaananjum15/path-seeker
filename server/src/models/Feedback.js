@@ -39,4 +39,8 @@ const feedbackSchema = new mongoose.Schema(
   }
 );
 
+feedbackSchema.index({ status: 1, createdAt: -1 });
+feedbackSchema.index({ createdAt: -1 });
+feedbackSchema.index({ userId: 1 });
+
 export const Feedback = mongoose.model('Feedback', feedbackSchema);

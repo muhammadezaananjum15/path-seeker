@@ -51,5 +51,8 @@ const contentSchema = new mongoose.Schema(
 );
 
 contentSchema.index({ title: 'text', body: 'text', tags: 'text' });
+contentSchema.index({ status: 1, createdAt: -1 });
+contentSchema.index({ category: 1, createdAt: -1 });
+contentSchema.index({ createdAt: -1 });
 
 export const Content = mongoose.model('Content', contentSchema);

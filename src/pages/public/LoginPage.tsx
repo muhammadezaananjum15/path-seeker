@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Lock, Mail, ArrowRight, ShieldCheck, Eye, EyeOff, Sparkles,
-  Compass, Award, Users, CheckCircle2, Star, Zap
+  Compass, Award, Users, CheckCircle2, Star
 } from 'lucide-react';
 import { authApi } from '../../services/authApi';
 import { useAuthStore } from '../../stores/useAuthStore';
@@ -33,11 +33,6 @@ export const LoginPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickAdmin = () => {
-    setEmail('admin420@gmail.com');
-    setPassword('420420420');
   };
 
   return (
@@ -145,18 +140,6 @@ export const LoginPage: React.FC = () => {
                 )}
               </button>
             </form>
-
-            {/* Quick Demo Access Button */}
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={handleQuickAdmin}
-                className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] font-bold text-purple-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                <span>One-Click Admin Demo Login</span>
-              </button>
-            </div>
           </div>
 
           <div className="pt-4 border-t border-white/10 text-center text-xs text-slate-400 font-medium">
