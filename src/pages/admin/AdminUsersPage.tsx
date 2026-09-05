@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, Search, Trash2, ShieldOff, ShieldCheck, Clock, ExternalLink,
   Brain, CheckCircle, XCircle, Filter, Eye, ChevronRight, X, BarChart3,
-  Calendar, Award, Activity, MousePointerClick, TrendingUp
+  Calendar, Award, Activity, MousePointerClick, TrendingUp, Loader2
 } from 'lucide-react';
 import { adminApi } from '../../services/adminApi';
 import apiClient from '../../services/apiClient';
+import { useUIStore } from '../../stores/useUIStore';
 
 interface UserWithStats {
   _id: string;
@@ -43,13 +44,14 @@ interface UserWithStats {
 }
 
 export const AdminUsersPage: React.FC = () => {
+  const { addToast } = useUIStore();
   const [users, setUsers] = useState<UserWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [quizFilter, setQuizFilter] = useState('all');
   const [sortBy, setSortBy] = useState('-createdAt');
-  const [actionMsg, setActionMsg] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Modals for deep analytics inspection
   const [selectedUserForPages, setSelectedUserForPages] = useState<UserWithStats | null>(null);
@@ -78,32 +80,35 @@ export const AdminUsersPage: React.FC = () => {
   }, [roleFilter, quizFilter, sortBy]);
 
   const handleRoleChange = async (id: string, role: string) => {
-    await adminApi.updateUserRole(id, role);
-    fetchUsers();
-    setActionMsg(`User role updated to ${role}.`);
-    setTimeout(() => setActionMsg(''), 2500);
+    try {
+      await adminApi.updateUserRole(id, role);
+      fetchUsers();
+      addToast({ type: 'success', title: 'Role Updated', message: `User role set to ${role}.` });
+    } catch {
+      addToast({ type: 'error', title: 'Role Update Failed', message: 'Could not update user role.' });
+    }
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${name}"?`)) return;
+    setDeletingId(id);
     try {
       await apiClient.delete(`/admin/users/${id}`);
-      setActionMsg(`User "${name}" deleted.`);
-      setTimeout(() => setActionMsg(''), 2500);
-      fetchUsers();
+      addToast({ type: 'success', title: 'User Deleted', message: `"${name}" was permanently removed.` });
+      setUsers((prev) => prev.filter((u) => u._id !== id));
     } catch {
-      setActionMsg('Delete failed. Try again.');
+      addToast({ type: 'error', title: 'Delete Failed', message: 'Could not delete user. Try again.' });
+    } finally {
+      setDeletingId(null);
     }
   };
 
   const handleToggleBan = async (id: string, name: string) => {
     try {
       const res = await apiClient.patch(`/admin/users/${id}/toggle-ban`);
-      setActionMsg(res.data.message);
-      setTimeout(() => setActionMsg(''), 2500);
+      addToast({ type: 'success', title: 'User Status Changed', message: res.data.message || `${name} ban status toggled.` });
       fetchUsers();
     } catch {
-      setActionMsg('Action failed. Try again.');
+      addToast({ type: 'error', title: 'Action Failed', message: 'Could not toggle ban status.' });
     }
   };
 
@@ -146,16 +151,6 @@ export const AdminUsersPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Action Toast */}
-      {actionMsg && (
-        <motion.div
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="px-4 py-3 rounded-2xl bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200 shadow-sm"
-        >
-          {actionMsg}
-        </motion.div>
-      )}
 
       {/* Metric Quick Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

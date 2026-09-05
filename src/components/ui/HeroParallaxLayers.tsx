@@ -114,11 +114,11 @@ const Header: React.FC<{
 
   return (
     <div className="max-w-5xl relative mx-auto pt-4 sm:pt-6 pb-8 px-4 sm:px-6 lg:px-8 w-full text-center flex flex-col items-center z-10">
-      {/* Top Badge */}
+      {/* Top Badge — enters first */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: -14, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200/80 text-[#4F20C9] text-xs font-bold tracking-wide mb-6 shadow-sm"
       >
         <Sparkles className="w-3.5 h-3.5 text-[#4F20C9]" />
@@ -126,11 +126,11 @@ const Header: React.FC<{
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
       </motion.div>
 
-      {/* Main Hero Headline */}
+      {/* Main Hero Headline — enters second with deliberate delay */}
       <motion.h1
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.75, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-5 tracking-tight leading-[1.04]"
         style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
@@ -141,38 +141,42 @@ const Header: React.FC<{
         </span>
       </motion.h1>
 
-      {/* Subtitle */}
+      {/* Subtitle — enters third */}
       <motion.p
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-2xl text-sm sm:text-base md:text-lg text-slate-600 font-medium leading-relaxed mb-8 px-2"
       >
         {subtitle}
       </motion.p>
 
-      {/* Hero CTAs */}
+      {/* Hero CTAs — enter last, with subtle scale spring */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.25 }}
+        transition={{ duration: 0.65, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md px-2"
       >
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => (onTakeQuiz ? onTakeQuiz() : navigate('/quiz'))}
-          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
+          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
         >
           <Brain className="w-4 h-4 text-purple-200" />
           <span>Take Career Assessment</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => (onExploreCareers ? onExploreCareers() : navigate('/careers'))}
-          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 font-bold text-xs uppercase tracking-wider transition-all hover:scale-103 active:scale-97 cursor-pointer whitespace-nowrap"
+          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap"
         >
           Explore Career Bank
-        </button>
+        </motion.button>
       </motion.div>
     </div>
   );

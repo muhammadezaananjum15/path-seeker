@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Check, X, Trash2, Sparkles, Filter, Plus, Edit2, Database, Eye } from 'lucide-react';
+import { Check, X, Trash2, Loader2, Plus, Edit2, Database, CheckCircle2, XCircle } from 'lucide-react';
 import { storyApi } from '../../services/storyApi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUIStore } from '../../stores/useUIStore';
 
 export const AdminStoriesPage: React.FC = () => {
+  const { addToast } = useUIStore();
   const [stories, setStories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,52 +66,56 @@ export const AdminStoriesPage: React.FC = () => {
   const handleSaveStory = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-
     try {
       if (editingStory) {
-        // Update existing story in MongoDB
         await storyApi.adminUpdateStory(editingStory._id, {
-          authorName,
-          domain,
-          headline,
-          storyText,
+          authorName, domain, headline, storyText,
           imageUrl: imageUrl || undefined,
           status,
         });
+        addToast({ type: 'success', title: 'Story Updated', message: `"${headline}" has been saved.` });
       } else {
-        // Create new story in MongoDB
         await storyApi.adminCreateStory({
-          authorName,
-          domain,
-          headline,
-          storyText,
+          authorName, domain, headline, storyText,
           imageUrl: imageUrl || undefined,
           status,
           timeline: [{ year: new Date().getFullYear().toString(), title: headline, description: 'Added by Admin' }],
         });
+        addToast({ type: 'success', title: 'Story Created', message: `"${headline}" is now live.` });
       }
       setModalOpen(false);
       fetchStories();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to save story in MongoDB');
+      addToast({ type: 'error', title: 'Save Failed', message: err.response?.data?.message || 'Failed to save story.' });
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleUpdateStatus = async (id: string, newStatus: 'approved' | 'rejected' | 'pending') => {
+    setActionLoadingId(id);
     try {
       await storyApi.adminUpdateStoryStatus(id, newStatus);
-      fetchStories();
-    } catch (e) {}
+      addToast({ type: 'success', title: 'Status Updated', message: `Story marked as ${newStatus}.` });
+      setStories((prev) => prev.map((s) => s._id === id ? { ...s, status: newStatus } : s));
+    } catch {
+      addToast({ type: 'error', title: 'Update Failed', message: 'Could not update story status.' });
+    } finally {
+      setActionLoadingId(null);
+    }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this story permanently from MongoDB?')) return;
+  const handleDelete = async (id: string, headline: string) => {
+    setDeletingId(id);
     try {
       await storyApi.adminDeleteStory(id);
-      fetchStories();
-    } catch (e) {}
+      addToast({ type: 'success', title: 'Story Deleted', message: `"${headline}" was permanently removed.` });
+      setStories((prev) => prev.filter((s) => s._id !== id));
+    } catch {
+      addToast({ type: 'error', title: 'Delete Failed', message: 'Could not delete this story.' });
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   return (
@@ -165,69 +173,91 @@ export const AdminStoriesPage: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {stories.map((story) => (
-            <div
-              key={story._id}
-              className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-purple-200 transition-all"
-            >
-              <div className="space-y-2 max-w-2xl">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-bold text-sm text-[#07031A]">{story.authorName}</span>
-                  <span className="px-2.5 py-0.5 rounded-md bg-purple-50 text-[#4F20C9] text-[10px] font-black uppercase">
-                    {story.domain}
-                  </span>
-                  <span
-                    className={`px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase ${
-                      story.status === 'approved'
-                        ? 'bg-emerald-100 text-emerald-800'
-                        : story.status === 'rejected'
-                        ? 'bg-rose-100 text-rose-800'
-                        : 'bg-amber-100 text-amber-900'
-                    }`}
-                  >
-                    {story.status}
-                  </span>
-                  <span className="text-[10px] text-slate-400 font-semibold">ID: {story._id}</span>
+          <AnimatePresence initial={false}>
+            {stories.map((story) => (
+              <motion.div
+                key={story._id}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -24, height: 0, marginBottom: 0 }}
+                transition={{ duration: 0.22 }}
+                className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-purple-200 transition-all"
+              >
+                <div className="space-y-2 max-w-2xl">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-sm text-[#07031A]">{story.authorName}</span>
+                    <span className="px-2.5 py-0.5 rounded-md bg-purple-50 text-[#4F20C9] text-[10px] font-black uppercase">
+                      {story.domain}
+                    </span>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase ${
+                        story.status === 'approved'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : story.status === 'rejected'
+                          ? 'bg-rose-100 text-rose-800'
+                          : 'bg-amber-100 text-amber-900'
+                      }`}
+                    >
+                      {story.status}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-sm text-[#07031A]">"{story.headline}"</h4>
+                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{story.storyText}</p>
                 </div>
-                <h4 className="font-bold text-sm text-[#07031A]">"{story.headline}"</h4>
-                <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{story.storyText}</p>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                <button
-                  onClick={() => handleOpenEditModal(story)}
-                  className="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors"
-                >
-                  <Edit2 className="w-3.5 h-3.5 text-[#4F20C9]" /> Edit
-                </button>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                  <button
+                    onClick={() => handleOpenEditModal(story)}
+                    className="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <Edit2 className="w-3.5 h-3.5 text-[#4F20C9]" /> Edit
+                  </button>
 
-                {story.status !== 'approved' && (
+                  {story.status !== 'approved' && (
+                    <button
+                      onClick={() => handleUpdateStatus(story._id, 'approved')}
+                      disabled={actionLoadingId === story._id}
+                      className="px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm cursor-pointer disabled:opacity-60 transition-colors"
+                    >
+                      {actionLoadingId === story._id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Check className="w-3.5 h-3.5" />
+                      )}
+                      Approve
+                    </button>
+                  )}
+                  {story.status !== 'rejected' && (
+                    <button
+                      onClick={() => handleUpdateStatus(story._id, 'rejected')}
+                      disabled={actionLoadingId === story._id}
+                      className="px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs flex items-center gap-1 shadow-sm cursor-pointer disabled:opacity-60 transition-colors"
+                    >
+                      {actionLoadingId === story._id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <X className="w-3.5 h-3.5" />
+                      )}
+                      Reject
+                    </button>
+                  )}
                   <button
-                    onClick={() => handleUpdateStatus(story._id, 'approved')}
-                    className="px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm"
+                    onClick={() => handleDelete(story._id, story.headline)}
+                    disabled={deletingId === story._id}
+                    className="p-2 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer disabled:opacity-60"
+                    title="Delete Story"
                   >
-                    <Check className="w-3.5 h-3.5" /> Approve
+                    {deletingId === story._id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
                   </button>
-                )}
-                {story.status !== 'rejected' && (
-                  <button
-                    onClick={() => handleUpdateStatus(story._id, 'rejected')}
-                    className="px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs flex items-center gap-1 shadow-sm"
-                  >
-                    <X className="w-3.5 h-3.5" /> Reject
-                  </button>
-                )}
-                <button
-                  onClick={() => handleDelete(story._id)}
-                  className="p-2 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors"
-                  title="Delete from MongoDB"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
 

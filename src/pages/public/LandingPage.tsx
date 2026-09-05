@@ -10,7 +10,6 @@ import apiClient from '../../services/apiClient';
 import { publicApi } from '../../services/publicApi';
 import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
 import { HeroParallaxLayers } from '../../components/ui/HeroParallaxLayers';
-import { gsap } from 'gsap';
 
 const FEATURED_HOME_VIDEOS = [
   { id: 'rfscVS0vtbw', title: 'Full Stack Web Development Complete Roadmap 2025', cat: 'Technology', channel: 'FreeCodeCamp', duration: '45:00', thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80' },
@@ -30,7 +29,7 @@ const FAQS = [
   },
   {
     question: 'How do I access the Administrator Control Panel?',
-    answer: 'Authorized administrators can sign in directly through the login page using production admin credentials (admin420@gmail.com / 420420420) to access live analytics, user management, and content moderation.',
+    answer: 'Authorized administrators can sign in through the standard login page using their designated admin credentials. Admin access is provisioned directly by the system owner and grants access to live analytics, user management, and content moderation tools.',
   },
   {
     question: 'Can I bookmark careers, videos, and resources to review later?',
@@ -58,20 +57,7 @@ export const LandingPage: React.FC = () => {
   const [currencyRates, setCurrencyRates] = useState<any>({ USD: 1, EUR: 0.92, GBP: 0.78, INR: 83.5, CAD: 1.36, AUD: 1.52 });
 
   useEffect(() => {
-    // GSAP Entrance Animations
-    gsap.fromTo(
-      '.gsap-hero-title',
-      { opacity: 0, y: 50, scale: 0.95 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'power3.out' }
-    );
-
-    gsap.fromTo(
-      '.gsap-hero-sub',
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.9, delay: 0.2, ease: 'power3.out' }
-    );
-
-    // Instant zero-lag fetches
+    // Fetch live data — hero animations handled by HeroParallaxLayers + framer-motion
     apiClient.get('/gemini/career-tip')
       .then((r) => { if (r.data?.success && r.data?.tip) setGeminiTip(r.data.tip); })
       .catch(() => {});
@@ -249,9 +235,10 @@ export const LandingPage: React.FC = () => {
             </div>
             <button
               onClick={() => navigate('/quiz')}
-              className="px-5 py-2.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shrink-0 shadow-sm cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shrink-0 shadow-sm cursor-pointer flex items-center gap-2"
             >
-              Get Full AI Plan →
+              Get Full AI Plan
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </ScrollAnimation>

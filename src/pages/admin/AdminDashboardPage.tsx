@@ -1,8 +1,9 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Users, Briefcase, HelpCircle, Award, MessageSquare, FileText,
-  Video, BookOpen, TrendingUp, CheckCircle2, AlertCircle, Clock, ShieldCheck, Activity
+  Video, BookOpen, TrendingUp, Clock, ShieldCheck, Activity, Download
 } from 'lucide-react';
 import { adminApi } from '../../services/adminApi';
 import {
@@ -186,7 +187,10 @@ export const AdminDashboardPage: React.FC = () => {
                   <span className="w-6 h-6 rounded-full bg-purple-100 text-[#4F20C9] font-black flex items-center justify-center text-[10px]">{i + 1}</span>
                   <span className="font-bold text-slate-800">{res.title}</span>
                 </div>
-                <span className="font-black text-[#4F20C9] tabular-nums">{(res.downloadCount || 0).toLocaleString()} ↓</span>
+                <span className="font-black text-[#4F20C9] tabular-nums flex items-center gap-1">
+                  <Download className="w-3.5 h-3.5" />
+                  {(res.downloadCount || 0).toLocaleString()}
+                </span>
               </div>
             ))
           ) : (
@@ -198,19 +202,19 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Quick Actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Manage Users', href: '/admin/users', icon: Users, color: 'bg-[#4F20C9]' },
-          { label: 'Manage Careers', href: '/admin/careers', icon: Briefcase, color: 'bg-emerald-600' },
-          { label: 'Review Stories', href: '/admin/success-stories', icon: Award, color: 'bg-amber-500' },
-          { label: 'View Feedback', href: '/admin/feedback', icon: MessageSquare, color: 'bg-rose-500' },
+          { label: 'Manage Users', to: '/admin/users', icon: Users, color: 'bg-[#4F20C9]' },
+          { label: 'Manage Careers', to: '/admin/careers', icon: Briefcase, color: 'bg-emerald-600' },
+          { label: 'Review Stories', to: '/admin/success-stories', icon: Award, color: 'bg-amber-500' },
+          { label: 'View Feedback', to: '/admin/feedback', icon: MessageSquare, color: 'bg-rose-500' },
         ].map((action) => (
-          <a
-            key={action.href}
-            href={action.href}
+          <Link
+            key={action.to}
+            to={action.to}
             className={`p-5 rounded-2xl ${action.color} text-white font-bold text-sm flex items-center gap-3 hover:opacity-90 transition-all shadow-md`}
           >
             <action.icon className="w-5 h-5" />
             {action.label}
-          </a>
+          </Link>
         ))}
       </div>
     </div>
