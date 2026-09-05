@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion';
 import {
   Sparkles, ArrowRight, Brain, Briefcase, Award, TrendingUp,
-  Star, Compass, ExternalLink, ShieldCheck, Video, Code, Layers
+  Star, Compass, Layers, Zap
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ export const HeroParallaxLayers: React.FC<{
   products = DEFAULT_PRODUCTS,
   headerTitle = 'Architect Your Future.',
   headerHighlight = 'Own Your Trajectory.',
-  headerSubtitle = 'The unified career passport platform powering students, graduates, and working professionals with AI matching, 150+ masterclasses, ATS resume tools, and live hiring feeds.',
+  headerSubtitle = 'The unified career platform empowering students, graduates, and professionals with AI career matching, 150+ masterclasses, ATS resume tools, and real-time hiring benchmarks.',
   onTakeQuiz,
   onExploreCareers,
 }) => {
@@ -37,14 +37,15 @@ export const HeroParallaxLayers: React.FC<{
     offset: ['start start', 'end start'],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  // Silky smooth spring damping
+  const springConfig = { stiffness: 90, damping: 26, mass: 0.12 };
 
-  const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 600]), springConfig);
-  const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -600]), springConfig);
-  const rotateX = useSpring(useTransform(scrollYProgress, [0, 0.2], [15, 0]), springConfig);
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2], [0.2, 1]), springConfig);
-  const rotateZ = useSpring(useTransform(scrollYProgress, [0, 0.2], [15, 0]), springConfig);
-  const translateY = useSpring(useTransform(scrollYProgress, [0, 0.2], [-500, 300]), springConfig);
+  const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 320]), springConfig);
+  const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -320]), springConfig);
+  const rotateX = useSpring(useTransform(scrollYProgress, [0, 0.4], [10, 0]), springConfig);
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.25], [0.85, 1]), springConfig);
+  const rotateZ = useSpring(useTransform(scrollYProgress, [0, 0.4], [6, 0]), springConfig);
+  const translateY = useSpring(useTransform(scrollYProgress, [0, 0.4], [-60, 40]), springConfig);
 
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
@@ -53,8 +54,11 @@ export const HeroParallaxLayers: React.FC<{
   return (
     <div
       ref={containerRef}
-      className="relative min-h-[220vh] py-12 sm:py-20 overflow-hidden antialiased flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="relative min-h-[110vh] sm:min-h-[125vh] pt-6 pb-16 overflow-hidden flex flex-col items-center [perspective:1000px] [transform-style:preserve-3d]"
     >
+      {/* Background ambient glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[350px] bg-gradient-to-tr from-purple-500/15 via-indigo-500/10 to-transparent blur-3xl pointer-events-none rounded-full" />
+
       {/* ── Top Hero Header Section ── */}
       <Header
         title={headerTitle}
@@ -64,7 +68,7 @@ export const HeroParallaxLayers: React.FC<{
         onExploreCareers={onExploreCareers}
       />
 
-      {/* ── 3D Parallax Layers Container ── */}
+      {/* ── 3D Parallax Layers Container (Smooth & Clean) ── */}
       <motion.div
         style={{
           rotateX,
@@ -72,24 +76,24 @@ export const HeroParallaxLayers: React.FC<{
           translateY,
           opacity,
         }}
-        className="space-y-10 sm:space-y-16 mt-8"
+        className="w-full space-y-6 sm:space-y-8 mt-4 sm:mt-8 will-change-transform"
       >
-        {/* Layer Row 1 — Moves Right */}
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8 sm:space-x-12 mb-6 sm:mb-10">
+        {/* Layer Row 1 — Smooth Right Shift */}
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-5 sm:space-x-8">
           {firstRow.map((product) => (
             <ProductCard product={product} translate={translateX} key={product.title} />
           ))}
         </motion.div>
 
-        {/* Layer Row 2 — Moves Left */}
-        <motion.div className="flex flex-row space-x-8 sm:space-x-12 mb-6 sm:mb-10">
+        {/* Layer Row 2 — Smooth Left Shift */}
+        <motion.div className="flex flex-row space-x-5 sm:space-x-8">
           {secondRow.map((product) => (
             <ProductCard product={product} translate={translateXReverse} key={product.title} />
           ))}
         </motion.div>
 
-        {/* Layer Row 3 — Moves Right */}
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8 sm:space-x-12">
+        {/* Layer Row 3 — Smooth Right Shift */}
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-5 sm:space-x-8">
           {thirdRow.map((product) => (
             <ProductCard product={product} translate={translateX} key={product.title} />
           ))}
@@ -109,72 +113,66 @@ const Header: React.FC<{
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-7xl relative mx-auto pt-6 sm:pt-10 pb-12 px-4 sm:px-6 lg:px-8 w-full left-0 top-0 text-center flex flex-col items-center">
+    <div className="max-w-5xl relative mx-auto pt-4 sm:pt-6 pb-8 px-4 sm:px-6 lg:px-8 w-full text-center flex flex-col items-center z-10">
       {/* Top Badge */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-50 border border-purple-200 text-[#4F20C9] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-6 sm:mb-8 shadow-sm"
+        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200/80 text-[#4F20C9] text-xs font-bold tracking-wide mb-6 shadow-sm"
       >
-        <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F20C9] animate-spin" />
-        <span>Next-Gen Career Intelligence OS</span>
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+        <Sparkles className="w-3.5 h-3.5 text-[#4F20C9]" />
+        <span>Next-Gen Career Intelligence Platform</span>
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
       </motion.div>
 
       {/* Main Hero Headline */}
-      <h1
-        className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[88px] xl:text-[96px] font-extrabold text-[#07031A] mb-4 sm:mb-6 tracking-tighter leading-[1.08] sm:leading-[0.95] max-w-5xl break-words px-2"
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-5 tracking-tight leading-[1.04]"
         style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         {title}
         <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F20C9] via-indigo-500 to-purple-400">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F20C9] via-indigo-600 to-purple-500">
           {highlight}
         </span>
-      </h1>
+      </motion.h1>
 
       {/* Subtitle */}
-      <p className="max-w-2xl text-xs sm:text-base md:text-lg text-slate-600 font-normal leading-relaxed mb-8 sm:mb-10 px-2">
+      <motion.p
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-2xl text-sm sm:text-base md:text-lg text-slate-600 font-medium leading-relaxed mb-8 px-2"
+      >
         {subtitle}
-      </p>
+      </motion.p>
 
       {/* Hero CTAs */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.25 }}
         className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md px-2"
       >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => (onTakeQuiz ? onTakeQuiz() : navigate('/quiz'))}
-          className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap"
+          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#4F20C9] hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
         >
-          <Brain className="w-4 h-4 text-purple-200 shrink-0" />
-          <span>Take AI Assessment</span>
-          <ArrowRight className="w-4 h-4 shrink-0" />
-        </motion.button>
+          <Brain className="w-4 h-4 text-purple-200" />
+          <span>Take Career Assessment</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
+        <button
           onClick={() => (onExploreCareers ? onExploreCareers() : navigate('/careers'))}
-          className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
+          className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 font-bold text-xs uppercase tracking-wider transition-all hover:scale-103 active:scale-97 cursor-pointer whitespace-nowrap"
         >
-          Explore 1,000+ Careers
-        </motion.button>
-      </motion.div>
-
-      {/* Floating Scroll Hint */}
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-        className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-200"
-      >
-        <Layers className="w-3.5 h-3.5" />
-        <span>Scroll to explore 3D career roadmap layers</span>
+          Explore Career Bank
+        </button>
       </motion.div>
     </div>
   );
@@ -190,42 +188,35 @@ const ProductCard: React.FC<{
         x: translate,
       }}
       whileHover={{
-        y: -20,
-        scale: 1.03,
+        y: -10,
+        scale: 1.02,
       }}
       key={product.title}
-      className="group/product h-80 sm:h-96 w-[280px] sm:w-[380px] relative shrink-0 rounded-3xl overflow-hidden bg-white border border-slate-200 shadow-xl hover:shadow-2xl hover:border-purple-300 transition-all duration-300"
+      className="group/product h-64 sm:h-72 w-[240px] sm:w-[320px] relative shrink-0 rounded-3xl overflow-hidden bg-slate-900 border border-slate-200/80 shadow-md hover:shadow-xl hover:border-purple-300 transition-all duration-300"
     >
-      <Link to={product.link} className="block group-hover/product:shadow-2xl h-full w-full">
-        {/* Card Background Image */}
+      <Link to={product.link} className="block h-full w-full relative">
+        {/* Clean Card Background Image (No Subbadges Overlaid) */}
         <img
           src={product.thumbnail}
           alt={product.title}
-          className="object-cover object-center absolute h-full w-full inset-0 group-hover/product:scale-108 transition-transform duration-700"
+          className="object-cover object-center absolute h-full w-full inset-0 group-hover/product:scale-106 transition-transform duration-700"
         />
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#07031A] via-[#07031A]/40 to-transparent" />
+        {/* Clean Subtle Gradient Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
 
-        {/* Top Badges */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-          <span className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#4F20C9] text-[10px] font-black uppercase shadow-sm">
+        {/* Clean Bottom Information Details */}
+        <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 text-white space-y-1">
+          <p className="text-[10px] font-extrabold uppercase tracking-wider text-purple-300">
             {product.domain}
-          </span>
-          <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black shadow-sm">
-            <Sparkles className="w-3 h-3" /> {product.matchScore}% Match
-          </span>
-        </div>
-
-        {/* Bottom Information Details */}
-        <div className="absolute bottom-0 inset-x-0 p-5 sm:p-6 text-white space-y-2">
-          <h3 className="font-black text-lg sm:text-xl leading-tight group-hover/product:text-purple-300 transition-colors line-clamp-1">
+          </p>
+          <h3 className="font-bold text-sm sm:text-base leading-snug group-hover/product:text-purple-200 transition-colors line-clamp-1">
             {product.title}
           </h3>
-          <div className="flex items-center justify-between text-xs font-bold text-slate-200 pt-1 border-t border-white/20">
-            <span>Avg: <span className="text-amber-300 font-extrabold">{product.salary}</span></span>
-            <span className="text-emerald-300 font-extrabold flex items-center gap-1">
-              <TrendingUp className="w-3.5 h-3.5" /> High Demand
+          <div className="flex items-center justify-between text-[11px] font-semibold text-slate-300 pt-1">
+            <span>{product.salary}</span>
+            <span className="text-emerald-400 font-bold flex items-center gap-1">
+              <TrendingUp className="w-3 h-3" /> High Growth
             </span>
           </div>
         </div>

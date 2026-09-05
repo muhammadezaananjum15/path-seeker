@@ -116,9 +116,9 @@ export const AdminContentPage: React.FC = () => {
       setShowModal(false);
       fetchContent(page);
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error saving content.');
+      setActionMsg(err.response?.data?.message || 'Error saving content. Please ensure you are logged in as admin.');
     } finally {
-      setTimeout(() => setActionMsg(''), 3000);
+      setTimeout(() => setActionMsg(''), 4000);
     }
   };
 
@@ -128,8 +128,8 @@ export const AdminContentPage: React.FC = () => {
       await contentApi.deleteContent(item._id);
       setActionMsg(`Article "${item.title}" deleted.`);
       fetchContent(page);
-    } catch {
-      alert('Failed to delete content.');
+    } catch (err: any) {
+      setActionMsg(err.response?.data?.message || 'Failed to delete content.');
     } finally {
       setTimeout(() => setActionMsg(''), 3000);
     }
@@ -141,8 +141,8 @@ export const AdminContentPage: React.FC = () => {
       await contentApi.updateContent(item._id, { status: newStatus });
       setActionMsg(`Status changed to ${newStatus}.`);
       fetchContent(page);
-    } catch {
-      alert('Failed to update status.');
+    } catch (err: any) {
+      setActionMsg(err.response?.data?.message || 'Failed to update status.');
     } finally {
       setTimeout(() => setActionMsg(''), 2500);
     }

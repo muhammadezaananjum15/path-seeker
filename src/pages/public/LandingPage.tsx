@@ -106,26 +106,83 @@ export const LandingPage: React.FC = () => {
       />
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 2: GLOBAL STATS & IMPACT METRICS (NEW SECTION)
+          SECTION 2: GLOBAL STATS & IMPACT METRICS (PREMIUM BENTO)
       ═══════════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { metric: '98.4%', label: 'ATS Resume Match Rate', icon: Award, color: 'text-[#4F20C9]' },
-            { metric: '150+', label: 'Video Masterclasses', icon: Video, color: 'text-purple-600' },
-            { metric: '50,000+', label: 'Active Career Explorers', icon: Users, color: 'text-emerald-600' },
-            { metric: '$125K+', label: 'Avg Starting Tech Salary', icon: DollarSign, color: 'text-amber-600' },
-          ].map(({ metric, label, icon: Icon, color }, idx) => (
-            <ScrollAnimation key={label} delay={idx * 0.08} enable3DTilt={true}>
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-lg text-center space-y-2 hover:border-[#4F20C9] transition-all">
-                <div className={`w-12 h-12 mx-auto rounded-2xl bg-purple-50 flex items-center justify-center ${color}`}>
-                  <Icon className="w-6 h-6" />
+        <div className="p-8 sm:p-12 rounded-[40px] bg-gradient-to-b from-slate-900 via-slate-950 to-[#07031A] text-white shadow-2xl border border-slate-800/80 relative overflow-hidden">
+          {/* Subtle Ambient Glow inside stats box */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#4F20C9]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-8 border-b border-slate-800">
+            <div>
+              <span className="px-3.5 py-1.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold uppercase tracking-wider">
+                Proven Platform Impact
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white mt-3" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                Engineered for Measurable Career Growth
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 max-w-md font-normal leading-relaxed">
+              Real-time analytics and global hiring data benchmarked against verified tech industry standards.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            {[
+              {
+                metric: '98.4%',
+                label: 'ATS Resume Match Rate',
+                sublabel: 'Optimized for modern corporate parsers',
+                badge: 'Top Tier',
+                badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+                icon: Award,
+              },
+              {
+                metric: '150+',
+                label: 'Curated Masterclasses',
+                sublabel: 'From architecture to interview prep',
+                badge: 'Updated Weekly',
+                badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+                icon: Video,
+              },
+              {
+                metric: '50,000+',
+                label: 'Active Explorers',
+                sublabel: 'Across 40+ countries & domains',
+                badge: '+34% this month',
+                badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+                icon: Users,
+              },
+              {
+                metric: '$125K+',
+                label: 'Avg Starting Tech Salary',
+                sublabel: 'Live verified compensation index',
+                badge: 'High Demand',
+                badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+                icon: DollarSign,
+              },
+            ].map(({ metric, label, sublabel, badge, badgeColor, icon: Icon }, idx) => (
+              <ScrollAnimation key={label} delay={idx * 0.08} enable3DTilt={true}>
+                <div className="p-6 rounded-3xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-purple-500/50 hover:bg-white/[0.08] transition-all duration-300 flex flex-col justify-between space-y-4 h-full group">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-purple-300 group-hover:scale-110 transition-transform">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}`}>
+                      {badge}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-3xl sm:text-4xl font-black text-white tracking-tight">{metric}</p>
+                    <p className="text-xs font-bold text-slate-200">{label}</p>
+                    <p className="text-[11px] text-slate-400 font-medium leading-normal">{sublabel}</p>
+                  </div>
                 </div>
-                <p className="text-3xl sm:text-4xl font-black text-[#07031A] tracking-tight">{metric}</p>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{label}</p>
-              </div>
-            </ScrollAnimation>
-          ))}
+              </ScrollAnimation>
+            ))}
+          </div>
         </div>
       </section>
 
